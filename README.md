@@ -6,3 +6,4 @@
 * Mohammad Murtuza
 * Chenyu
 * Wenyu Zheng
+* Kayla Laufer
