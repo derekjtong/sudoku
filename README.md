@@ -1,1 +1,5 @@
 # sudoku
+
+### Team members:
+
+* Derek
