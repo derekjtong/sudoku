@@ -3,5 +3,7 @@
 ### Team members:
 
 * Derek
-* Mohammad Murtuza
+* Mohammad_Murtuza
+* Chenyu
+* Wenyu Zheng
 * Safal Gautam
