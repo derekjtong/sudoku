@@ -7,3 +7,5 @@
 * Chenyu
 * Wenyu Zheng
 * Safal Gautam
+* Andi
+* Kayla
