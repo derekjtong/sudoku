@@ -7,5 +7,5 @@ const { ppid } = require("process");
 app.use(express.static(path.join(__dirname, "/dist")));
 
 app.listen(port, () => {
-  console.log(`Listening on port ${port}`);
+  console.log(`Started server on http://localhost:${port}/`);
 });
