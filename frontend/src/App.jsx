@@ -1,5 +1,5 @@
 function Home() {
-  return <div>Hello World</div>;
+  return <div>SUDOKU</div>;
 }
 
 export default Home;
