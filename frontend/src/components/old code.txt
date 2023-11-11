@@ -1,0 +1,32 @@
+function Cell() {
+  return (
+    <>
+      <button className="m-4 h-10 w-10 border border-gray-300">1</button>
+    </>
+  );
+}
+
+export default Cell;
+
+
+import Cell from "./Cell";
+
+function Board() {
+  const generateNumbers = () => {
+    return Array.from({ length: 9 }, (_, index) => index + 1);
+  };
+
+  return (
+    <div className="grid grid-cols-9 gap-1">
+      {generateNumbers().map((rowNumber) =>
+        // Generate a row of cells
+        generateNumbers().map((colNumber) => (
+          // Create a Cell component for each cell in the row
+          <Cell key={`${rowNumber}-${colNumber}`} />
+        )),
+      )}
+    </div>
+  );
+}
+
+export default Board;
