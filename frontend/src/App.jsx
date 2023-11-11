@@ -1,15 +1,13 @@
-import Nav from "./components/Nav";
+import Content from "./components/Content";
+import Nav from "./components/Navbar";
 
 function Home() {
   return (
     <>
       <Nav />
-      <div>Hello</div>
+      <Content />
     </>
-
-  )
-
-
+  );
 }
 
 export default Home;
