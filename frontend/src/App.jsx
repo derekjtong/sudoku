@@ -1,5 +1,15 @@
+import Buttons from "./components/Buttons";
+import Logo from "./components/Logo";
+
+
 function Home() {
-  return <div>SUDOKU</div>;
+  return (
+    <>
+      <Logo />
+      <div>Hello</div>
+      <Buttons />
+    </>
+  );
 }
 
 export default Home;
