@@ -1,5 +1,12 @@
+import HeadLine from "./components/HeadLine";
+
 function Home() {
-  return <div>SUDOKU</div>;
+  return (
+    <>
+      <HeadLine/>
+      <div>SUDOKU</div>
+    </>
+  );
 }
 
 export default Home;
