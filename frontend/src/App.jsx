@@ -1,11 +1,12 @@
-import Board from "./components/Board";
+import Content from "./components/Content";
+import Nav from "./components/Navbar";
 
 function Home() {
   return (
-    <div>
-      <div className="text-4xl">SUDOKU</div>
-      <Board />
-    </div>
+    <>
+      <Nav />
+      <Content />
+    </>
   );
 }
 
