@@ -1,6 +1,7 @@
 // Board.jsx
 import React, { useState } from "react";
 import Cell from "./Cell";
+import Keypad from "./Keypad";
 
 function Board() {
   const [sudokuGrid, setSudokuGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill("")));
@@ -15,6 +16,14 @@ function Board() {
   const handleCellClick = (row, col) => {
     console.log(`Selected cell: (${row + 1}, ${col + 1})`);
     setSelectedCell({ row, col });
+  };
+
+  const handleKeypadClick = (value) => {
+    if (selectedCell.row !== null && selectedCell.col !== null) {
+      const newGrid = [...sudokuGrid];
+      newGrid[selectedCell.row][selectedCell.col] = value.toString();
+      setSudokuGrid(newGrid);
+    }
   };
 
   const isSubgridBoundary = (index) => index % 3 === 0;
@@ -67,28 +76,32 @@ function Board() {
   };
 
   return (
-    <table className="sudoku-grid border border-black">
-      <tbody>
-        {[0, 3, 6].map((startRow, quadrantRowIndex) => (
-          <tr key={quadrantRowIndex}>
-            {[0, 3, 6].map((startCol, quadrantColIndex) => (
-              <td
-                key={quadrantColIndex}
-                className="subgrid-cell"
-                style={{
-                  border: "4px solid green",
-                  boxSizing: "border-box", // Ensure the border is included in the overall size
-                }}
-              >
-                <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
-                  {renderSubgrid(startRow, startCol, 3 * quadrantRowIndex + quadrantColIndex)}
-                </table>
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div>
+      <table className="sudoku-grid mb-4 border border-black">
+        <tbody>
+          {[0, 3, 6].map((startRow, quadrantRowIndex) => (
+            <tr key={quadrantRowIndex}>
+              {[0, 3, 6].map((startCol, quadrantColIndex) => (
+                <td
+                  key={quadrantColIndex}
+                  className="subgrid-cell"
+                  style={{
+                    border: "4px solid green",
+                    boxSizing: "border-box", // Ensure the border is included in the overall size
+                  }}
+                >
+                  <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
+                    {renderSubgrid(startRow, startCol, 3 * quadrantRowIndex + quadrantColIndex)}
+                  </table>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <Keypad onKeypadClick={handleKeypadClick} />
+    </div>
   );
 }
 
