@@ -1,14 +1,11 @@
-import Buttons from "./components/Buttons";
-import Logo from "./components/Logo";
+import Content from "./components/Content";
 import Nav from "./components/Nav";
 
 function Home() {
   return (
     <>
       <Nav />
-      <Logo />
-      <div>Hello</div>
-      <Buttons />
+      <Content />
     </>
   );
 }
