@@ -1,5 +1,4 @@
-// Board.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
 
@@ -25,8 +24,6 @@ function Board() {
       setSudokuGrid(newGrid);
     }
   };
-
-  const isSubgridBoundary = (index) => index % 3 === 0;
 
   const isSelectedQuadrant = (row, col) => {
     const selectedRow = selectedCell.row;

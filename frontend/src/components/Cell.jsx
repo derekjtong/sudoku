@@ -1,6 +1,3 @@
-// Cell.js
-import React from "react";
-
 function Cell({ row, col, value, onCellClick, onChange, isSelected }) {
   return (
     <input
