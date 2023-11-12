@@ -1,6 +1,4 @@
-// Keypad.jsx
-import React from "react";
-
+import PropTypes from "react";
 function Keypad({ onKeypadClick }) {
   const keypadNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -30,4 +28,5 @@ function Keypad({ onKeypadClick }) {
   );
 }
 
+Keypad.propTypes = {onKeypadClick: };
 export default Keypad;
