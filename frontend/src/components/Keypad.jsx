@@ -28,5 +28,4 @@ function Keypad({ onKeypadClick }) {
   );
 }
 
-Keypad.propTypes = {onKeypadClick: };
 export default Keypad;
