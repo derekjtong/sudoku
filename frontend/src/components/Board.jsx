@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
 
@@ -102,10 +102,13 @@ function Board() {
     const value = e.key;
     if (/^[1-9]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
       handleCellChange(selectedCell.row, selectedCell.col, value);
+    } else if (e.code === "Backspace" && selectedCell.row !== null && selectedCell.col !== null) {
+      // Handle Backspace to clear the cell
+      handleCellChange(selectedCell.row, selectedCell.col, "");
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener("keydown", handleArrowKeys);
     document.addEventListener("keydown", handlePhysicalKeyboardInput);
     return () => {
