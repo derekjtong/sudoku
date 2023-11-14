@@ -7,9 +7,12 @@ function Board() {
   const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
 
   const handleCellChange = (row, col, e) => {
-    const newGrid = [...sudokuGrid];
-    newGrid[row][col] = e.target.value;
-    setSudokuGrid(newGrid);
+    const value = e.target.value;
+    if (/^[1-9]$/.test(value) || value === "") {
+      const newGrid = [...sudokuGrid];
+      newGrid[row][col] = e.target.value;
+      setSudokuGrid(newGrid);
+    }
   };
 
   const handleCellClick = (row, col) => {
