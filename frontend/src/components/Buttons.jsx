@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
   const [notesOn, setNotesOn] = useState(false);
