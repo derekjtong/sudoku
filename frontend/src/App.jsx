@@ -1,10 +1,11 @@
-import HeadLine from "./components/HeadLine";
+import Content from "./components/Content";
+import Nav from "./components/Navbar";
 
 function Home() {
   return (
     <>
-      <HeadLine/>
-      <div>SUDOKU</div>
+      <Nav />
+      <Content />
     </>
   );
 }
