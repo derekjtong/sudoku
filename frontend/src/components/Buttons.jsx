@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Buttons.css';
 
 const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
   const [notesOn, setNotesOn] = useState(false);
@@ -10,13 +9,13 @@ const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
   };
 
   return (
-    <div className="buttons-container">
-      <button onClick={onUndo}>Undo</button>
-      <button onClick={toggleNotes}>
+    <div className="fixed bottom-5 w-full bg-gray-800 p-4 flex justify-around">
+      <button className="text-white" onClick={onUndo}>Undo</button>
+      <button className="text-white" onClick={toggleNotes}>
         {notesOn ? 'Notes On' : 'Notes Off'}
       </button>
-      <button onClick={onGetHint}>Hint</button>
-      <button onClick={onErase}>Check Board</button>
+      <button className="text-white" onClick={onGetHint}>Hint</button>
+      <button className="text-white" onClick={onErase}>Check Board</button>
     </div>
   );
 };
