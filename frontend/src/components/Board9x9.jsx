@@ -112,7 +112,7 @@ function Board9x9() {
       handleCellChange(selectedCell.row, selectedCell.col, "");
       e.preventDefault();
     } else if (/^[0]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
-      // Clear the cell for alphabets
+      // Clear the cell for zero
       handleCellChange(selectedCell.row, selectedCell.col, "");
       e.preventDefault();
     }
