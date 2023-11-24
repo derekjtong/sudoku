@@ -1,16 +1,8 @@
 import checkIfValid from "../helpers/checkIfValid.js";
 
-const getHint = (req, res) => {
+const getRandomHint = (req, res) => {
   let board = JSON.parse(req.body.board);
-  let solution = JSON.parse(req.body.solution);
-  let indexes = JSON.parse(req.body.indexes);
-  let r = indexes["row"];
-  let c = indexes["col"];
-
-  if (r !== -1 && c !== -1) {
-    return res.json({ suggestedMove: solution[r][c] });
-  }
-
+    
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[0].length; col++) {
       // Find an empty cell
@@ -25,8 +17,6 @@ const getHint = (req, res) => {
           }
         }
 
-        // If no valid move is found, reset the cell to -1
-        board[row][col] = -1;
       }
     }
   }
@@ -35,4 +25,4 @@ const getHint = (req, res) => {
   return res.json({ message: "No hint available", suggestedMove: null });
 };
 
-export default getHint;
+export default getRandomHint;
