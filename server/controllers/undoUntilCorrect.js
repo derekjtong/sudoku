@@ -1,4 +1,4 @@
-import stack from "../helpers/stack";
+import stack from "../helpers/stack.js";
 
 const undoUntilCorrect = (req, res) => {
   // Check if the stack is empty

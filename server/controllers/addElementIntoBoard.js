@@ -1,6 +1,5 @@
 //the frontend passes the element which have to be added and the coordinates
 import checkIfValid from "../helpers/checkIfValid.js";
-import { getDb } from '../../database/databas.js'; // Adjust the path as necessary
 import stack from "../helpers/stack.js";
 
 export const addElementIntoBoard = (req, res) => {

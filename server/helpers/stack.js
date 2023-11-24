@@ -1,4 +1,5 @@
-import {Stack} from "./stackDefination";
+import {Stack} from "./stackDefination.js";
 
 
-export default stack = new Stack();
+let stack = new Stack();
+export default stack;
