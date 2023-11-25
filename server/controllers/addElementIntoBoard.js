@@ -9,12 +9,14 @@ export const addElementIntoBoard = async(req, res) => {
 
   const gameId = new ObjectId(req.params.id);
   let board = await Game.findOne({ _id: gameId });
+  let stack = board[ 'stack' ];
   board = board[ 'problemBoard' ];
   const row = parseInt(req.body.board.row);
   const col = parseInt(req.body.board.col);
   const element = parseInt(req.body.board.element);
-  if (stack.isEmpty()) {
-    stack.push(board, checkIfValid(board));
+  if (stack.length===0) {
+    // stack.push({ board, checkIfValid(board) });
+    stack.push({grid:board, booleanValue:checkIfValid(board)})
   }
   
   // console.log(board, row, col, element);
@@ -38,7 +40,7 @@ export const addElementIntoBoard = async(req, res) => {
   }
 
   board[ row ][ col ] = element;
-  stack.push(board, checkIfValid(board));
+  stack.push({grid:board, booleanValue:checkIfValid(board)});
   updateGame(board, gameId, stack);
   if (checkIfValid(board) === false) {
     return res.json({

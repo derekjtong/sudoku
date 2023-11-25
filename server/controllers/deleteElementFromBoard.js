@@ -9,9 +9,11 @@ export const deleteElementFromBoard = async(req, res) => {
     const gameId = new ObjectId(req.params.id);
     //const board = JSON.parse(req.body.board.matrix);
     let board = await Game.findOne({ _id: gameId });
-    board = board["problemBoard"];
-    if (stack.isEmpty()) {
-      stack.push(board, checkIfValid(board));
+    let stack = board[ "stack" ];
+    board = board[ "problemBoard" ];
+    
+    if (stack.length===0) {
+      stack.push({grid:board,booleanValue:checkIfValid(board)});
     }
     
 
@@ -25,7 +27,7 @@ export const deleteElementFromBoard = async(req, res) => {
 
     if (board[row][col] !== -1) {
       board[row][col] = -1;
-      stack.push(board, checkIfValid(board));
+      stack.push({ grid: board, booleanValue: checkIfValid(board) });
       updateGame(board, gameId, stack);
     }
 
