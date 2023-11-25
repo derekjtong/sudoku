@@ -1,10 +1,10 @@
 
 import express from 'express';
 import bodyParser from 'body-parser'
-import {generateBoard}  from './helpers/generateBoard.js';
 import boardManipulationRoute from './routes/boardManipulation.js';
 import boardRouter from "./routes/getBoard.js";
 import makeDB from './database/database.js';
+import gamesRouter from './routes/games.js';
 
 
 const app = express();
@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // all routes called here
 app.use("/api", boardManipulationRoute);
 app.use("/api", boardRouter);
+app.use("/api", gamesRouter);
 // app.use('/api',require('./routes/boardManipulation'));
 
 
