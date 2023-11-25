@@ -9,15 +9,22 @@ import getRandomHint from '../controllers/getRandomHint.js';
 import getSpecificHint from '../controllers/getHintSpecificHint.js';
 
 const router = express.Router();
-
-router.post("/addelement/:id", addElementIntoBoard);
-router.post("/deleteelement/:id", deleteElementFromBoard);
-router.get("/checksolved/:id", checkIfSolved);
-router.get("/correctSoFar/:id", correctSoFar);
-router.get("/getRandomHint/:id", getRandomHint);
-router.post("/getSpecificHint/:id", getSpecificHint);
-router.get('/undo/:id', undo);
-router.get('/undountilcorrect/:id', undoUntilCorrect);
+// @route /api/addelement/{dbId}
+router.post("/addelement/:id", addElementIntoBoard); // {valid:true or false, board,stack}
+// @route /api/deleteelement/{dbId}
+router.post("/deleteelement/:id", deleteElementFromBoard); // {valid:true or false, board}
+// @route /api/checksolved/{dbId}
+router.get("/checksolved/:id", checkIfSolved);            // {isSolved:true/false}
+//@route /api/correctSoFar/{dbId}
+router.get("/correctSoFar/:id", correctSoFar);            // {valid:true/false}
+// @route /api/getRandomHint/{dbId}
+router.get("/getRandomHint/:id", getRandomHint);          //{suggestedMove:{row,col,num}}
+// @route /api/getSpecificHint/{dbId}
+router.post("/getSpecificHint/:id", getSpecificHint);       //{suggestedMove} suggestedMove means the element that we can add
+// @route /api/undo/{dbId}
+router.get('/undo/:id', undo);                           // {board}
+// @route /api/undountilcorrect/{dbId}
+router.get('/undountilcorrect/:id', undoUntilCorrect);  // {board}
 
 
 export default router;

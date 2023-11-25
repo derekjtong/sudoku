@@ -19,8 +19,8 @@ export const getFourBoard = async (req, res, next) => {
       const board = dic["cell"];
       const solution = dic["solution"];
       const game = await createGame(board, solution, 4, []);
-      
-      res.json({ game });
+
+      return res.json({ game });
     }
   }
   catch (err) {

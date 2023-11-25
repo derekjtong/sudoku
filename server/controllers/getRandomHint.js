@@ -1,7 +1,7 @@
 import checkIfValid from "../helpers/checkIfValid.js";
 import { ObjectId } from "mongodb";
 import Game from "../database/gameSchema.js";
-
+// suggestedMove{row,col,num}
 const getRandomHint = async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
@@ -24,6 +24,8 @@ const getRandomHint = async (req, res) => {
         }
       }
     }
+    // If no empty cell is found, return a response indicating no hint is available
+    return res.json({ message: "No hint available", suggestedMove: null });
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal Server Error", error });
@@ -31,8 +33,7 @@ const getRandomHint = async (req, res) => {
   
   
 
-  // If no empty cell is found, return a response indicating no hint is available
-  return res.json({ message: "No hint available", suggestedMove: null });
+  
 };
 
 export default getRandomHint;

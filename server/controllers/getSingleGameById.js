@@ -3,7 +3,7 @@
 import Game from "../database/gameSchema.js";
 import {ObjectId} from "mongodb";
 
-
+// returns game
 const getSingleGameById = async (req, res) => {
     try {
       const gameId = new ObjectId(req.params.id);

@@ -4,10 +4,10 @@ import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 import updateGame from "../helpers/updateGame.js";
 
+//{valid:true/false,board}
 export const deleteElementFromBoard = async(req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
-    //const board = JSON.parse(req.body.board.matrix);
     let board = await Game.findOne({ _id: gameId });
     let stack = board[ "stack" ];
     board = board[ "problemBoard" ];

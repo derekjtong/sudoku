@@ -1,7 +1,7 @@
 import checkIfValid from "../helpers/checkIfValid.js";
 import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
-
+//json {valid:true/false}
 export const correctSoFar = async(req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);

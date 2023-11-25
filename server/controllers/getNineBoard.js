@@ -22,7 +22,7 @@ export const getNineBoard = async (req, res, next) => {
       const game = await createGame(board, solution, 9, []);
 
       // Send the response
-      res.json({ game });
+      return res.json({ game });
     }
   } catch (err) {
     console.log(err);

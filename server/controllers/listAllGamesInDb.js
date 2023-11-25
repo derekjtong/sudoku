@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Game from "../database/gameSchema.js";
 
 
+//returns games
 
 const listAllGamesInDb = async (req, res) => {
     try {

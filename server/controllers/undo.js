@@ -1,6 +1,6 @@
 import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
-
+// returns board after undo
 const undo = async (req, res) => {
   try {
     // Check if the stack is empty
