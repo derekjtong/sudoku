@@ -4,7 +4,7 @@ import createGame from "../helpers/createGame.js";
 export const getFourBoard = async (req, res, next) => {
   const id = parseInt(req.params.id);
   // Check if id is not equal to 9
-  if (id !== 9) {
+  if (id !== 4) {
     // Assuming you want to skip the rest of the middleware stack
     return {
       message: "Bad request",

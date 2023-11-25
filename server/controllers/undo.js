@@ -1,21 +1,21 @@
 import Game from "../database/gameSchema.js";
-import stack from "../helpers/stack.js";
+import { ObjectId } from "mongodb";
 
 const undo = async(req, res) => {
   // Check if the stack is empty
   const gameId = new ObjectId(req.params.id);
   let stackDb = await Game.findOne({ _id: gameId });
   stackDb = stackDb[ 'stack' ];
-  if (stackDb.size() === 0) {
+  if (stackDb.length <= 1) {
     return res.status(400).json({ error: "Stack is empty." });
   }
-
   // Pop an item from the stack
   stackDb.pop();
-  await Game.updateOne({ _id: gameId }, { problemBoard:board,stack: stackDb });
-  const { grid } = stackDb.peek();
+  const board = stackDb.pop();
+  stackDb.push(board);
+  await Game.updateOne({ _id: gameId }, { problemBoard:board['grid'],stack: stackDb });
   return res.json({
-    board: grid, // Use the grid from the popped state
+    board
   });
 };
 

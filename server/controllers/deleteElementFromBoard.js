@@ -17,8 +17,8 @@ export const deleteElementFromBoard = async(req, res) => {
     }
     
 
-    const row = parseInt(req.body.board.row);
-    const col = parseInt(req.body.board.col);
+    const row = parseInt(req.body.row);
+    const col = parseInt(req.body.col);
 
     if (isNaN(row) || isNaN(col) || row < 0 || col < 0 || row >= board.length || col >= board[0].length) {
       // Invalid coordinates

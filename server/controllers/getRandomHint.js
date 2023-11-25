@@ -1,4 +1,6 @@
 import checkIfValid from "../helpers/checkIfValid.js";
+import { ObjectId } from "mongodb";
+import Game from "../database/gameSchema.js";
 
 const getRandomHint = async(req, res) => {
   const gameId = new ObjectId(req.params.id);

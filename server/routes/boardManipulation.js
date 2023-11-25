@@ -10,12 +10,14 @@ import getSpecificHint from '../controllers/getHintSpecificHint.js';
 
 const router = express.Router();
 
-router.post('/addelement', addElementIntoBoard);
-router.post("/deleteelement", deleteElementFromBoard);
-router.get("/checksolved", checkIfSolved);
-router.get("/correctSoFar", correctSoFar);
-router.get("/getRandomHint", getRandomHint);
-router.get("/getSpecificHint", getSpecificHint);
-router.get('/undo', undo);
-router.get('/undountilcorrect', undoUntilCorrect);
+router.post("/addelement/:id", addElementIntoBoard);
+router.post("/deleteelement/:id", deleteElementFromBoard);
+router.get("/checksolved/:id", checkIfSolved);
+router.get("/correctSoFar/:id", correctSoFar);
+router.get("/getRandomHint/:id", getRandomHint);
+router.post("/getSpecificHint/:id", getSpecificHint);
+router.get('/undo/:id', undo);
+router.get('/undountilcorrect/:id', undoUntilCorrect);
+
+
 export default router;
