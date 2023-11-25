@@ -3,7 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser'
 import {generateBoard}  from './helpers/generateBoard.js';
 import boardManipulationRoute from './routes/boardManipulation.js';
-import getBoard from './routes/getBoard.js'
+import boardRouter from "./routes/getBoard.js";
 import makeDB from './database/database.js';
 
 
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // all routes called here
 app.use("/api", boardManipulationRoute);
-app.use("/api", getBoard);
+app.use("/api", boardRouter);
 // app.use('/api',require('./routes/boardManipulation'));
 
 

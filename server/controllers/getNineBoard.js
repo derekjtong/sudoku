@@ -1,20 +1,27 @@
 import { generateBoard } from "../helpers/generateBoard.js";
-
-export const getNineBoard = (req, res, next) => {
+import createGame from "../helpers/createGame.js";
+export const getNineBoard = async(req, res, next) => {
   const id = parseInt(req.params.id);
-
   // Check if id is not equal to 9
   if (id !== 9) {
     // Assuming you want to skip the rest of the middleware stack
-    return next();
+    return {
+      message:"Bad request"
+    };
     // If you want to send a response, use res.status().json() here
   }
+  if (id === 9) {
+    // Generate a 9x9 Sudoku board and its solution
+    const dic = generateBoard(9, 9);
+    console.log(dic);
+    // Create and save games
 
-  // Generate a 9x9 Sudoku board and its solution
-  const dic = generateBoard(9, 9);
-  const board = dic["cell"];
-  const solution = dic["solution"];
+    const board = dic["cell"];
+    const solution =dic["solution"];
+    const game = await createGame(board, solution, 9, []);
 
-  // Send the response
-  res.json({ board, solution });
+    // Send the response
+    res.json({ game });
+  }
+  
 };

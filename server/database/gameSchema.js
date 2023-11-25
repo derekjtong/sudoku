@@ -1,45 +1,17 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const CellSchema = new mongoose.Schema({
-  value: {
-    type: Number,
-    default: -1,
-  },
-  fixed: {
-    type: Boolean,
-    default: false,
-  },
+const gameSchema = new mongoose.Schema({
+  problemBoard: [[Number]], // Array of arrays of numbers
+  solutionBoard: [[Number]], // Array of arrays of numbers
+  dimension: Number,
+  stack: [
+    {
+      grid: [[Number]], // Array of arrays of numbers
+      booleanValue: Boolean,
+    },
+  ],
 });
 
-const StackSnapshotSchema = new mongoose.Schema({
-  grid: {
-    type: [[CellSchema]],
-    required: true,
-  },
-  booleanValue: {
-    type: Boolean,
-    required: true,
-  },
-});
+const Game = mongoose.model("Game", gameSchema);
 
-const GameSchema = new mongoose.Schema({
-  problemBoard: {
-    type: [[CellSchema]],
-    required: true,
-  },
-  solutionBoard: {
-    type: [[CellSchema]],
-    required: true,
-  },
-  dimension: {
-    type: Number,
-    required: true,
-  },
-  stack: [StackSnapshotSchema],
-});
-
-const Cell = mongoose.model("Cell", CellSchema);
-const StackSnapshot = mongoose.model("StackSnapshot", StackSnapshotSchema);
-const Game = mongoose.model("Game", GameSchema);
-
-export { Cell, StackSnapshot, Game };
+export default Game;
