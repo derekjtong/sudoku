@@ -1,15 +1,22 @@
 //the frontend passes the element which have to be added and the coordinates
 import checkIfValid from "../helpers/checkIfValid.js";
 import stack from "../helpers/stack.js";
+import Game from "../database/gameSchema.js";
+import updateGame from "../helpers/updateGame.js";
+import { ObjectId } from "mongodb";
 
-export const addElementIntoBoard = (req, res) => {
-  console.log("before");
-  const board = JSON.parse(req.body.board.matrix);
-  // console.log("after")
+export const addElementIntoBoard = async(req, res) => {
+
+  const gameId = new ObjectId(req.params.id);
+  let board = await Game.findOne({ _id: gameId });
+  board = board[ 'problemBoard' ];
   const row = parseInt(req.body.board.row);
   const col = parseInt(req.body.board.col);
   const element = parseInt(req.body.board.element);
-  stack.push(board, checkIfValid(board));
+  if (stack.isEmpty()) {
+    stack.push(board, checkIfValid(board));
+  }
+  
   // console.log(board, row, col, element);
   for (let i = 0; i < board.length; i++) {
     //check in row
@@ -32,6 +39,7 @@ export const addElementIntoBoard = (req, res) => {
 
   board[ row ][ col ] = element;
   stack.push(board, checkIfValid(board));
+  updateGame(board, gameId, stack);
   if (checkIfValid(board) === false) {
     return res.json({
       valid: false,
@@ -41,5 +49,6 @@ export const addElementIntoBoard = (req, res) => {
   return res.json({
     valid: true,
     board,
+    stack
   });
 };

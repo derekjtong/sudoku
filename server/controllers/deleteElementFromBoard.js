@@ -1,10 +1,19 @@
 import checkIfValid from "../helpers/checkIfValid.js";
 import stack from "../helpers/stack.js";
+import Game from "../database/gameSchema.js";
+import { ObjectId } from "mongodb";
+import updateGame from "../helpers/updateGame.js";
 
-export const deleteElementFromBoard = (req, res) => {
+export const deleteElementFromBoard = async(req, res) => {
   try {
-    const board = JSON.parse(req.body.board.matrix);
-    stack.push(board, checkIfValid(board));
+    const gameId = new ObjectId(req.params.id);
+    //const board = JSON.parse(req.body.board.matrix);
+    let board = await Game.findOne({ _id: gameId });
+    board = board["problemBoard"];
+    if (stack.isEmpty()) {
+      stack.push(board, checkIfValid(board));
+    }
+    
 
     const row = parseInt(req.body.board.row);
     const col = parseInt(req.body.board.col);
@@ -17,6 +26,7 @@ export const deleteElementFromBoard = (req, res) => {
     if (board[row][col] !== -1) {
       board[row][col] = -1;
       stack.push(board, checkIfValid(board));
+      updateGame(board, gameId, stack);
     }
 
     return res.json({

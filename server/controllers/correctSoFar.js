@@ -1,8 +1,14 @@
 import checkIfValid from "../helpers/checkIfValid.js";
+import Game from "../database/gameSchema.js";
+import { ObjectId } from "mongodb";
 
-export const correctSoFar = (req, res) => {
+export const correctSoFar = async(req, res) => {
   try {
-    const board = JSON.parse(req.body.board.matrix);
+    const gameId = new ObjectId(req.params.id);
+    //const board = JSON.parse(req.body.board.matrix);
+    let board = await Game.findOne({ _id: gameId });
+    board = board["problemBoard"];
+
 
     if (!Array.isArray(board) || board.length === 0 || !board.every((row) => Array.isArray(row))) {
       // Invalid board structure

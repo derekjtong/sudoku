@@ -1,7 +1,9 @@
 import checkIfValid from "../helpers/checkIfValid.js";
 
-const getRandomHint = (req, res) => {
-  let board = JSON.parse(req.body.board);
+const getRandomHint = async(req, res) => {
+  const gameId = new ObjectId(req.params.id);
+  let board = await Game.findOne({ _id: gameId });
+  board = board[ 'problemBoard' ];
     
   for (let row = 0; row < board.length; row++) {
     for (let col = 0; col < board[0].length; col++) {

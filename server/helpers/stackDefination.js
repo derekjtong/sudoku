@@ -48,23 +48,4 @@ class Stack {
   }
 }
 
-export { Stack,StackNode};
-// Example usage:
-
-
-
-// Pushing pairs into the stack
-// myStack.push(
-//   [
-//     [1, 2, 3],
-//     [4, 5, 6],
-//   ],
-//   true,
-// );
-// myStack.push(
-//   [
-//     [7, 8, 9],
-//     [10, 11, 12],
-//   ],
-//   false,
-// );
+export { Stack, StackNode };

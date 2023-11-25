@@ -9,5 +9,6 @@ const boardRouter = express.Router();
 // })
 boardRouter.get("/newboard/:id", getFourBoard);
 boardRouter.get("/newboard/:id", getNineBoard);
+// add other routes
 
 export default boardRouter;
