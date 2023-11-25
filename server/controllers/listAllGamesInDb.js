@@ -3,12 +3,19 @@ import Game from "../database/gameSchema.js";
 
 
 
-const listAllGamesInDb = async(req, res) => {
-    const games = await Game.find();
+const listAllGamesInDb = async (req, res) => {
+    try {
+        const games = await Game.find();
+
+        return res.json({
+          games,
+        });
+    }
     
-    return res.json({
-        games
-    })
+    catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
 }
 
 export default listAllGamesInDb;

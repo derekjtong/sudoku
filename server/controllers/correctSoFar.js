@@ -20,6 +20,6 @@ export const correctSoFar = async(req, res) => {
     return res.json({ valid: isValid });
   } catch (error) {
     console.error("Error checking if the board is correct so far:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error",error });
   }
 };

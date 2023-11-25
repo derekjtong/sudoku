@@ -4,11 +4,7 @@ import { getNineBoard } from '../controllers/getNineBoard.js';
 
 const boardRouter = express.Router();
 
-// router.get("/getBoard", (req, res) => {
-//     res.json(res.body.matrix);
-// })
 boardRouter.get("/newboard/:id", getFourBoard);
 boardRouter.get("/newboard/:id", getNineBoard);
-// add other routes
 
 export default boardRouter;
