@@ -1,10 +1,10 @@
 
 import express from 'express';
 import bodyParser from 'body-parser'
-import {generateBoard}  from './helpers/generateBoard.js';
 import boardManipulationRoute from './routes/boardManipulation.js';
-import getBoard from './routes/getBoard.js'
-import { connectToServer } from './database/database.js';
+import boardRouter from "./routes/getBoard.js";
+import makeDB from './database/database.js';
+import gamesRouter from './routes/games.js';
 
 
 const app = express();
@@ -13,7 +13,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // all routes called here
 app.use("/api", boardManipulationRoute);
-app.use("/api", getBoard);
+app.use("/api", boardRouter);
+app.use("/api", gamesRouter);
 // app.use('/api',require('./routes/boardManipulation'));
 
 
@@ -22,13 +23,13 @@ app.use("/api", getBoard);
 
 const port = 9090;
 
-connectToServer((error) => {
-  if (error) {
-    console.error("Failed to connect to the database!", error);
-    process.exit();
+app.listen(port, (err) => {
+  makeDB();
+  if (!err) {
+    console.log('Server is up and running..');
   }
-
-  app.listen(port, () => {
-    console.log(`Started server on http://localhost:${port}/`);
-  });
-});
+  else {
+    console.log(err);
+  }
+  
+})

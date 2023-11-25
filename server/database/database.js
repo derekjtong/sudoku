@@ -1,24 +1,14 @@
-import { MongoClient } from 'mongodb';
-import dotenv from 'dotenv';
-dotenv.config();
+import mongoose from "mongoose";
+const url = "mongodb://localhost:27017/sudoku";
 
-const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+function makeDB() {
+    mongoose.connect(url).then(() => {
+        console.log('Conected to db..')
+    }).catch((err) => {
+       console.log('Error...')
+    })
+}
+export default makeDB;
 
-let dbConnection;
 
-export const connectToServer = (callback) => {
-    client.connect((err, db) => {
-        if (err) {
-            console.error("Could not connect to MongoDB", err);
-            return callback(err);
-        }
-        dbConnection = db.db('sudokuDB');
-        console.log("Successfully connected to MongoDB.");
-        return callback(null);
-    });
-};
 
-export const getDb = () => {
-    return dbConnection;
-};
