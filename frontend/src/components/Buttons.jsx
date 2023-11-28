@@ -10,16 +10,16 @@ const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
 
   return (
     <div className="fixed bottom-0 flex w-full justify-around bg-gray-800 p-4">
-      <button className="text-white" onClick={onUndo}>
+      <button className="text-white" onClick={() => { onUndo(); onUserAction('Undo'); }}>
         Undo
       </button>
       <button className="text-white" onClick={toggleNotes}>
         {notesOn ? "Notes On" : "Notes Off"}
       </button>
-      <button className="text-white" onClick={onGetHint}>
+      <button className="text-white" onClick={() => { onGetHint(); onUserAction('Get Hint'); }}>
         Hint
       </button>
-      <button className="text-white" onClick={onErase}>
+      <button className="text-white" onClick={() => { onErase(); onUserAction('Erase'); }}>
         Check Board
       </button>
     </div>
