@@ -1,4 +1,4 @@
-import Game from "../database/gameSchema";
+import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 //{suggestedMove}
 const getSpecificHint = async (req, res) => {
