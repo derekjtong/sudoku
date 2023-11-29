@@ -154,8 +154,9 @@ function Board4x4() {
           ))}
         </tbody>
       </table>
-
-      <Keypad onKeypadClick={handleKeypadClick} />
+      <center>
+        <Keypad onKeypadClick={handleKeypadClick} />
+      </center>
     </div>
   );
 }
