@@ -8,7 +8,7 @@ function Board() {
   const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
 
   useEffect(() => {
-    getNineBoard("boardId").then((data) => console.log(data));
+    getNineBoard().then((data) => console.log(data));
   });
   const handleCellChange = (row, col, e) => {
     const value = e.target.value;
