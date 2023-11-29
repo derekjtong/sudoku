@@ -7,9 +7,10 @@ export const getFourBoard = async (req, res, next) => {
     // Check if id is not equal to 9
     if (id !== 4) {
       // Assuming you want to skip the rest of the middleware stack
-      return {
-        message: "Bad request",
-      };
+      // return {
+      //   message: "Bad request",
+      // };
+      next();
       // If you want to send a response, use res.status().json() here
     }
     if (id === 4) {

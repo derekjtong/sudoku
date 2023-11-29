@@ -2,6 +2,7 @@ import { generateBoard } from "../helpers/generateBoard.js";
 import createGame from "../helpers/createGame.js";
 export const getNineBoard = async (req, res, next) => {
   try {
+    console.log('this is cool');
     const id = parseInt(req.params.id);
     // Check if id is not equal to 9
     if (id !== 9) {
