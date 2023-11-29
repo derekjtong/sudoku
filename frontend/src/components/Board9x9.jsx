@@ -151,8 +151,9 @@ function Board9x9() {
           ))}
         </tbody>
       </table>
-
-      <Keypad onKeypadClick={handleKeypadClick} />
+      <center>
+        <Keypad onKeypadClick={handleKeypadClick} />
+      </center>
     </div>
   );
 }
