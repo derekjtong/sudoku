@@ -7,9 +7,9 @@ const BASE_URL = "http://localhost:9090";
  * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const getFourBoard = (id) => {
+export const getFourBoard = () => {
   return axios
-    .get(`${BASE_URL}/newboard/${id}`)
+    .get(`${BASE_URL}/newboard/4`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error fetching 4x4 board: ${error.message}`);
@@ -21,9 +21,9 @@ export const getFourBoard = (id) => {
  * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const getNineBoard = (id) => {
+export const getNineBoard = () => {
   return axios
-    .get(`${BASE_URL}/newboard/${id}`)
+    .get(`${BASE_URL}/newboard/9`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error fetching 9x9 board: ${error.message}`);
@@ -35,9 +35,9 @@ export const getNineBoard = (id) => {
  * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const getSixteenBoard = (id) => {
+export const getSixteenBoard = () => {
   return axios
-    .get(`${BASE_URL}/newboard/${id}`)
+    .get(`${BASE_URL}/newboard/16`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error fetching 16x16 board: ${error.message}`);
