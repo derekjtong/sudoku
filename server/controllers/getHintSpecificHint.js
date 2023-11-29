@@ -10,8 +10,7 @@ const getSpecificHint = async (req, res) => {
     let r = indexes["row"];
     let c = indexes["col"];
     return res.json({ suggestedMove: solution[r][c] });
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal Server Error", error });
   }
