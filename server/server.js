@@ -6,16 +6,18 @@ import makeDB from "./database/database.js";
 import gamesRouter from "./routes/games.js";
 
 const app = express();
+const port = 9090;
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static("dist"));
 
 // all routes called here
 app.use("/api", boardManipulationRoute);
 app.use("/api", boardRouter);
 app.use("/api", gamesRouter);
 // app.use('/api',require('./routes/boardManipulation'));
-
-const port = 9090;
 
 app.listen(port, (err) => {
   makeDB();
