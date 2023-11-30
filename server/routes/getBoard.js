@@ -10,6 +10,5 @@ const router = express.Router();
 // })
 router.get("/newboard/:id", getFourBoard);
 router.get("/newboard/:id", getNineBoard);
-router.get("/newboard/:id", getSixteenBoard);
 
 export default router;
