@@ -1,5 +1,3 @@
-import PropTypes from "react";
-
 function Keypad({ onKeypadClick }) {
   const keypadNumbers = ["1", "2", "3", "4"];
 

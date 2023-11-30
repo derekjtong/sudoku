@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
 
