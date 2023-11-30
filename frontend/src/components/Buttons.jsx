@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
+const Buttons = ({ onUndo, onErase, onToggleNotes, onUndoUntilCorrect, onGetRandomHint, onGetSpecificHint }) => {
   const [notesOn, setNotesOn] = useState(false);
 
   const toggleNotes = () => {
@@ -13,11 +13,17 @@ const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={onUndo}>
         Undo
       </button>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={onUndoUntilCorrect}>
+        Undo Until Correct
+      </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
         {notesOn ? "Notes On" : "Notes Off"}
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={onGetHint}>
-        Hint
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={onGetRandomHint}>
+        Random Hint
+      </button>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={onGetSpecificHint}>
+        Specific Hint
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={onErase}>
         Check Board
