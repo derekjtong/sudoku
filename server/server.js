@@ -1,11 +1,35 @@
-const express = require("express");
+
+import express from 'express';
+import bodyParser from 'body-parser'
+import boardManipulationRoute from './routes/boardManipulation.js';
+import boardRouter from "./routes/getBoard.js";
+import makeDB from './database/database.js';
+import gamesRouter from './routes/games.js';
+
+
 const app = express();
-const port = 3000;
-const path = require("path");
-const { ppid } = require("process");
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "/dist")));
+// all routes called here
+app.use("/api", boardManipulationRoute);
+app.use("/api", boardRouter);
+app.use("/api", gamesRouter);
+// app.use('/api',require('./routes/boardManipulation'));
 
-app.listen(port, () => {
-  console.log(`Started server on http://localhost:${port}/`);
-});
+
+
+
+
+const port = 9090;
+
+app.listen(port, (err) => {
+  makeDB();
+  if (!err) {
+    console.log('Server is up and running..');
+  }
+  else {
+    console.log(err);
+  }
+  
+})

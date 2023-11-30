@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
+import { getNineBoard } from "../api/getBoard";
 
 function Board() {
   const [sudokuGrid, setSudokuGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill("")));
   const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
 
+  useEffect(() => {
+    getNineBoard().then((data) => console.log(data));
+  });
   const handleCellChange = (row, col, e) => {
-    const newGrid = [...sudokuGrid];
-    newGrid[row][col] = e.target.value;
-    setSudokuGrid(newGrid);
+    const value = e.target.value;
+    if (/^[1-9]$/.test(value) || value === "") {
+      const newGrid = [...sudokuGrid];
+      newGrid[row][col] = e.target.value;
+      setSudokuGrid(newGrid);
+    }
   };
 
   const handleCellClick = (row, col) => {
