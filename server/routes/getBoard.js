@@ -1,7 +1,6 @@
 import express from 'express';
 import { getFourBoard } from '../controllers/getFourBoard.js';
 import { getNineBoard } from '../controllers/getNineBoard.js';
-import { getSixteenBoard } from '../controllers/getSixteenBoard.js';
 
 const router = express.Router();
 
