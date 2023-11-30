@@ -1,10 +1,9 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9090";
+const BASE_URL = "http://localhost:9090/api";
 
 /**
  * Get a 4x4 sudoku board.
- * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const getFourBoard = () => {
@@ -18,7 +17,6 @@ export const getFourBoard = () => {
 
 /**
  * Get a 9x9 sudoku board.
- * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const getNineBoard = () => {
@@ -32,7 +30,6 @@ export const getNineBoard = () => {
 
 /**
  * Get a 16x16 sudoku board.
- * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const getSixteenBoard = () => {

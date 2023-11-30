@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
+import { getNineBoard } from "../api/getBoard";
 
 function Board9x9() {
   const [sudokuGrid, setSudokuGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill("")));
   const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
+
+  useEffect(() => {
+    console.log("getNineBoard");
+    getNineBoard().then((data) => console.log(data));
+  });
 
   const handleCellChange = (row, col, value) => {
     const newGrid = [...sudokuGrid];
