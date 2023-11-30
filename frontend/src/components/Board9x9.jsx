@@ -1,18 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
 
-function Board() {
+function Board9x9() {
   const [sudokuGrid, setSudokuGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill("")));
-  const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
+  const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
 
-  const handleCellChange = (row, col, e) => {
-    const value = e.target.value;
-    if (/^[1-9]$/.test(value) || value === "") {
-      const newGrid = [...sudokuGrid];
-      newGrid[row][col] = e.target.value;
-      setSudokuGrid(newGrid);
-    }
+  const handleCellChange = (row, col, value) => {
+    const newGrid = [...sudokuGrid];
+    newGrid[row][col] = value;
+    setSudokuGrid(newGrid);
   };
 
   const handleCellClick = (row, col) => {
@@ -22,9 +19,7 @@ function Board() {
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
-      const newGrid = [...sudokuGrid];
-      newGrid[selectedCell.row][selectedCell.col] = value.toString();
-      setSudokuGrid(newGrid);
+      handleCellChange(selectedCell.row, selectedCell.col, value.toString());
     }
   };
 
@@ -52,7 +47,7 @@ function Board() {
                 row={startRow + rowIndex}
                 col={startCol + colIndex}
                 value={sudokuGrid[startRow + rowIndex][startCol + colIndex]}
-                onChange={(e) => handleCellChange(startRow + rowIndex, startCol + colIndex, e)}
+                onChange={(value) => handleCellChange(startRow + rowIndex, startCol + colIndex, value)}
                 onCellClick={handleCellClick}
                 isSelected={
                   startRow + rowIndex === selectedCell.row ||
@@ -66,6 +61,7 @@ function Board() {
                   ${colIndex === 2 && "border-right"}
                   ${getQuadrantColor(quadrantIndex)}
                   ${isSelectedQuadrant(startRow + rowIndex, startCol + colIndex) && "bg-gray-200"}
+                  ${startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col && "bg-red-500 text-white"}
                 `}
               />
             ))}
@@ -74,6 +70,62 @@ function Board() {
       </tbody>
     );
   };
+
+  const handleArrowKeys = (e) => {
+    const currentRow = selectedCell.row;
+    const currentCol = selectedCell.col;
+
+    let newRow = currentRow;
+    let newCol = currentCol;
+
+    switch (e.key) {
+      case "ArrowUp":
+        newRow = Math.max(0, currentRow - 1);
+        break;
+      case "ArrowDown":
+        newRow = Math.min(8, currentRow + 1);
+        break;
+      case "ArrowLeft":
+        newCol = Math.max(0, currentCol - 1);
+        break;
+      case "ArrowRight":
+        newCol = Math.min(8, currentCol + 1);
+        break;
+      default:
+        return;
+    }
+
+    setSelectedCell({ row: newRow, col: newCol });
+  };
+
+  const handlePhysicalKeyboardInput = (e) => {
+    const value = e.key;
+
+    if (/^[1-9]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
+      handleCellChange(selectedCell.row, selectedCell.col, value);
+    } else if (e.code === "Backspace" && selectedCell.row !== null && selectedCell.col !== null) {
+      // Handle Backspace to clear the cell
+      handleCellChange(selectedCell.row, selectedCell.col, "");
+      e.preventDefault();
+    } else if (/^[A-Za-z]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
+      // Clear the cell for alphabets
+      handleCellChange(selectedCell.row, selectedCell.col, "");
+      e.preventDefault();
+    } else if (/^[0]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
+      // Clear the cell for zero
+      handleCellChange(selectedCell.row, selectedCell.col, "");
+      e.preventDefault();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleArrowKeys);
+    document.addEventListener("keydown", handlePhysicalKeyboardInput);
+    return () => {
+      document.removeEventListener("keydown", handleArrowKeys);
+      document.removeEventListener("keydown", handlePhysicalKeyboardInput);
+    };
+  }, [selectedCell]);
 
   return (
     <div>
@@ -87,7 +139,7 @@ function Board() {
                   className="subgrid-cell"
                   style={{
                     border: "4px solid green",
-                    boxSizing: "border-box", // Ensure the border is included in the overall size
+                    boxSizing: "border-box",
                   }}
                 >
                   <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
@@ -99,10 +151,11 @@ function Board() {
           ))}
         </tbody>
       </table>
-
-      <Keypad onKeypadClick={handleKeypadClick} />
+      <center>
+        <Keypad onKeypadClick={handleKeypadClick} />
+      </center>
     </div>
   );
 }
 
-export default Board;
+export default Board9x9;
