@@ -1,11 +1,11 @@
-import Content from "./components/Content";
-import Nav from "./components/Navbar";
-import Buttons from "./components/Buttons";
+import Buttons from "./components/shared/Buttons";
+import Content from "./components/shared/Content";
+import Navbar from "./components/shared/Navbar";
 
 function Home() {
   return (
     <>
-      <Nav />
+      <Navbar />
       <Content />
       <Buttons />
     </>
