@@ -1,21 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad4x4";
+import { useSudokuGrid, useSelectedCell } from "./BoardUtils";
 
 function Board4x4() {
-  const [sudokuGrid, setSudokuGrid] = useState(Array.from({ length: 4 }, () => Array(4).fill("")));
-  const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
-
-  const handleCellChange = (row, col, value) => {
-    const newGrid = [...sudokuGrid];
-    newGrid[row][col] = value;
-    setSudokuGrid(newGrid);
-  };
-
-  const handleCellClick = (row, col) => {
-    console.log(`Selected cell: (${row + 1}, ${col + 1})`);
-    setSelectedCell({ row, col });
-  };
+  const { sudokuGrid, handleCellChange } = useSudokuGrid(4);
+  const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
