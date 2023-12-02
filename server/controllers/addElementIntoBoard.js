@@ -1,7 +1,6 @@
 //the frontend passes the element which have to be added and the coordinates
-import { getDb } from "../database/database.js";
 import checkIfValid from "../helpers/checkIfValid.js";
-import { getDb } from '../../database/databas.js'; // Adjust the path as necessary
+import { getDb } from '../../database/database.js'; // Adjust the path as necessary
 export const addElementIntoBoard = (req, res) => {
   console.log("before");
   const board = JSON.parse(req.body.board.matrix);

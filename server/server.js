@@ -1,4 +1,5 @@
-
+import dotenv from 'dotenv';
+dotenv.config({ path: './.env.local' }); // Loads environment variables from .env.local file
 import express from 'express';
 import bodyParser from 'body-parser'
 import {generateBoard}  from './helpers/generateBoard.js';
