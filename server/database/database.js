@@ -3,25 +3,22 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const uri = process.env.MONGODB_URI;
-console.log("MongoDB URI: ", process.env.MONGODB_URI);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let dbConnection;
 
-export const connectToServer = async () => {
-    try {
-        await client.connect();
-        dbConnection = client.db('sudokuDB');
+export const connectToServer = (callback) => {
+    client.connect((err, db) => {
+        if (err) {
+            console.error("Could not connect to MongoDB", err);
+            return callback(err);
+        }
+        dbConnection = db.db('sudokuDB');
         console.log("Successfully connected to MongoDB.");
-    } catch (err) {
-        console.error("Could not connect to MongoDB", err);
-        throw err; // This allows the error to be handled by the caller of connectToServer
-    }
+        return callback(null);
+    });
 };
 
 export const getDb = () => {
-    if (!dbConnection) {
-        throw new Error('Database connection is not established');
-    }
     return dbConnection;
 };
