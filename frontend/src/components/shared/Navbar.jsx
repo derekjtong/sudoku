@@ -1,7 +1,8 @@
+import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
 
-const Navbar = () => {
+const Navbar = ({ setBoardDimension, setDifficulty }) => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
   const [show9x9Dropdown, setShow9x9Dropdown] = useState(false);
   const dropdown4x4Ref = useRef(null);
@@ -29,6 +30,10 @@ const Navbar = () => {
     }
   };
 
+  const handleDifficultyChange = (dimension, difficulty) => {
+    setBoardDimension(dimension);
+    setDifficulty(difficulty);
+  };
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -56,17 +61,17 @@ const Navbar = () => {
             {show4x4Dropdown && (
               <ul className="absolute mt-2 bg-gray-800 p-2">
                 <li>
-                  <a href="#" className="block text-white hover:text-gray-300">
+                  <a href="#" className="block text-white hover:text-gray-300" onClick={() => handleDifficultyChange(4, 1)}>
                     Easy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="block text-white hover:text-gray-300">
+                  <a href="#" className="block text-white hover:text-gray-300" onClick={() => handleDifficultyChange(4, 2)}>
                     Medium
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="block text-white hover:text-gray-300">
+                  <a href="#" className="block text-white hover:text-gray-300" onClick={() => handleDifficultyChange(4, 3)}>
                     Hard
                   </a>
                 </li>
@@ -80,17 +85,17 @@ const Navbar = () => {
             {show9x9Dropdown && (
               <ul className="absolute mt-2 bg-gray-800 p-2">
                 <li>
-                  <a href="#" className="block text-white hover:text-gray-300">
+                  <a href="#" className="block text-white hover:text-gray-300" onClick={() => handleDifficultyChange(9, 1)}>
                     Easy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="block text-white hover:text-gray-300">
+                  <a href="#" className="block text-white hover:text-gray-300" onClick={() => handleDifficultyChange(9, 2)}>
                     Medium
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="block text-white hover:text-gray-300">
+                  <a href="#" className="block text-white hover:text-gray-300" onClick={() => handleDifficultyChange(9, 3)}>
                     Hard
                   </a>
                 </li>
@@ -101,6 +106,11 @@ const Navbar = () => {
       </div>
     </nav>
   );
+};
+
+Navbar.propTypes = {
+  setBoardDimension: PropTypes.func.isRequired,
+  setDifficulty: PropTypes.func.isRequired,
 };
 
 export default Navbar;
