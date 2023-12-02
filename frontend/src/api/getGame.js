@@ -18,12 +18,11 @@ export const getSingleGameById = (gameId) => {
 
 /**
  * List all games.
- * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const listAllGamesInDb = () => {
   return axios
-    .get(`${BASE_URL}/getallgames/id`)
+    .get(`${BASE_URL}/getallgames`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error fetching all games: ${error.message}`);
