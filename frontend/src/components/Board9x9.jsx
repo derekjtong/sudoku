@@ -12,11 +12,14 @@ function Board9x9() {
     getNineBoard().then((data) => console.log(data));
   }, []);
 
-  const handleCellChange = (row, col, value) => {
-    const newGrid = [...sudokuGrid];
-    newGrid[row][col] = value;
-    setSudokuGrid(newGrid);
-  };
+  const handleCellChange = useCallback(
+    (row, col, value) => {
+      const newGrid = [...sudokuGrid];
+      newGrid[row][col] = value;
+      setSudokuGrid(newGrid);
+    },
+    [sudokuGrid],
+  );
 
   const handleCellClick = (row, col) => {
     console.log(`Selected cell: (${row + 1}, ${col + 1})`);
