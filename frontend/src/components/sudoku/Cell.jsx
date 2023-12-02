@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 function Cell({ row, col, value, onCellClick, onChange, isSelected }) {
   return (
     <input
@@ -10,5 +12,14 @@ function Cell({ row, col, value, onCellClick, onChange, isSelected }) {
     />
   );
 }
+
+Cell.propTypes = {
+  row: PropTypes.number.isRequired,
+  col: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
+  onCellClick: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+};
 
 export default Cell;
