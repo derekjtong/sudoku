@@ -1,7 +1,7 @@
 import Game from "../database/gameSchema.js";
 import stack from "../helpers/stack.js";
 // board which is the latest one
-const undoUntilCorrect = async(req, res) => {
+const undoUntilCorrect = async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
     let stackDb = await Game.findOne({ _id: gameId });

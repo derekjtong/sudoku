@@ -1,4 +1,4 @@
-import Game from "../database/gameSchema.js"
+import Game from "../database/gameSchema.js";
 const createGame = async (problemBoard, solutionBoard, dimension, stack) => {
   try {
     const newGame = new Game({
