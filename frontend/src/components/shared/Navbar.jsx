@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
 
-const Nav = () => {
+const Navbar = () => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
   const [show9x9Dropdown, setShow9x9Dropdown] = useState(false);
   const dropdown4x4Ref = useRef(null);
@@ -103,4 +103,4 @@ const Nav = () => {
   );
 };
 
-export default Nav;
+export default Navbar;

@@ -1,4 +1,4 @@
-import Board9x9 from "./Board9x9";
+import Board9x9 from "../sudoku/Board9x9";
 
 function Content() {
   return (
