@@ -15,7 +15,7 @@ class Stack {
   isEmpty() {
     return this.size === 0;
   }
-// @params(board, T/F)
+  // @params(board, T/F)
   push(grid, booleanValue) {
     const newNode = new StackNode(grid, booleanValue);
     newNode.next = this.top;

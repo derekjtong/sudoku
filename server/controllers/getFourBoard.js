@@ -23,10 +23,8 @@ export const getFourBoard = async (req, res, next) => {
 
       return res.json({ game });
     }
-  }
-  catch (err) {
+  } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Internal Server Error", error });
   }
-  
 };

@@ -1,32 +1,30 @@
 // 4*4 9*9 16*16
- export const generateBoard = (m, n) => {
-   let board = {};
+export const generateBoard = (m, n) => {
+  let board = {};
 
-   if (m == 4 && n == 4) {
-     
+  if (m == 4 && n == 4) {
     // let cell = [
     //   [3, 4, 1, 2],
     //   [2, 1, 4, 3],
     //   [1, 2, 3, 4],
     //   [4, 3, 2, 1],
-     // ];
-     let cell = [
-       [3, -1, 1, 2],
-       [2, 1, 4, 3],
-       [1, 2, 3, 4],
-       [4, 3, 2, 1],
-     ];
-     const solution = [
-       [3, 4, 1, 2],
-       [2, 1, 4, 3],
-       [1, 2, 3, 4],
-       [4, 3, 2, 1],
-     ];
-     board[ "cell" ] = cell;
-     board[ "solution" ] = solution;
-   } else if (m == 9 && n == 9) {
-     
-   let cell = [
+    // ];
+    let cell = [
+      [3, -1, 1, 2],
+      [2, 1, 4, 3],
+      [1, 2, 3, 4],
+      [4, 3, 2, 1],
+    ];
+    const solution = [
+      [3, 4, 1, 2],
+      [2, 1, 4, 3],
+      [1, 2, 3, 4],
+      [4, 3, 2, 1],
+    ];
+    board["cell"] = cell;
+    board["solution"] = solution;
+  } else if (m == 9 && n == 9) {
+    let cell = [
       [5, 3, 4, 6, 7, 8, 9, 1, 2],
       [6, 7, 2, 1, 9, 5, 3, 4, 8],
       [1, 9, 8, 3, 4, 2, 5, 6, 7],
@@ -37,7 +35,7 @@
       [2, 8, 7, 4, 1, 9, 6, 3, 5],
       [3, 4, 5, 2, 8, 6, 1, 7, 9],
     ];
-     const solution=[
+    const solution = [
       [5, 3, 4, 6, 7, 8, 9, 1, 2],
       [6, 7, 2, 1, 9, 5, 3, 4, 8],
       [1, 9, 8, 3, 4, 2, 5, 6, 7],
@@ -48,9 +46,9 @@
       [2, 8, 7, 4, 1, 9, 6, 3, 5],
       [3, 4, 5, 2, 8, 6, 1, 7, 9],
     ];
-     board[ "cell" ] = cell;
-     board[ "solution" ] = solution;
-  } 
+    board["cell"] = cell;
+    board["solution"] = solution;
+  }
 
   return board;
 };

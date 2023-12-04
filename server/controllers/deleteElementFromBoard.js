@@ -5,17 +5,16 @@ import { ObjectId } from "mongodb";
 import updateGame from "../helpers/updateGame.js";
 
 //{valid:true/false,board}
-export const deleteElementFromBoard = async(req, res) => {
+export const deleteElementFromBoard = async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
     let board = await Game.findOne({ _id: gameId });
-    let stack = board[ "stack" ];
-    board = board[ "problemBoard" ];
-    
-    if (stack.length===0) {
-      stack.push({grid:board,booleanValue:checkIfValid(board)});
+    let stack = board["stack"];
+    board = board["problemBoard"];
+
+    if (stack.length === 0) {
+      stack.push({ grid: board, booleanValue: checkIfValid(board) });
     }
-    
 
     const row = parseInt(req.body.row);
     const col = parseInt(req.body.col);
@@ -37,6 +36,6 @@ export const deleteElementFromBoard = async(req, res) => {
     });
   } catch (error) {
     console.error("Error deleting element from the board:", error);
-    return res.status(500).json({ message: "Internal Server Error",error });
+    return res.status(500).json({ message: "Internal Server Error", error });
   }
 };
