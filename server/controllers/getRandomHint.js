@@ -30,10 +30,6 @@ const getRandomHint = async (req, res) => {
     console.log(err);
     return res.status(500).json({ message: "Internal Server Error", error });
   }
-  
-  
-
-  
 };
 
 export default getRandomHint;

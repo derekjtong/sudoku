@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
-import { getNineBoard } from "../api/getBoard";
+import { getNineBoard } from "../../api/getBoard";
 
-function Board() {
+function Board9x9() {
   const [sudokuGrid, setSudokuGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill("")));
-  const [selectedCell, setSelectedCell] = useState({ row: null, col: null });
+  const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
 
   useEffect(() => {
+    console.log("getNineBoard");
     getNineBoard().then((data) => console.log(data));
-  });
-  const handleCellChange = (row, col, e) => {
-    const value = e.target.value;
-    if (/^[1-9]$/.test(value) || value === "") {
+  }, []);
+
+  const handleCellChange = useCallback(
+    (row, col, value) => {
       const newGrid = [...sudokuGrid];
-      newGrid[row][col] = e.target.value;
+      newGrid[row][col] = value;
       setSudokuGrid(newGrid);
-    }
-  };
+    },
+    [sudokuGrid],
+  );
 
   const handleCellClick = (row, col) => {
     console.log(`Selected cell: (${row + 1}, ${col + 1})`);
@@ -26,9 +28,7 @@ function Board() {
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
-      const newGrid = [...sudokuGrid];
-      newGrid[selectedCell.row][selectedCell.col] = value.toString();
-      setSudokuGrid(newGrid);
+      handleCellChange(selectedCell.row, selectedCell.col, value.toString());
     }
   };
 
@@ -56,7 +56,7 @@ function Board() {
                 row={startRow + rowIndex}
                 col={startCol + colIndex}
                 value={sudokuGrid[startRow + rowIndex][startCol + colIndex]}
-                onChange={(e) => handleCellChange(startRow + rowIndex, startCol + colIndex, e)}
+                onChange={(value) => handleCellChange(startRow + rowIndex, startCol + colIndex, value)}
                 onCellClick={handleCellClick}
                 isSelected={
                   startRow + rowIndex === selectedCell.row ||
@@ -70,6 +70,7 @@ function Board() {
                   ${colIndex === 2 && "border-right"}
                   ${getQuadrantColor(quadrantIndex)}
                   ${isSelectedQuadrant(startRow + rowIndex, startCol + colIndex) && "bg-gray-200"}
+                  ${startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col && "bg-red-500 text-white"}
                 `}
               />
             ))}
@@ -78,6 +79,49 @@ function Board() {
       </tbody>
     );
   };
+
+  const handleArrowKeys = useCallback(
+    (e) => {
+      const ARROW_KEYS = {
+        ArrowUp: { row: -1, col: 0 },
+        ArrowDown: { row: 1, col: 0 },
+        ArrowLeft: { row: 0, col: -1 },
+        ArrowRight: { row: 0, col: 1 },
+      };
+      if (ARROW_KEYS[e.key]) {
+        const newRow = Math.max(0, Math.min(8, selectedCell.row + ARROW_KEYS[e.key].row));
+        const newCol = Math.max(0, Math.min(8, selectedCell.col + ARROW_KEYS[e.key].col));
+        setSelectedCell({ row: newRow, col: newCol });
+      }
+    },
+    [selectedCell],
+  );
+
+  const handlePhysicalKeyboardInput = useCallback(
+    (e) => {
+      const value = e.key;
+      if (selectedCell.row == null || selectedCell.col == null) {
+        return;
+      }
+
+      if (/^[1-9]$/.test(value)) {
+        handleCellChange(selectedCell.row, selectedCell.col, value);
+      } else {
+        handleCellChange(selectedCell.row, selectedCell.col, "");
+        e.preventDefault();
+      }
+    },
+    [selectedCell, handleCellChange],
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleArrowKeys);
+    document.addEventListener("keydown", handlePhysicalKeyboardInput);
+    return () => {
+      document.removeEventListener("keydown", handleArrowKeys);
+      document.removeEventListener("keydown", handlePhysicalKeyboardInput);
+    };
+  }, [selectedCell, handleArrowKeys, handlePhysicalKeyboardInput]);
 
   return (
     <div>
@@ -91,7 +135,7 @@ function Board() {
                   className="subgrid-cell"
                   style={{
                     border: "4px solid green",
-                    boxSizing: "border-box", // Ensure the border is included in the overall size
+                    boxSizing: "border-box",
                   }}
                 >
                   <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
@@ -103,10 +147,11 @@ function Board() {
           ))}
         </tbody>
       </table>
-
-      <Keypad onKeypadClick={handleKeypadClick} />
+      <center>
+        <Keypad onKeypadClick={handleKeypadClick} />
+      </center>
     </div>
   );
 }
 
-export default Board;
+export default Board9x9;
