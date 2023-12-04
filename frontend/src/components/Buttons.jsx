@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
   const [notesOn, setNotesOn] = useState(false);
@@ -13,7 +13,7 @@ const Buttons = ({ onUndo, onErase, onToggleNotes, onGetHint }) => {
       <button className="text-white" onClick={() => { onUndo(); onUserAction('Undo'); }}>
         Undo
       </button>
-      <button className="text-white" onClick={toggleNotes}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
         {notesOn ? "Notes On" : "Notes Off"}
       </button>
       <button className="text-white" onClick={() => { onGetHint(); onUserAction('Get Hint'); }}>
