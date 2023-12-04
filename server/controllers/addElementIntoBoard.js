@@ -1,13 +1,14 @@
 //the frontend passes the element which have to be added and the coordinates
 import checkIfValid from "../helpers/checkIfValid.js";
-import { getDb } from '../../database/database.js'; // Adjust the path as necessary
+import { getDb } from '../database/database.js'; // Adjust the path as necessary
 export const addElementIntoBoard = (req, res) => {
-  console.log("before");
-  const board = JSON.parse(req.body.board.matrix);
-  // console.log("after")
-  const row = parseInt(req.body.board.row);
-  const col = parseInt(req.body.board.col);
-  const element = parseInt(req.body.board.element);
+  try {
+    console.log("before");
+    const board = JSON.parse(req.body.board.matrix);
+    // console.log("after")
+    const row = parseInt(req.body.board.row);
+    const col = parseInt(req.body.board.col);
+    const element = parseInt(req.body.board.element);
 
     if (stack.length === 0) {
       stack.push({ grid: board, booleanValue: checkIfValid(board) });

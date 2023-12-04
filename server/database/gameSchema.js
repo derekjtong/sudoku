@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const gameSchema = new mongoose.Schema({
   problemBoard: [[Number]], // Array of arrays of numbers
