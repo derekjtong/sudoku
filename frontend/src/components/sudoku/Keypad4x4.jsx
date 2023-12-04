@@ -1,5 +1,7 @@
+import PropTypes from "prop-types";
+
 function Keypad({ onKeypadClick }) {
-  const keypadNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const keypadNumbers = ["1", "2", "3", "4"];
 
   const keypadTableStyle = {
     borderCollapse: "collapse", // Ensure cell borders collapse
@@ -26,5 +28,9 @@ function Keypad({ onKeypadClick }) {
     </table>
   );
 }
+
+Keypad.propTypes = {
+  onKeypadClick: PropTypes.func.isRequired,
+};
 
 export default Keypad;

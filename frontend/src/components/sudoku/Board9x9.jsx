@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
-import { getNineBoard } from "../api/getBoard";
+import { getNineBoard } from "../../api/getBoard";
 
 function Board9x9() {
   const [sudokuGrid, setSudokuGrid] = useState(Array.from({ length: 9 }, () => Array(9).fill("")));
@@ -10,13 +10,16 @@ function Board9x9() {
   useEffect(() => {
     console.log("getNineBoard");
     getNineBoard().then((data) => console.log(data));
-  });
+  }, []);
 
-  const handleCellChange = (row, col, value) => {
-    const newGrid = [...sudokuGrid];
-    newGrid[row][col] = value;
-    setSudokuGrid(newGrid);
-  };
+  const handleCellChange = useCallback(
+    (row, col, value) => {
+      const newGrid = [...sudokuGrid];
+      newGrid[row][col] = value;
+      setSudokuGrid(newGrid);
+    },
+    [sudokuGrid],
+  );
 
   const handleCellClick = (row, col) => {
     console.log(`Selected cell: (${row + 1}, ${col + 1})`);
@@ -77,52 +80,39 @@ function Board9x9() {
     );
   };
 
-  const handleArrowKeys = (e) => {
-    const currentRow = selectedCell.row;
-    const currentCol = selectedCell.col;
+  const handleArrowKeys = useCallback(
+    (e) => {
+      const ARROW_KEYS = {
+        ArrowUp: { row: -1, col: 0 },
+        ArrowDown: { row: 1, col: 0 },
+        ArrowLeft: { row: 0, col: -1 },
+        ArrowRight: { row: 0, col: 1 },
+      };
+      if (ARROW_KEYS[e.key]) {
+        const newRow = Math.max(0, Math.min(8, selectedCell.row + ARROW_KEYS[e.key].row));
+        const newCol = Math.max(0, Math.min(8, selectedCell.col + ARROW_KEYS[e.key].col));
+        setSelectedCell({ row: newRow, col: newCol });
+      }
+    },
+    [selectedCell],
+  );
 
-    let newRow = currentRow;
-    let newCol = currentCol;
-
-    switch (e.key) {
-      case "ArrowUp":
-        newRow = Math.max(0, currentRow - 1);
-        break;
-      case "ArrowDown":
-        newRow = Math.min(8, currentRow + 1);
-        break;
-      case "ArrowLeft":
-        newCol = Math.max(0, currentCol - 1);
-        break;
-      case "ArrowRight":
-        newCol = Math.min(8, currentCol + 1);
-        break;
-      default:
+  const handlePhysicalKeyboardInput = useCallback(
+    (e) => {
+      const value = e.key;
+      if (selectedCell.row == null || selectedCell.col == null) {
         return;
-    }
+      }
 
-    setSelectedCell({ row: newRow, col: newCol });
-  };
-
-  const handlePhysicalKeyboardInput = (e) => {
-    const value = e.key;
-
-    if (/^[1-9]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
-      handleCellChange(selectedCell.row, selectedCell.col, value);
-    } else if (e.code === "Backspace" && selectedCell.row !== null && selectedCell.col !== null) {
-      // Handle Backspace to clear the cell
-      handleCellChange(selectedCell.row, selectedCell.col, "");
-      e.preventDefault();
-    } else if (/^[A-Za-z]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
-      // Clear the cell for alphabets
-      handleCellChange(selectedCell.row, selectedCell.col, "");
-      e.preventDefault();
-    } else if (/^[0]$/.test(value) && selectedCell.row !== null && selectedCell.col !== null) {
-      // Clear the cell for zero
-      handleCellChange(selectedCell.row, selectedCell.col, "");
-      e.preventDefault();
-    }
-  };
+      if (/^[1-9]$/.test(value)) {
+        handleCellChange(selectedCell.row, selectedCell.col, value);
+      } else {
+        handleCellChange(selectedCell.row, selectedCell.col, "");
+        e.preventDefault();
+      }
+    },
+    [selectedCell, handleCellChange],
+  );
 
   useEffect(() => {
     document.addEventListener("keydown", handleArrowKeys);
@@ -131,7 +121,7 @@ function Board9x9() {
       document.removeEventListener("keydown", handleArrowKeys);
       document.removeEventListener("keydown", handlePhysicalKeyboardInput);
     };
-  }, [selectedCell]);
+  }, [selectedCell, handleArrowKeys, handlePhysicalKeyboardInput]);
 
   return (
     <div>
