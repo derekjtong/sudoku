@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import Logo from "./Logo";
 
 const Nav = () => {
@@ -33,19 +33,19 @@ const Nav = () => {
               4 x 4
             </a>
             {show4x4Dropdown && (
-              <ul className="absolute bg-gray-800 p-2 mt-2">
+              <ul className="absolute mt-2 bg-gray-800 p-2">
                 <li>
-                  <a href="#" className="text-white hover:text-gray-300 block">
+                  <a href="#" className="block text-white hover:text-gray-300">
                     Easy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-white hover:text-gray-300 block">
+                  <a href="#" className="block text-white hover:text-gray-300">
                     Medium
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-white hover:text-gray-300 block">
+                  <a href="#" className="block text-white hover:text-gray-300">
                     Hard
                   </a>
                 </li>
@@ -57,19 +57,19 @@ const Nav = () => {
               9 x 9
             </a>
             {show9x9Dropdown && (
-              <ul className="absolute bg-gray-800 p-2 mt-2">
+              <ul className="absolute mt-2 bg-gray-800 p-2">
                 <li>
-                  <a href="#" className="text-white hover:text-gray-300 block">
+                  <a href="#" className="block text-white hover:text-gray-300">
                     Easy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-white hover:text-gray-300 block">
+                  <a href="#" className="block text-white hover:text-gray-300">
                     Medium
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-white hover:text-gray-300 block">
+                  <a href="#" className="block text-white hover:text-gray-300">
                     Hard
                   </a>
                 </li>
