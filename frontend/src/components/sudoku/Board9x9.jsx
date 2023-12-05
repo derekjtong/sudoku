@@ -118,14 +118,7 @@ function Board9x9() {
           {[0, 3, 6].map((startRow, quadrantRowIndex) => (
             <tr key={quadrantRowIndex}>
               {[0, 3, 6].map((startCol, quadrantColIndex) => (
-                <td
-                  key={quadrantColIndex}
-                  className="subgrid-cell"
-                  style={{
-                    border: "4px solid green",
-                    boxSizing: "border-box",
-                  }}
-                >
+                <td key={quadrantColIndex} className="border-0 bg-gray-800">
                   <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
                     {renderSubgrid(startRow, startCol, 3 * quadrantRowIndex + quadrantColIndex)}
                   </table>
