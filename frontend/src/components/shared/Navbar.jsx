@@ -34,6 +34,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
     setBoardDimension(dimension);
     setDifficulty(difficulty);
   };
+
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
     return () => {
@@ -66,8 +67,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
               <ul className="absolute mt-2 bg-gray-800">
                 <li>
                   <a
-                    href="#"
-                    className="block p-2 text-white hover:bg-gray-900 hover:text-gray-300"
+                    className="block cursor-pointer p-2 text-white hover:bg-gray-900 hover:text-gray-300"
                     onClick={() => handleDifficultyChange(4, 1)}
                   >
                     Easy
@@ -75,8 +75,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="block p-2 text-white hover:bg-gray-900 hover:text-gray-300"
+                    className="block cursor-pointer p-2 text-white hover:bg-gray-900 hover:text-gray-300"
                     onClick={() => handleDifficultyChange(4, 2)}
                   >
                     Medium
@@ -84,8 +83,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="block p-2 text-white hover:bg-gray-900 hover:text-gray-300"
+                    className="block cursor-pointer p-2 text-white hover:bg-gray-900 hover:text-gray-300"
                     onClick={() => handleDifficultyChange(4, 3)}
                   >
                     Hard
@@ -106,8 +104,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
               <ul className="absolute mt-2 bg-gray-800">
                 <li>
                   <a
-                    href="#"
-                    className="block p-2 text-white hover:bg-gray-900 hover:text-gray-300"
+                    className="block cursor-pointer p-2 text-white hover:bg-gray-900 hover:text-gray-300"
                     onClick={() => handleDifficultyChange(9, 1)}
                   >
                     Easy
@@ -115,8 +112,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="block p-2 text-white hover:bg-gray-900 hover:text-gray-300"
+                    className="block cursor-pointer p-2 text-white hover:bg-gray-900 hover:text-gray-300"
                     onClick={() => handleDifficultyChange(9, 2)}
                   >
                     Medium
@@ -124,8 +120,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
                 </li>
                 <li>
                   <a
-                    href="#"
-                    className="block p-2 text-white hover:bg-gray-900 hover:text-gray-300"
+                    className="block cursor-pointer p-2 text-white hover:bg-gray-900 hover:text-gray-300"
                     onClick={() => handleDifficultyChange(9, 3)}
                   >
                     Hard
