@@ -51,13 +51,10 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
         {/* Navigation links */}
         <ul className="flex text-2xl">
           <li>
-            <a href="#" className="p-4 text-white hover:bg-gray-900 hover:text-gray-300">
-              New Game
-            </a>
+            <a className="p-4 text-white hover:bg-gray-900 hover:text-gray-300">New Game</a>
           </li>
           <li ref={dropdown4x4Ref}>
             <a
-              href="#"
               className={`p-4 text-white hover:bg-gray-900 hover:text-gray-300 ${show4x4Dropdown ? `bg-gray-900` : ``}`}
               onClick={toggle4x4Dropdown}
             >
@@ -94,7 +91,6 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
           </li>
           <li ref={dropdown9x9Ref}>
             <a
-              href="#"
               className={`p-4 text-white hover:bg-gray-900 hover:text-gray-300 ${show9x9Dropdown ? `bg-gray-900` : ``}`}
               onClick={toggle9x9Dropdown}
             >
