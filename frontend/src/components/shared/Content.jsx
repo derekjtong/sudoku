@@ -17,20 +17,21 @@ function Content({ boardDimension, difficulty }) {
   let difficultyText;
   switch (difficulty) {
     case 1:
-      difficultyText = "easy";
+      difficultyText = "Easy";
       break;
     case 2:
-      difficultyText = "medium";
+      difficultyText = "Medium";
       break;
     case 3:
-      difficultyText = "hard";
+      difficultyText = "Hard";
       break;
     default:
       difficultyText = null;
   }
   return (
-    <div className="container mx-auto mt-32 flex justify-center ">
-      {difficultyText} {BoardComponent}
+    <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
+      {difficultyText}
+      {BoardComponent}
     </div>
   );
 }
