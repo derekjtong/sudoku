@@ -51,6 +51,7 @@ function Board4x4() {
                   startCol + colIndex === selectedCell.col ||
                   isSelectedQuadrant(startRow + rowIndex, startCol + colIndex)
                 }
+                isPrimarySelected={startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col}
                 className={`
                   ${rowIndex > 0 && "border-top"}
                   ${colIndex > 0 && "border-left"}
