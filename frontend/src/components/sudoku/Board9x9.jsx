@@ -2,7 +2,9 @@ import { useEffect, useCallback } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
 import { getNineBoard } from "../../api/getBoard";
-import { useSudokuGrid, useSelectedCell } from "./BoardUtils";
+import { useSelectedCell } from "./hooks/useSelectedCell";
+import { useSudokuGrid } from "./hooks/useSudokuGrid";
+
 function Board9x9() {
   const { sudokuGrid, handleCellChange } = useSudokuGrid(9);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
@@ -80,7 +82,7 @@ function Board9x9() {
         setSelectedCell({ row: newRow, col: newCol });
       }
     },
-    [selectedCell],
+    [selectedCell, setSelectedCell],
   );
 
   const handlePhysicalKeyboardInput = useCallback(
