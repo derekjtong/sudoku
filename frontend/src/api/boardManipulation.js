@@ -8,7 +8,7 @@ const BASE_URL = "http://localhost:9090";
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const addElementToBoard = (inputData) => {
- return axios
+  return axios
     .get(`${BASE_URL}/addelement/`, inputData)
     .then((response) => response.data)
     .catch((error) => {
@@ -22,7 +22,7 @@ export const addElementToBoard = (inputData) => {
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const deleteElementFromBoard = (inputData) => {
- return axios
+  return axios
     .get(`${BASE_URL}/deleteelement/`, inputData)
     .then((response) => response.data)
     .catch((error) => {
