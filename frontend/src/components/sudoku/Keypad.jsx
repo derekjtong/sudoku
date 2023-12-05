@@ -8,7 +8,7 @@ function Keypad({ onKeypadClick }) {
       <tbody>
         <tr>
           {keypadNumbers.map((number) => (
-            <td key={number} className="border border-black hover:bg-gray-800 hover:text-white">
+            <td key={number} className="border border-black hover:bg-gray-300">
               <button onClick={() => onKeypadClick(number)} className="p-4 text-2xl">
                 {number}
               </button>
