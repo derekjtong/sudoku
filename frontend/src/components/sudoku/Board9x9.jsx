@@ -51,6 +51,7 @@ function Board9x9() {
                   startCol + colIndex === selectedCell.col ||
                   isSelectedQuadrant(startRow + rowIndex, startCol + colIndex)
                 }
+                isPrimarySelected={startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col}
                 className={`
                   ${rowIndex > 0 && "border-top"}
                   ${colIndex > 0 && "border-left"}
@@ -96,7 +97,6 @@ function Board9x9() {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
         handleCellChange(selectedCell.row, selectedCell.col, "");
-        e.preventDefault();
       }
     },
     [selectedCell, handleCellChange],
@@ -118,14 +118,7 @@ function Board9x9() {
           {[0, 3, 6].map((startRow, quadrantRowIndex) => (
             <tr key={quadrantRowIndex}>
               {[0, 3, 6].map((startCol, quadrantColIndex) => (
-                <td
-                  key={quadrantColIndex}
-                  className="subgrid-cell"
-                  style={{
-                    border: "4px solid green",
-                    boxSizing: "border-box",
-                  }}
-                >
+                <td key={quadrantColIndex} className="border-0 bg-gray-800">
                   <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
                     {renderSubgrid(startRow, startCol, 3 * quadrantRowIndex + quadrantColIndex)}
                   </table>
