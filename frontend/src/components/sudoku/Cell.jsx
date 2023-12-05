@@ -4,9 +4,9 @@ function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySel
   return (
     <input
       type="text"
-      className={`m-0 h-14  w-14 cursor-default border border-gray-800 text-center caret-transparent ${isSelected ? "bg-gray-200" : ""} ${
-        isPrimarySelected ? "bg-gray-400 text-white" : ""
-      }`}
+      className={`m-0 h-14 w-14 cursor-default border border-gray-800 text-center caret-transparent focus:outline-none ${
+        isSelected ? "bg-gray-200" : ""
+      } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
       value={value}
       onChange={onChange}
       onClick={() => onCellClick(row, col)}
