@@ -97,7 +97,6 @@ function Board9x9() {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
         handleCellChange(selectedCell.row, selectedCell.col, "");
-        e.preventDefault();
       }
     },
     [selectedCell, handleCellChange],

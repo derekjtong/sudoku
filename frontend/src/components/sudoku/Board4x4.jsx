@@ -10,7 +10,7 @@ function Board4x4() {
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   useEffect(() => {
-    console.log("getNineBoard");
+    console.log("getFourBoard");
     getFourBoard().then((data) => console.log(data));
   }, []);
 
@@ -97,7 +97,6 @@ function Board4x4() {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
         handleCellChange(selectedCell.row, selectedCell.col, "");
-        e.preventDefault();
       }
     },
     [selectedCell, handleCellChange],
