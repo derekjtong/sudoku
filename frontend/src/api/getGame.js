@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9090";
+const BASE_URL = "http://localhost:9090/api";
 
 /**
  * Get one game
