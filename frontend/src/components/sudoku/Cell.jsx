@@ -1,6 +1,20 @@
 import PropTypes from "prop-types";
 
 function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySelected }) {
+  const handleChange = (event) => {
+    const val = event.target.value;
+    // When backspace is hit, the value becomes empty
+    if (val === "") {
+      onChange(""); // Clear the cell
+    } else {
+      // Check if the input is a single digit between 1 and 9
+      const lastChar = val.slice(-1);
+      if (/^[1-9]$/.test(lastChar)) {
+        onChange(lastChar); // Update with the last character
+      }
+    }
+    // Ignore other inputs
+  };
   return (
     <input
       type="text"
@@ -8,7 +22,7 @@ function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySel
         isSelected ? "bg-gray-200" : ""
       } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
       value={value}
-      onChange={onChange}
+      onChange={handleChange}
       onClick={() => onCellClick(row, col)}
       maxLength="1"
     />

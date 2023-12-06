@@ -1,19 +1,7 @@
 import PropTypes from "prop-types";
-import Board9x9 from "../sudoku/Board9x9";
-import Board4x4 from "../sudoku/Board4x4";
+import Board from "../sudoku/Board";
 
 function Content({ boardDimension, difficulty }) {
-  let BoardComponent;
-  switch (boardDimension) {
-    case 4:
-      BoardComponent = <Board4x4 />;
-      break;
-    case 9:
-      BoardComponent = <Board9x9 />;
-      break;
-    default:
-      BoardComponent = null;
-  }
   let difficultyText;
   switch (difficulty) {
     case 1:
@@ -29,9 +17,9 @@ function Content({ boardDimension, difficulty }) {
       difficultyText = null;
   }
   return (
-    <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
-      {difficultyText}
-      {BoardComponent}
+    <div className="container mx-auto mt-32 flex flex-col items-center justify-center">
+      {difficultyText && <h2>{difficultyText}</h2>}
+      {boardDimension && <Board size={boardDimension} />}
     </div>
   );
 }
