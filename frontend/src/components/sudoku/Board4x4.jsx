@@ -6,13 +6,16 @@ import { useSelectedCell } from "./hooks/useSelectedCell";
 import { useSudokuGrid } from "./hooks/useSudokuGrid";
 
 function Board4x4() {
-  const { sudokuGrid, handleCellChange } = useSudokuGrid(4);
+  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(4);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   useEffect(() => {
     console.log("getFourBoard");
-    getFourBoard().then((data) => console.log(data));
-  }, []);
+    getFourBoard().then((data) => {
+      const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+      setSudokuGrid(loadedBoard);
+    });
+  }, [setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
@@ -96,7 +99,7 @@ function Board4x4() {
       if (/^[1-4]$/.test(value)) {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
-        handleCellChange(selectedCell.row, selectedCell.col, "");
+        // handleCellChange(selectedCell.row, selectedCell.col, "");
       }
     },
     [selectedCell, handleCellChange],

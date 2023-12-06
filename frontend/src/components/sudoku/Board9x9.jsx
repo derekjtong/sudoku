@@ -6,13 +6,16 @@ import { useSelectedCell } from "./hooks/useSelectedCell";
 import { useSudokuGrid } from "./hooks/useSudokuGrid";
 
 function Board9x9() {
-  const { sudokuGrid, handleCellChange } = useSudokuGrid(9);
+  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(9);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   useEffect(() => {
     console.log("getNineBoard");
-    getNineBoard().then((data) => console.log(data));
-  }, []);
+    getNineBoard().then((data) => {
+      const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+      setSudokuGrid(loadedBoard);
+    });
+  }, [setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
@@ -96,7 +99,7 @@ function Board9x9() {
       if (/^[1-9]$/.test(value)) {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
-        handleCellChange(selectedCell.row, selectedCell.col, "");
+        // handleCellChange(selectedCell.row, selectedCell.col, "");
       }
     },
     [selectedCell, handleCellChange],
