@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
 
-const Navbar = ({ setBoardDimension, setDifficulty }) => {
+const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
   const [show9x9Dropdown, setShow9x9Dropdown] = useState(false);
   const dropdown4x4Ref = useRef(null);
@@ -51,7 +51,9 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
         {/* Navigation links */}
         <ul className="flex text-2xl">
           <li>
-            <a className="cursor-pointer p-4 text-white hover:bg-gray-900 hover:text-gray-300">New Game</a>
+            <a className="cursor-pointer p-4 text-white hover:bg-gray-900 hover:text-gray-300" onClick={() => setCurrentGameId(-1)}>
+              New Game
+            </a>
           </li>
           <li ref={dropdown4x4Ref}>
             <a
@@ -134,6 +136,7 @@ const Navbar = ({ setBoardDimension, setDifficulty }) => {
 Navbar.propTypes = {
   setBoardDimension: PropTypes.func.isRequired,
   setDifficulty: PropTypes.func.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
 };
 
 export default Navbar;

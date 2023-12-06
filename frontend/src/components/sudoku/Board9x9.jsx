@@ -4,18 +4,34 @@ import Keypad from "./Keypad";
 import { getNineBoard } from "../../api/getBoard";
 import { useSelectedCell } from "./hooks/useSelectedCell";
 import { useSudokuGrid } from "./hooks/useSudokuGrid";
+import { getSingleGameById } from "../../api/getGame";
+import PropTypes from "prop-types";
 
-function Board9x9() {
+function Board9x9({ currentGameId, setCurrentGameId }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(9);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   useEffect(() => {
-    console.log("getNineBoard");
-    getNineBoard().then((data) => {
-      const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
-      setSudokuGrid(loadedBoard);
-    });
-  }, [setSudokuGrid]);
+    const fetchGame = async () => {
+      if (currentGameId !== -1) {
+        // Load existing game
+        console.log("Load existing game, call getSingleGameById:", currentGameId);
+        const data = await getSingleGameById(currentGameId);
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+        setSudokuGrid(loadedBoard);
+      } else {
+        // Load a new game
+        console.log("Load new game, call getNineBoard");
+        const data = await getNineBoard();
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+        setSudokuGrid(loadedBoard);
+        setCurrentGameId(data.game._id);
+        console.log("Current game _id:", data.game._id);
+      }
+    };
+
+    fetchGame();
+  }, [currentGameId]);
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
@@ -138,4 +154,8 @@ function Board9x9() {
   );
 }
 
+Board9x9.propTypes = {
+  currentGameId: PropTypes.number.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
+};
 export default Board9x9;
