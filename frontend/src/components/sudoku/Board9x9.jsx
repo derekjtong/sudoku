@@ -115,6 +115,7 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
       if (/^[1-9]$/.test(value)) {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
+        // Invalid input, do nothing
         // handleCellChange(selectedCell.row, selectedCell.col, "");
       }
     },

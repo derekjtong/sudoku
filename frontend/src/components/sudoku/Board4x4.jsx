@@ -114,6 +114,7 @@ function Board4x4({ currentGameId, setCurrentGameId }) {
       if (/^[1-4]$/.test(value)) {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
+        // Invalid input, do nothing
         // handleCellChange(selectedCell.row, selectedCell.col, "");
       }
     },
