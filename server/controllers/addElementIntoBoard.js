@@ -1,14 +1,20 @@
 //the frontend passes the element which have to be added and the coordinates
 import checkIfValid from "../helpers/checkIfValid.js";
-import { getDb } from '../database/database.js'; // Adjust the path as necessary
-export const addElementIntoBoard = (req, res) => {
+import Game from "../database/gameSchema.js";
+import updateGame from "../helpers/updateGame.js";
+import { ObjectId } from "mongodb";
+// json output: valid:either true or false
+// valid: true means the added element wont cause any problem and the puzzle is in the suitable position
+// but not might not be in the exact position
+export const addElementIntoBoard = async (req, res) => {
   try {
-    console.log("before");
-    const board = JSON.parse(req.body.board.matrix);
-    // console.log("after")
-    const row = parseInt(req.body.board.row);
-    const col = parseInt(req.body.board.col);
-    const element = parseInt(req.body.board.element);
+    const gameId = new ObjectId(req.params.id);
+    let board = await Game.findOne({ _id: gameId });
+    let stack = board["stack"];
+    board = board["problemBoard"];
+    const row = parseInt(req.body.row);
+    const col = parseInt(req.body.col);
+    const element = parseInt(req.body.element);
 
     if (stack.length === 0) {
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
