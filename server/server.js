@@ -2,7 +2,8 @@ import express, { application } from "express";
 import bodyParser from "body-parser";
 import boardManipulationRoute from "./routes/boardManipulation.js";
 import boardRouter from "./routes/getBoard.js";
-import makeDB from "./database/database.js";
+import { connectToServer, getDb } from "./database/database.js";
+//import makeDB from "./database/database.js";
 import gamesRouter from "./routes/games.js";
 import cors from "cors";
 
@@ -22,7 +23,7 @@ app.use("/api", gamesRouter);
 // app.use('/api',require('./routes/boardManipulation'));
 
 app.listen(port, (err) => {
-  makeDB();
+  //makeDB();
   if (!err) {
     console.log(`Server is running on http://localhost:${port}/`);
   } else {
