@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Buttons from "./components/shared/Buttons";
+import FooterToolbar from "./components/shared/FooterToolbar";
 import Content from "./components/shared/Content";
 import Navbar from "./components/shared/Navbar";
 
@@ -10,7 +10,7 @@ function Home() {
     <>
       <Navbar setBoardDimension={setBoardDimension} setDifficulty={setDifficulty} />
       <Content boardDimension={boardDimension} difficulty={difficulty} />
-      <Buttons />
+      <FooterToolbar />
     </>
   );
 }
