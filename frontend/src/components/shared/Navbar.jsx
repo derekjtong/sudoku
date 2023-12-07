@@ -2,9 +2,7 @@ import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
 
-
-
-const SwitchPuzzleDialog = ({ onCancel, onContinue }) => {
+const SwitchPuzzleDialog = ({ onCancel, onContinue, dimension, difficulty }) => {
   return (
     <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-8 rounded-md shadow-md">
@@ -14,7 +12,7 @@ const SwitchPuzzleDialog = ({ onCancel, onContinue }) => {
           <button className="px-4 py-2 mr-2 text-white bg-gray-500 hover:bg-gray-600 rounded" onClick={onCancel}>
             Cancel
           </button>
-          <button className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded" onClick={onContinue}>
+          <button className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded" onClick={() => onContinue(dimension, difficulty)}>
             Continue
           </button>
         </div>
@@ -26,6 +24,8 @@ const SwitchPuzzleDialog = ({ onCancel, onContinue }) => {
 const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
   const [show9x9Dropdown, setShow9x9Dropdown] = useState(false);
+  const [selectedDimension, setSelectedDimension] = useState(4); // Default value, you can adjust accordingly
+  const [selectedDifficulty, setSelectedDifficulty] = useState(1); // Default value, you can adjust accordingly
   const dropdown4x4Ref = useRef(null);
   const dropdown9x9Ref = useRef(null);
   const [showSwitchPuzzleDialog, setShowSwitchPuzzleDialog] = useState(false);
@@ -53,17 +53,14 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   };
 
   const handleDifficultyChange = (dimension, difficulty) => {
-    console.log("Attempting to change difficulty...");
+    setSelectedDimension(dimension);
+    setSelectedDifficulty(difficulty);
     setShowSwitchPuzzleDialog(true);
-    console.log("Progress exists, showing dialog.");
-    setBoardDimension(dimension);
-    setDifficulty(difficulty);
   };
 
-  console.log("showSwitchPuzzleDialog value:", showSwitchPuzzleDialog);
-
   const handleContinueSwitchPuzzle = () => {
-    // Logic to continue switching puzzles
+    setBoardDimension(selectedDimension);
+    setDifficulty(selectedDifficulty);
     setShowSwitchPuzzleDialog(false);
   };
 
