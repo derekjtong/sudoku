@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-// dotenv.config();
-// console.log(process.env.MONGODB_URI);
-//console.log(process.env); // This will print all environment variables
 import express, { application } from "express";
 import bodyParser from "body-parser";
 import boardManipulationRoute from "./routes/boardManipulation.js";
