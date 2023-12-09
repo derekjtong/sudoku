@@ -37,7 +37,7 @@ export const deleteElementFromBoard = (inputData) => {
  */
 export const checkIfSolved = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`)
+    .get(`${BASE_URL}/checksolved/${gameId}`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error checking if board is solved: ${error.message}`);
@@ -51,7 +51,7 @@ export const checkIfSolved = (gameId) => {
  */
 export const correctSoFar = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`)
+    .get(`${BASE_URL}/correctSoFar/${gameId}`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error checking board: ${error.message}`);
@@ -65,7 +65,7 @@ export const correctSoFar = (gameId) => {
  */
 export const getRandomHint = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`)
+    .get(`${BASE_URL}/getRandomHint/${gameId}`)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error getting random hint: ${error.message}`);
@@ -79,7 +79,7 @@ export const getRandomHint = (gameId) => {
  */
 export const getSpecificHint = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`) // ??
+    .get(`${BASE_URL}/getSpecificHint/${gameId}`) // ??
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error getting specific hint: ${error.message}`);
@@ -92,8 +92,9 @@ export const getSpecificHint = (gameId) => {
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const undo = (gameId) => {
+  console.log(gameId)
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`)
+    .post(`${BASE_URL}/undo/${gameId}`)  // Updated to POST
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error undoing last element on the board: ${error.message}`);

@@ -1,9 +1,8 @@
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } from "../../api/boardManipulation";
 
-
-const FooterToolbar = ({ onToggleNotes }) => {
+const FooterToolbar = ({ onToggleNotes, currentGameId, setCurrentGameId }) => {
   const [notesOn, setNotesOn] = useState(false);
 
   const toggleNotes = () => {
@@ -13,22 +12,40 @@ const FooterToolbar = ({ onToggleNotes }) => {
 
   return (
     <div className="fixed bottom-0 flex w-full justify-around bg-gray-800">
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={undo}>
+      <button
+        className="w-full p-4 text-white hover:bg-gray-900"
+        onClick={() => undo(currentGameId, setCurrentGameId)}
+      >
         Undo
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={undoUntilCorrect}>
+      <button
+        className="w-full p-4 text-white hover:bg-gray-900"
+        onClick={() => undoUntilCorrect(currentGameId, setCurrentGameId)}
+      >
         Undo Until Correct
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
+      <button
+        className="w-full p-4 text-white hover:bg-gray-900"
+        onClick={toggleNotes}
+      >
         {notesOn ? "Notes On" : "Notes Off"}
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={getRandomHint}>
+      <button
+        className="w-full p-4 text-white hover:bg-gray-900"
+        onClick={() => getRandomHint(currentGameId)}
+      >
         Random Hint
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={getSpecificHint}>
+      <button
+        className="w-full p-4 text-white hover:bg-gray-900"
+        onClick={() => getSpecificHint(currentGameId)}
+      >
         Specific Hint
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={correctSoFar}>
+      <button
+        className="w-full p-4 text-white hover:bg-gray-900"
+        onClick={() => correctSoFar(currentGameId)}
+      >
         Check Board
       </button>
     </div>
@@ -36,12 +53,9 @@ const FooterToolbar = ({ onToggleNotes }) => {
 };
 
 FooterToolbar.propTypes = {
-  onUndo: PropTypes.func.isRequired,
-  onErase: PropTypes.func.isRequired,
   onToggleNotes: PropTypes.func.isRequired,
-  onUndoUntilCorrect: PropTypes.func.isRequired,
-  onGetRandomHint: PropTypes.func.isRequired,
-  onGetSpecificHint: PropTypes.func.isRequired,
+  currentGameId: PropTypes.number.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
 };
 
 export default FooterToolbar;
