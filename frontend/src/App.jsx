@@ -13,7 +13,7 @@ function Home() {
     <>
       <Navbar setBoardDimension={setBoardDimension} setDifficulty={setDifficulty} setCurrentGameId={setCurrentGameId} />
       <Content boardDimension={boardDimension} difficulty={difficulty} currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} />
-      <FooterToolbar currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} />
+      <FooterToolbar currentGameId={currentGameId} />
     </>
   );
 }

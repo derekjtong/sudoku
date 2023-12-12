@@ -3,8 +3,10 @@ import { ObjectId } from "mongodb";
 import Game from "../database/gameSchema.js";
 // suggestedMove{row,col,num}
 const getRandomHint = async (req, res) => {
+  console.log("Random Hint: ")
   try {
     const gameId = new ObjectId(req.params.id);
+    console.log("Game ID: " + gameId)
     let board = await Game.findOne({ _id: gameId });
     board = board["problemBoard"];
 

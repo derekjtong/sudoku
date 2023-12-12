@@ -3,8 +3,10 @@ import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 //json {valid:true/false}
 export const correctSoFar = async (req, res) => {
+  console.log("In correctSoFar: ")
   try {
     const gameId = new ObjectId(req.params.id);
+    console.log("Game ID: " + gameId)
     //const board = JSON.parse(req.body.board.matrix);
     let board = await Game.findOne({ _id: gameId });
     board = board["problemBoard"];
@@ -13,7 +15,7 @@ export const correctSoFar = async (req, res) => {
       // Invalid board structure
       return res.status(400).json({ error: "Invalid board structure" });
     }
-
+    console.log("Checking if valid")
     const isValid = checkIfValid(board);
 
     return res.json({ valid: isValid });

@@ -94,7 +94,7 @@ export const getSpecificHint = (gameId) => {
 export const undo = (gameId) => {
   console.log(gameId)
   return axios
-    .post(`${BASE_URL}/undo/${gameId}`)  // Updated to POST
+    .get(`${BASE_URL}/undo/${gameId}`)  // Updated to POST
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error undoing last element on the board: ${error.message}`);
@@ -109,6 +109,7 @@ export const undo = (gameId) => {
 export const undoUntilCorrect = (gameId) => {
   return axios
     .get(`${BASE_URL}/undountilcorrect/${gameId}`)
+    .then(console.log("GameID: " + gameId))
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error undoing board until correct: ${error.message}`);

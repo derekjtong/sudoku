@@ -6,8 +6,10 @@ import updateGame from "../helpers/updateGame.js";
 
 //{valid:true/false,board}
 export const deleteElementFromBoard = async (req, res) => {
+  console.log("In Delete Element")
   try {
     const gameId = new ObjectId(req.params.id);
+    console.log("Game ID: " + gameId)
     let board = await Game.findOne({ _id: gameId });
     let stack = board["stack"];
     board = board["problemBoard"];

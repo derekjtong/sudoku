@@ -4,8 +4,10 @@ import { ObjectId } from "mongodb";
 // json output
 // isSolved:true means solved
 export const checkIfSolved = async (req, res) => {
+  console.log("In Check if solved")
   try {
     const gameId = new ObjectId(req.params.id);
+    console.log("Game ID: " + gameId)
     //const board = JSON.parse(req.body.board.matrix);
     let board = await Game.findOne({ _id: gameId });
     board = board["problemBoard"];

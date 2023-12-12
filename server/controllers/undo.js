@@ -4,9 +4,13 @@ import { ObjectId } from "mongodb";
 const undo = async (req, res) => {
   try {
     // Check if the stack is empty
+    console.log("In UNDO")
+    
     const gameId = new ObjectId(req.params.id);
+    console.log("Game ID: " + req.params.id)
     let stackDb = await Game.findOne({ _id: gameId });
     stackDb = stackDb["stack"];
+    console.log("Stack: " + stackDb)
     if (stackDb.length <= 1) {
       return res.status(400).json({ error: "Stack is empty." });
     }

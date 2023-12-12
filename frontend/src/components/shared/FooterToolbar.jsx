@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } from "../../api/boardManipulation";
 
-const FooterToolbar = ({ onToggleNotes, currentGameId, setCurrentGameId }) => {
+const FooterToolbar = ({ onToggleNotes, currentGameId }) => {
   const [notesOn, setNotesOn] = useState(false);
 
   const toggleNotes = () => {
@@ -14,13 +14,13 @@ const FooterToolbar = ({ onToggleNotes, currentGameId, setCurrentGameId }) => {
     <div className="fixed bottom-0 flex w-full justify-around bg-gray-800">
       <button
         className="w-full p-4 text-white hover:bg-gray-900"
-        onClick={() => undo(currentGameId, setCurrentGameId)}
+        onClick={() => undo(currentGameId)}
       >
         Undo
       </button>
       <button
         className="w-full p-4 text-white hover:bg-gray-900"
-        onClick={() => undoUntilCorrect(currentGameId, setCurrentGameId)}
+        onClick={() => undoUntilCorrect(currentGameId)}
       >
         Undo Until Correct
       </button>
