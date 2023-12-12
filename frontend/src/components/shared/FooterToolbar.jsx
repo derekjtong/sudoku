@@ -36,12 +36,27 @@ const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
     }
   };
 
+  const handleUndoUntilCorrect = async () => {
+    try {
+      const data = await undoUntilCorrect(currentGameId);
+      if (data.noMoreMoves) {
+        console.log("No more moves to undo");
+        return;
+      }
+      const newGrid = data.board.grid;
+      setSudokuGrid(newGrid);
+      setSelectedCell(-1, -1);
+    } catch (error) {
+      console.error("Error during operation:", error);
+    }
+  };
+
   return (
     <div className="fixed bottom-0 flex w-full justify-around bg-gray-800">
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndo}>
         Undo
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => undoUntilCorrect(currentGameId)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndoUntilCorrect}>
         Undo Until Correct
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
