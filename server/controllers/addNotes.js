@@ -1,5 +1,11 @@
 import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
+import updateGame from "../helpers/updateGame.js";
+
+// @params{
+// id on the url
+// body {row, col, element}
+//  }
 
 const addNotes = async (req, res) => {
     try {
@@ -16,11 +22,18 @@ const addNotes = async (req, res) => {
             const col = parseInt(req.body.col);
             const element = parseInt(req.body.element);
             let cell = problemBoard[ row ][ col ].notes;
-            cell.forEach((cellRow) => {
-                if (cellRow.length < dimension-1) {
-                    cellRow.push(element)
+            for (let i = 0; i < cell.length; i++){
+                let cellRow = cell[ i ];
+                if (cellRow.length < dimension) {
+                    cellRow.push(element);
+                    break;
                 }
-            })
+            }
+            problemBoard[ row ][ col ] = {
+                value:problemBoard[ row ][ col ].value,
+                notes:cell
+            }
+            updateGame(problemBoard, gameId, stack, noteMode);
             await game.save();
             return res.json({
                 game
