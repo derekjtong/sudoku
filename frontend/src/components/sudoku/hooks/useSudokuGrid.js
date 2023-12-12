@@ -9,6 +9,7 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
   });
 
   const handleCellChange = (row, col, value) => {
+    // TODO: Notes support
     value = Number(value);
     if (sudokuGrid[row][col].value === Number(value)) {
       console.log("handleCellChange - no change, did not call API");

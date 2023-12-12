@@ -32,10 +32,7 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
-      handleCellChange(selectedCell.row, selectedCell.col, {
-        value: value.toString(),
-        notes: sudokuGrid[selectedCell.row][selectedCell.col].notes,
-      });
+      handleCellChange(selectedCell.row, selectedCell.col, value);
     }
   };
 

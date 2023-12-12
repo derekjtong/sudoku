@@ -98,13 +98,18 @@ export const getSpecificHint = (gameId) => {
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const undo = (gameId) => {
-  console.log("Called undo");
   return axios
     .get(`${BASE_URL}/undo/${gameId}`)
-    .then((response) => response.data)
+    .then((response) => {
+      // If there are no more moves to undo, return a specific response instead of throwing an error
+      if (response.data.message && response.data.message === "No more moves to undo.") {
+        return { noMoreMoves: true };
+      }
+      return response.data;
+    })
     .catch((error) => {
-      console.log(error);
-      throw new Error(`Error undoing last element on the board: ${error.message}`);
+      console.error("Error during undo operation:", error);
+      throw error; // Propagate the error for further handling
     });
 };
 

@@ -12,6 +12,10 @@ const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
   const handleUndo = async () => {
     try {
       const data = await undo(currentGameId);
+      if (data.noMoreMoves) {
+        console.log("No more moves to undo");
+        return;
+      }
       const newGrid = data.board.grid;
       setSudokuGrid(newGrid);
 
