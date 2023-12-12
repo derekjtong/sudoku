@@ -9,9 +9,10 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
   });
 
   const handleCellChange = (row, col, value) => {
+    console.log(typeof value);
     // TODO: Notes support
-    value = Number(value);
-    if (sudokuGrid[row][col].value === Number(value)) {
+    const numberValue = Number(value);
+    if (sudokuGrid[row][col].value === numberValue) {
       console.log("handleCellChange - no change, did not call API");
       return;
     }
@@ -20,13 +21,16 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
     const newGrid = sudokuGrid.map((row) => row.map((cell) => ({ ...cell })));
 
     // Update the value of the specified cell
-    newGrid[row][col].value = value;
+    newGrid[row][col].value = numberValue;
 
     // Call API
-    addElementToBoard(currentGameId, row, col, Number(value));
+    console.log("Call api");
+    addElementToBoard(currentGameId, row, col, numberValue);
 
     // Update the state with the new grid
     setSudokuGrid(newGrid);
+
+    console.log("Complete");
   };
 
   return { sudokuGrid, setSudokuGrid, handleCellChange };

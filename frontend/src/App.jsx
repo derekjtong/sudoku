@@ -9,7 +9,7 @@ function Home() {
   const [boardDimension, setBoardDimension] = useState(9);
   const [difficulty, setDifficulty] = useState(1);
   const [currentGameId, setCurrentGameId] = useLocalStorage("currentGameId", "");
-  const [showNotes, setShowNotes] = useState(false);
+  const [addNoteMode, setAddNoteMode] = useState(false);
 
   return (
     <SudokuBoardProvider size={boardDimension} currentGameId={currentGameId}>
@@ -19,10 +19,10 @@ function Home() {
         difficulty={difficulty}
         currentGameId={currentGameId}
         setCurrentGameId={setCurrentGameId}
-        showNotes={showNotes}
-        setShowNotes={setShowNotes}
+        addNoteMode={addNoteMode}
+        setAddNoteMode={setAddNoteMode}
       />
-      <FooterToolbar currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
+      <FooterToolbar currentGameId={currentGameId} addNoteMode={addNoteMode} setAddNoteMode={setAddNoteMode} />
     </SudokuBoardProvider>
   );
 }

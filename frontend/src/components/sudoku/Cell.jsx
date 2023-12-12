@@ -1,14 +1,13 @@
 import PropTypes from "prop-types";
 
-function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySelected, showNotes }) {
+function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySelected }) {
   // TODO: add notes
   const { value, notes } = cell;
 
-  if (showNotes) {
-    console.log(notes);
-  }
-
   const handleOnChange = (e) => {
+    // If user enters 0, show blank and don't make API
+    if (e.target.value === "0") return;
+
     // Construct a new cell object with the updated value
     const updatedCell = {
       ...cell, // Copy the existing cell object
@@ -23,7 +22,7 @@ function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySele
       className={`m-0 h-14 w-14 cursor-default border border-gray-800 text-center caret-transparent focus:outline-none ${
         isSelected ? "bg-gray-200" : ""
       } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
-      value={value}
+      value={value == 0 ? "" : value}
       onChange={handleOnChange}
       onClick={() => onCellClick(row, col)}
       maxLength="1"
