@@ -3,21 +3,6 @@ import Board from "../sudoku/Board";
 import FooterToolbar from "./FooterToolbar";
 
 function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, showNotes, setShowNotes }) {
-  let BoardComponent;
-  switch (boardDimension) {
-    case 4:
-      BoardComponent = (
-        <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
-      );
-      break;
-    case 9:
-      BoardComponent = (
-        <Board9x9 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
-      );
-      break;
-    default:
-      BoardComponent = null;
-  }
   let difficultyText;
   switch (difficulty) {
     case 1:

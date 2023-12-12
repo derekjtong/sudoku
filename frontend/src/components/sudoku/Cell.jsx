@@ -15,9 +15,7 @@ function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySele
       value: e.target.value, // Update the value
     };
     onChange(updatedCell);
-  };
 
-  const handleChange = (event) => {
     const val = event.target.value;
     // When backspace is hit, the value becomes empty
     if (val === "") {

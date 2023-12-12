@@ -4,26 +4,37 @@ import Cell from "./Cell";
 import { getFourBoard, getNineBoard } from "../../api/getBoard";
 import Keypad from "./Keypad"; // Ensure this is adaptable for different sizes
 import { useSelectedCell } from "./hooks/useSelectedCell";
-import { useSudokuGrid } from "./hooks/useSudokuGrid";
+import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
+import { useSudokuBoard } from "../providers/board-provider";
 
 Board.propTypes = {
   size: PropTypes.number.isRequired, // Add prop validation for size
 };
 
-function Board({ size }) {
-  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(size);
+function Board({ size, currentGameId, setCurrentGameId, showNotes }) {
+  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuBoard(size);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   useEffect(() => {
-    // Generalized fetching logic based on board size
-    console.log(`get${size}x${size}Board`);
-    const fetchBoard = size === 4 ? getFourBoard : getNineBoard;
-    fetchBoard().then((data) => {
-      const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
-      setSudokuGrid(loadedBoard);
-    });
-  }, [size, setSudokuGrid]);
+    const fetchGame = async () => {
+      if (currentGameId) {
+        // Load existing game
+        console.log("Found existing game id in local storage, loading it:", currentGameId);
+        const data = await getSingleGameById(currentGameId);
+        setSudokuGrid(data.game.problemBoard.map((row) => row.map((num) => num.toString())));
+      } else {
+        // Load a new game based on the size
+        console.log(`Loading new ${size}x${size} game`);
+        const fetchBoard = size === 4 ? getFourBoard : getNineBoard;
+        const data = await fetchBoard();
+        setSudokuGrid(data.game.problemBoard.map((row) => row.map((num) => num.toString())));
+        setCurrentGameId(data.game._id);
+      }
+    };
+
+    fetchGame();
+  }, [size, currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
@@ -47,35 +58,52 @@ function Board({ size }) {
 
   const renderSubgrid = (startRow, startCol, quadrantIndex) => {
     const subgridSize = size === 4 ? 2 : 3;
+
+    // Safety check to ensure sudokuGrid has the expected structure
+    const isGridValid = sudokuGrid.length === size && sudokuGrid.every((row) => row.length === size);
+    if (!isGridValid) {
+      console.error("Invalid sudoku grid structure");
+      return null; // or return a placeholder component
+    }
+
     return (
       <tbody key={`subgrid-${startRow}-${startCol}`}>
         {[...Array(subgridSize)].map((_, rowIndex) => (
           <tr key={rowIndex}>
-            {[...Array(subgridSize)].map((_, colIndex) => (
-              <Cell
-                key={`${startRow + rowIndex}-${startCol + colIndex}`}
-                row={startRow + rowIndex}
-                col={startCol + colIndex}
-                value={sudokuGrid[startRow + rowIndex][startCol + colIndex]}
-                onChange={(value) => handleCellChange(startRow + rowIndex, startCol + colIndex, value)}
-                onCellClick={handleCellClick}
-                isSelected={
-                  startRow + rowIndex === selectedCell.row ||
-                  startCol + colIndex === selectedCell.col ||
-                  isSelectedQuadrant(startRow + rowIndex, startCol + colIndex)
-                }
-                isPrimarySelected={startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col}
-                className={`
-                ${rowIndex > 0 && "border-top"}
-                ${colIndex > 0 && "border-left"}
-                ${rowIndex === subgridSize - 1 && "border-bottom"}
-                ${colIndex === subgridSize - 1 && "border-right"}
-                ${getQuadrantColor(quadrantIndex)}
-                ${isSelectedQuadrant(startRow + rowIndex, startCol + colIndex) && "bg-gray-200"}
-                ${startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col && "bg-red-500 text-white"}
-              `}
-              />
-            ))}
+            {[...Array(subgridSize)].map((_, colIndex) => {
+              const cellRow = startRow + rowIndex;
+              const cellCol = startCol + colIndex;
+              const cellValue = sudokuGrid[cellRow][cellCol];
+
+              // Create the cell object here
+              const cell = {
+                value: cellValue, // assuming cellValue is a string here
+                notes: [], // replace with actual notes if available
+              };
+              return (
+                <Cell
+                  key={`${cellRow}-${cellCol}`}
+                  row={cellRow}
+                  col={cellCol}
+                  value={cellValue}
+                  cell={cell}
+                  onChange={(value) => handleCellChange(cellRow, cellCol, value)}
+                  onCellClick={handleCellClick}
+                  showNotes={showNotes}
+                  isSelected={cellRow === selectedCell.row || cellCol === selectedCell.col || isSelectedQuadrant(cellRow, cellCol)}
+                  isPrimarySelected={cellRow === selectedCell.row && cellCol === selectedCell.col}
+                  className={`
+                  ${rowIndex > 0 && "border-top"}
+                  ${colIndex > 0 && "border-left"}
+                  ${rowIndex === subgridSize - 1 && "border-bottom"}
+                  ${colIndex === subgridSize - 1 && "border-right"}
+                  ${getQuadrantColor(quadrantIndex)}
+                  ${isSelectedQuadrant(cellRow, cellCol) && "bg-gray-200"}
+                  ${cellRow === selectedCell.row && cellCol === selectedCell.col && "bg-red-500 text-white"}
+                `}
+                />
+              );
+            })}
           </tr>
         ))}
       </tbody>
@@ -151,5 +179,10 @@ function Board({ size }) {
     </div>
   );
 }
-
+Board.propTypes = {
+  currentGameId: PropTypes.string.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
+  showNotes: PropTypes.bool.isRequired,
+  setShowNotes: PropTypes.func.isRequired,
+};
 export default Board;

@@ -7,7 +7,7 @@ import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
 
-function Board9x9({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) {
+function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuBoard(); // Context
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 

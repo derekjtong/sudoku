@@ -20,6 +20,12 @@ const SwitchPuzzleDialog = ({ onCancel, onContinue, dimension, difficulty }) => 
     </div>
   );
 };
+SwitchPuzzleDialog.propTypes = {
+  onCancel: PropTypes.func.isRequired,
+  onContinue: PropTypes.func.isRequired,
+  dimension: PropTypes.number.isRequired,
+  difficulty: PropTypes.number.isRequired,
+};
 
 const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
