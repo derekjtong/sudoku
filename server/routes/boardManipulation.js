@@ -7,6 +7,11 @@ import undo from "../controllers/undo.js";
 import undoUntilCorrect from "../controllers/undoUntilCorrect.js";
 import getRandomHint from "../controllers/getRandomHint.js";
 import getSpecificHint from "../controllers/getHintSpecificHint.js";
+import addNotes from "../controllers/addNotes.js";
+import switchNote from "../controllers/switchNotes.js";
+import resetGame from "../controllers/resetGame.js";
+import deleteNotes from "../controllers/deleteNotes.js";
+
 
 const router = express.Router();
 // @route /api/addelement/{dbId}
@@ -25,5 +30,18 @@ router.post("/getSpecificHint/:id", getSpecificHint); //{suggestedMove} suggeste
 router.get("/undo/:id", undo); // {board}
 // @route /api/undountilcorrect/{dbId}
 router.get("/undountilcorrect/:id", undoUntilCorrect); // {board}
+
+// @route /api/switchnote
+router.put("/switchnote/:id", switchNote);
+
+// @route /api/addnote/{dbId}
+router.put("/addnote/:id", addNotes);
+
+// @route /api/deletenote/{dbId}
+router.delete("/deletenote/:id", deleteNotes);
+
+// just pass the id 
+// @route /api/reset/{dbId}
+router.put("/reset/:id", resetGame);
 
 export default router;

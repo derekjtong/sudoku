@@ -5,9 +5,12 @@ import boardRouter from "./routes/getBoard.js";
 import makeDB from "./database/database.js";
 import gamesRouter from "./routes/games.js";
 import cors from "cors";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
-const port = 9090;
+const port = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
@@ -19,7 +22,6 @@ app.use(express.static("dist"));
 app.use("/api", boardManipulationRoute);
 app.use("/api", boardRouter);
 app.use("/api", gamesRouter);
-// app.use('/api',require('./routes/boardManipulation'));
 
 app.listen(port, (err) => {
   makeDB();
