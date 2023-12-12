@@ -25,27 +25,33 @@ export const addElementIntoBoard = async (req, res) => {
     if (stack.length === 0) {
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
     }
-    board[row][col] = element;
+    board[row][col]['value'] = element;
     stack.push({ grid: board, booleanValue: checkIfValid(board) });
     updateGame(board, gameId, stack);
 
     for (let i = 0; i < board.length; i++) {
       //check in row
-      if (board[i][col] === element) {
+      if (board[i][col].val === element) {
         return res.json({
           valid: false,
+          board,
+          stack,
         });
       }
       //check in col
-      if (board[col][i] === element) {
+      if (board[col][i].val === element) {
         return res.json({
           valid: false,
+          board,
+          stack,
         });
       }
       //check in the block
-      if (board[Math.floor(3 * (row / 3) + i / 3)][Math.floor(3 * (col / 3) + (i % 3))] === element) {
+      if (board[Math.floor(3 * (row / 3) + i / 3)][Math.floor(3 * (col / 3) + (i % 3))].val === element) {
         return res.json({
           valid: false,
+          board,
+          stack,
         });
       }
     }
@@ -53,6 +59,8 @@ export const addElementIntoBoard = async (req, res) => {
     if (checkIfValid(board) === false) {
       return res.json({
         valid: false,
+        board,
+        stack,
       });
     }
 

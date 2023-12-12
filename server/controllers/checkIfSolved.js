@@ -19,7 +19,7 @@ export const checkIfSolved = async (req, res) => {
 
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[0].length; j++) {
-        if (board[i][j] === -1) {
+        if (board[i][j].value === -1) {
           // Board is not solved
           return res.json({ isSolved: false, isValid: checkIfValid(board) });
         }
