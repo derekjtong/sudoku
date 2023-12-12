@@ -2,14 +2,14 @@ import PropTypes from "prop-types";
 import Board9x9 from "../sudoku/Board9x9";
 import Board4x4 from "../sudoku/Board4x4";
 
-function Content({ boardDimension, difficulty }) {
+function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId }) {
   let BoardComponent;
   switch (boardDimension) {
     case 4:
-      BoardComponent = <Board4x4 />;
+      BoardComponent = <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} />;
       break;
     case 9:
-      BoardComponent = <Board9x9 />;
+      BoardComponent = <Board9x9 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} />;
       break;
     default:
       BoardComponent = null;
@@ -17,25 +17,28 @@ function Content({ boardDimension, difficulty }) {
   let difficultyText;
   switch (difficulty) {
     case 1:
-      difficultyText = "easy";
+      difficultyText = "Easy";
       break;
     case 2:
-      difficultyText = "medium";
+      difficultyText = "Medium";
       break;
     case 3:
-      difficultyText = "hard";
+      difficultyText = "Hard";
       break;
     default:
       difficultyText = null;
   }
   return (
-    <div className="container mx-auto mt-32 flex justify-center ">
-      {difficultyText} {BoardComponent}
+    <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
+      {difficultyText}
+      {BoardComponent}
     </div>
   );
 }
 Content.propTypes = {
   boardDimension: PropTypes.number.isRequired,
   difficulty: PropTypes.number.isRequired,
+  currentGameId: PropTypes.number.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
 };
 export default Content;

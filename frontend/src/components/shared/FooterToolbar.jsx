@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-const Buttons = ({ onUndo, onErase, onToggleNotes, onUndoUntilCorrect, onGetRandomHint, onGetSpecificHint }) => {
+const FooterToolbar = ({ onUndo, onErase, onToggleNotes, onUndoUntilCorrect, onGetRandomHint, onGetSpecificHint }) => {
   const [notesOn, setNotesOn] = useState(false);
 
   const toggleNotes = () => {
@@ -33,7 +33,7 @@ const Buttons = ({ onUndo, onErase, onToggleNotes, onUndoUntilCorrect, onGetRand
   );
 };
 
-Buttons.propTypes = {
+FooterToolbar.propTypes = {
   onUndo: PropTypes.func.isRequired,
   onErase: PropTypes.func.isRequired,
   onToggleNotes: PropTypes.func.isRequired,
@@ -42,4 +42,4 @@ Buttons.propTypes = {
   onGetSpecificHint: PropTypes.func.isRequired,
 };
 
-export default Buttons;
+export default FooterToolbar;
