@@ -10,6 +10,7 @@ import getSpecificHint from "../controllers/getHintSpecificHint.js";
 import addNotes from "../controllers/addNotes.js";
 import switchNote from "../controllers/switchNotes.js";
 import resetGame from "../controllers/resetGame.js";
+import deleteNotes from "../controllers/deleteNotes.js";
 
 
 const router = express.Router();
@@ -33,9 +34,14 @@ router.get("/undountilcorrect/:id", undoUntilCorrect); // {board}
 // @route /api/switchnote
 router.put("/switchnote/:id", switchNote);
 
-// @route /api/addnotes/{dbId}
-router.put("/addnotes/:id", addNotes);
+// @route /api/addnote/{dbId}
+router.put("/addnote/:id", addNotes);
 
+// @route /api/deletenote/{dbId}
+router.delete("/deletenote/:id", deleteNotes);
+
+// just pass the id 
+// @route /api/reset/{dbId}
 router.put("/reset/:id", resetGame);
 
 export default router;
