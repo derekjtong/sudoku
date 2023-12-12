@@ -12,9 +12,11 @@ export const addElementToBoard = (gameId, row, col, value) => {
     .post(`${BASE_URL}/addelement/${gameId}`, {
       row: row,
       col: col,
-      value: value,
+      element: value,
     })
     .then((response) => response.data)
+    .then(console.log("Change cell (" + row + ", " + col + ") to " + value))
+    .then((res) => console.log(res))
     .catch((error) => {
       throw new Error(`Error adding element to board: ${error.message}`);
     });

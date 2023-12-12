@@ -15,7 +15,7 @@ function Board4x4({ currentGameId, setCurrentGameId }) {
     const fetchGame = async () => {
       if (currentGameId !== -1) {
         // Load existing game
-        console.log("Load existing game, call getSingleGameById:", currentGameId);
+        console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
         const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
         setSudokuGrid(loadedBoard);
