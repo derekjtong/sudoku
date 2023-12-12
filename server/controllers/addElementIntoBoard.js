@@ -10,6 +10,7 @@ export const addElementIntoBoard = async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
     let board = await Game.findOne({ _id: gameId });
+    const noteMode=board["noteMode"]
     let stack = board["stack"];
     board = board["problemBoard"];
     const row = parseInt(req.body.row);
@@ -19,9 +20,10 @@ export const addElementIntoBoard = async (req, res) => {
     if (stack.length === 0) {
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
     }
+    
     board[row][col]['value'] = element;
     stack.push({ grid: board, booleanValue: checkIfValid(board) });
-    updateGame(board, gameId, stack);
+    updateGame(board, gameId, stack,noteMode);
 
     for (let i = 0; i < board.length; i++) {
       //check in row

@@ -7,6 +7,9 @@ import undo from "../controllers/undo.js";
 import undoUntilCorrect from "../controllers/undoUntilCorrect.js";
 import getRandomHint from "../controllers/getRandomHint.js";
 import getSpecificHint from "../controllers/getHintSpecificHint.js";
+import addNotes from "../controllers/addNotes.js";
+import switchNote from "../controllers/switchNotes.js";
+
 
 const router = express.Router();
 // @route /api/addelement/{dbId}
@@ -25,5 +28,11 @@ router.post("/getSpecificHint/:id", getSpecificHint); //{suggestedMove} suggeste
 router.get("/undo/:id", undo); // {board}
 // @route /api/undountilcorrect/{dbId}
 router.get("/undountilcorrect/:id", undoUntilCorrect); // {board}
+
+// @route /api/switchnote
+router.put("/switchnote/:id", switchNote);
+
+// @route /api/addnotes/{dbId}
+router.put("/addnotes/:id", addNotes);
 
 export default router;
