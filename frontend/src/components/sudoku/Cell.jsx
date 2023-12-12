@@ -35,7 +35,7 @@ Cell.propTypes = {
   row: PropTypes.number.isRequired,
   col: PropTypes.number.isRequired,
   cell: PropTypes.shape({
-    value: PropTypes.string.isRequired,
+    value: PropTypes.number.isRequired,
     notes: PropTypes.arrayOf(PropTypes.array).isRequired,
   }).isRequired,
   onCellClick: PropTypes.func.isRequired,
