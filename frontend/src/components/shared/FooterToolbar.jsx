@@ -1,13 +1,9 @@
-import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } from "../../api/boardManipulation";
 
-const FooterToolbar = ({ onToggleNotes, currentGameId, setCurrentGameId }) => {
-  const [notesOn, setNotesOn] = useState(false);
-
+const FooterToolbar = ({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) => {
   const toggleNotes = () => {
-    setNotesOn(!notesOn);
-    onToggleNotes(!notesOn); // Call the provided prop function with the updated state
+    setShowNotes((cur) => !cur);
   };
 
   return (
@@ -19,7 +15,7 @@ const FooterToolbar = ({ onToggleNotes, currentGameId, setCurrentGameId }) => {
         Undo Until Correct
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
-        {notesOn ? "Notes On" : "Notes Off"}
+        {showNotes ? "Notes On" : "Notes Off"}
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getRandomHint(currentGameId)}>
         Random Hint
@@ -35,9 +31,10 @@ const FooterToolbar = ({ onToggleNotes, currentGameId, setCurrentGameId }) => {
 };
 
 FooterToolbar.propTypes = {
-  onToggleNotes: PropTypes.func.isRequired,
-  currentGameId: PropTypes.number.isRequired,
+  currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
+  setShowNotes: PropTypes.func.isRequired,
+  showNotes: PropTypes.bool.isRequired,
 };
 
 export default FooterToolbar;

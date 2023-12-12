@@ -7,6 +7,7 @@ export function useSudokuGrid(size, currentGameId) {
   const handleCellChange = (row, col, value) => {
     const newGrid = [...sudokuGrid];
     newGrid[row][col] = value;
+    console.log(value);
     addElementToBoard(currentGameId, row, col, Number(value));
     setSudokuGrid(newGrid);
   };

@@ -13,7 +13,7 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
 
   useEffect(() => {
     const fetchGame = async () => {
-      if (currentGameId !== -1) {
+      if (currentGameId !== "") {
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
@@ -21,16 +21,17 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
         setSudokuGrid(loadedBoard);
       } else {
         // Load a new game
-        console.log("Load new game, call getNineBoard");
+        console.log("Did not find game id in local storage, load new game:");
         const data = await getNineBoard();
         const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
         setSudokuGrid(loadedBoard);
         setCurrentGameId(data.game._id);
-        console.log("Current game _id:", data.game._id);
+        console.log(data.game._id);
       }
     };
 
     fetchGame();
+    console.log("Board9x9 useEffect");
   }, [currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
@@ -156,7 +157,7 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
 }
 
 Board9x9.propTypes = {
-  currentGameId: PropTypes.number.isRequired,
+  currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
 };
 export default Board9x9;

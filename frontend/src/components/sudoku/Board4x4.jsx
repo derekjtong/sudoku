@@ -13,24 +13,25 @@ function Board4x4({ currentGameId, setCurrentGameId }) {
 
   useEffect(() => {
     const fetchGame = async () => {
-      if (currentGameId !== -1) {
+      if (currentGameId !== "") {
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
         setSudokuGrid(loadedBoard);
       } else {
         // Load a new game
-        console.log("Load new game, call getNineBoard");
+        console.log("Did not find game id in local storage, load new game:");
         const data = await getFourBoard();
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
         setSudokuGrid(loadedBoard);
         setCurrentGameId(data.game._id);
-        console.log("Current game _id:", data.game._id);
+        console.log(data.game._id);
       }
     };
     fetchGame();
-  }, [currentGameId]);
+    console.log("Board4x4 useEffect");
+  }, [currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
@@ -155,7 +156,7 @@ function Board4x4({ currentGameId, setCurrentGameId }) {
 }
 
 Board4x4.propTypes = {
-  currentGameId: PropTypes.number.isRequired,
+  currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
 };
 
