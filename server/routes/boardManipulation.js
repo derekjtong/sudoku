@@ -9,6 +9,7 @@ import getRandomHint from "../controllers/getRandomHint.js";
 import getSpecificHint from "../controllers/getHintSpecificHint.js";
 import addNotes from "../controllers/addNotes.js";
 import switchNote from "../controllers/switchNotes.js";
+import resetGame from "../controllers/resetGame.js";
 
 
 const router = express.Router();
@@ -34,5 +35,7 @@ router.put("/switchnote/:id", switchNote);
 
 // @route /api/addnotes/{dbId}
 router.put("/addnotes/:id", addNotes);
+
+router.put("/reset/:id", resetGame);
 
 export default router;
