@@ -7,9 +7,13 @@ const BASE_URL = "http://localhost:9090/api";
  * @param {Object} inputData Object containing row, column, and value.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const addElementToBoard = (inputData) => {
+export const addElementToBoard = (gameId, row, col, value) => {
   return axios
-    .get(`${BASE_URL}/addelement/`, inputData)
+    .post(`${BASE_URL}/addelement/${gameId}`, {
+      row: row,
+      col: col,
+      value: value,
+    })
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error adding element to board: ${error.message}`);
@@ -23,7 +27,7 @@ export const addElementToBoard = (inputData) => {
  */
 export const deleteElementFromBoard = (inputData) => {
   return axios
-    .get(`${BASE_URL}/deleteelement/`, inputData)
+    .post(`${BASE_URL}/deleteelement/`, inputData)
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error deleting element from board: ${error.message}`);
@@ -92,11 +96,11 @@ export const getSpecificHint = (gameId) => {
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const undo = (gameId) => {
-  console.log(gameId)
   return axios
     .get(`${BASE_URL}/undo/${gameId}`)  // Updated to POST
     .then((response) => response.data)
     .catch((error) => {
+      console.log(error);
       throw new Error(`Error undoing last element on the board: ${error.message}`);
     });
 };

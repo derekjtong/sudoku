@@ -24,28 +24,16 @@ const FooterToolbar = ({ onToggleNotes, currentGameId }) => {
       >
         Undo Until Correct
       </button>
-      <button
-        className="w-full p-4 text-white hover:bg-gray-900"
-        onClick={toggleNotes}
-      >
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
         {notesOn ? "Notes On" : "Notes Off"}
       </button>
-      <button
-        className="w-full p-4 text-white hover:bg-gray-900"
-        onClick={() => getRandomHint(currentGameId)}
-      >
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getRandomHint(currentGameId)}>
         Random Hint
       </button>
-      <button
-        className="w-full p-4 text-white hover:bg-gray-900"
-        onClick={() => getSpecificHint(currentGameId)}
-      >
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getSpecificHint(currentGameId)}>
         Specific Hint
       </button>
-      <button
-        className="w-full p-4 text-white hover:bg-gray-900"
-        onClick={() => correctSoFar(currentGameId)}
-      >
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => correctSoFar(currentGameId)}>
         Check Board
       </button>
     </div>
