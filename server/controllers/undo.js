@@ -2,8 +2,10 @@ import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 // returns board after undo
 const undo = async (req, res) => {
+  console.log("Called undo");
   try {
     // Check if the stack is empty
+    console.log(req.params.id);
     const gameId = new ObjectId(req.params.id);
     let stackDb = await Game.findOne({ _id: gameId });
     stackDb = stackDb["stack"];

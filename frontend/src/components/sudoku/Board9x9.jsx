@@ -3,12 +3,12 @@ import Cell from "./Cell";
 import Keypad from "./Keypad";
 import { getNineBoard } from "../../api/getBoard";
 import { useSelectedCell } from "./hooks/useSelectedCell";
-import { useSudokuGrid } from "./hooks/useSudokuGrid";
 import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
+import { useSudokuBoard } from "../providers/board-provider";
 
-function Board9x9({ currentGameId, setCurrentGameId }) {
-  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(9, currentGameId);
+function Board9x9({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) {
+  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuBoard(); // Context
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   useEffect(() => {
@@ -17,14 +17,12 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
-        setSudokuGrid(loadedBoard);
+        setSudokuGrid(data.game.problemBoard);
       } else {
         // Load a new game
         console.log("Did not find game id in local storage, load new game:");
         const data = await getNineBoard();
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
-        setSudokuGrid(loadedBoard);
+        setSudokuGrid(data.game.problemBoard);
         setCurrentGameId(data.game._id);
         console.log(data.game._id);
       }
@@ -36,7 +34,10 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
-      handleCellChange(selectedCell.row, selectedCell.col, value.toString());
+      handleCellChange(selectedCell.row, selectedCell.col, {
+        value: value.toString(),
+        notes: sudokuGrid[selectedCell.row][selectedCell.col].notes,
+      });
     }
   };
 
@@ -57,22 +58,24 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
     return (
       <tbody key={`subgrid-${startRow}-${startCol}`}>
         {[...Array(3)].map((_, rowIndex) => (
-          <tr key={rowIndex}>
-            {[...Array(3)].map((_, colIndex) => (
-              <Cell
-                key={`${startRow + rowIndex}-${startCol + colIndex}`}
-                row={startRow + rowIndex}
-                col={startCol + colIndex}
-                value={sudokuGrid[startRow + rowIndex][startCol + colIndex]}
-                onChange={(value) => handleCellChange(startRow + rowIndex, startCol + colIndex, value)}
-                onCellClick={handleCellClick}
-                isSelected={
-                  startRow + rowIndex === selectedCell.row ||
-                  startCol + colIndex === selectedCell.col ||
-                  isSelectedQuadrant(startRow + rowIndex, startCol + colIndex)
-                }
-                isPrimarySelected={startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col}
-                className={`
+          <tr key={`row-${startRow + rowIndex}`}>
+            {[...Array(3)].map((_, colIndex) => {
+              const cellObj = sudokuGrid[startRow + rowIndex][startCol + colIndex];
+              return (
+                <Cell
+                  key={`cell-${startRow + rowIndex}-${startCol + colIndex}`}
+                  row={startRow + rowIndex}
+                  col={startCol + colIndex}
+                  cell={cellObj}
+                  onChange={(newCell) => handleCellChange(startRow + rowIndex, startCol + colIndex, newCell)}
+                  onCellClick={handleCellClick}
+                  showNotes={showNotes}
+                  isSelected={
+                    (startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col) ||
+                    isSelectedQuadrant(startRow + rowIndex, startCol + colIndex)
+                  }
+                  isPrimarySelected={startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col}
+                  className={`
                   ${rowIndex > 0 && "border-top"}
                   ${colIndex > 0 && "border-left"}
                   ${rowIndex === 2 && "border-bottom"}
@@ -81,8 +84,9 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
                   ${isSelectedQuadrant(startRow + rowIndex, startCol + colIndex) && "bg-gray-200"}
                   ${startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col && "bg-red-500 text-white"}
                 `}
-              />
-            ))}
+                />
+              );
+            })}
           </tr>
         ))}
       </tbody>
@@ -159,5 +163,7 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
 Board9x9.propTypes = {
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
+  showNotes: PropTypes.bool.isRequired,
+  setShowNotes: PropTypes.func.isRequired,
 };
 export default Board9x9;

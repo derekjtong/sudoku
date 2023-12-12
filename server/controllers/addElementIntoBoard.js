@@ -16,9 +16,7 @@ export const addElementIntoBoard = async (req, res) => {
     const row = parseInt(req.body.row);
     const col = parseInt(req.body.col);
     const element = parseInt(req.body.element);
-    console.log("row: ", row);
-    console.log("col: ", col);
-    console.log("element: ", element);
+
     if (stack.length === 0) {
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
     }
@@ -27,10 +25,9 @@ export const addElementIntoBoard = async (req, res) => {
     stack.push({ grid: board, booleanValue: checkIfValid(board) });
     updateGame(board, gameId, stack, noteMode);
 
-    console.log("before");
     for (let i = 0; i < board.length; i++) {
       //check in row
-      if (board[i][col].val === element) {
+      if (board[i][col].value === element) {
         return res.json({
           valid: false,
           board,
@@ -38,7 +35,7 @@ export const addElementIntoBoard = async (req, res) => {
         });
       }
       //check in col
-      if (board[col][i].val === element) {
+      if (board[col][i].value === element) {
         return res.json({
           valid: false,
           board,
@@ -46,7 +43,7 @@ export const addElementIntoBoard = async (req, res) => {
         });
       }
       //check in the block
-      if (board[Math.floor(3 * (row / 3) + i / 3)][Math.floor(3 * (col / 3) + (i % 3))].val === element) {
+      if (board[Math.floor(3 * (row / 3) + i / 3)][Math.floor(3 * (col / 3) + (i % 3))].value === element) {
         return res.json({
           valid: false,
           board,

@@ -1,6 +1,22 @@
 import PropTypes from "prop-types";
 
-function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySelected }) {
+function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySelected, showNotes }) {
+  // TODO: add notes
+  const { value, notes } = cell;
+
+  if (showNotes) {
+    console.log(notes);
+  }
+
+  const handleOnChange = (e) => {
+    // Construct a new cell object with the updated value
+    const updatedCell = {
+      ...cell, // Copy the existing cell object
+      value: e.target.value, // Update the value
+    };
+    onChange(updatedCell);
+  };
+
   return (
     <input
       type="text"
@@ -8,7 +24,7 @@ function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySel
         isSelected ? "bg-gray-200" : ""
       } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
       value={value}
-      onChange={onChange}
+      onChange={handleOnChange}
       onClick={() => onCellClick(row, col)}
       maxLength="1"
     />
@@ -18,11 +34,15 @@ function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySel
 Cell.propTypes = {
   row: PropTypes.number.isRequired,
   col: PropTypes.number.isRequired,
-  value: PropTypes.string.isRequired,
+  cell: PropTypes.shape({
+    value: PropTypes.string.isRequired,
+    notes: PropTypes.arrayOf(PropTypes.array).isRequired,
+  }).isRequired,
   onCellClick: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   isPrimarySelected: PropTypes.bool.isRequired,
+  showNotes: PropTypes.bool.isRequired,
 };
 
 export default Cell;
