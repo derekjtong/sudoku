@@ -2,9 +2,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 dotenv.config();
-const url = process.env.MONGODB_URI || "mongodb://localhost:27017/sudoku";
-
-
+const url = process.env.MONGODB_URI;
 
 function makeDB() {
   mongoose

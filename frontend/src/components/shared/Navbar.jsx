@@ -2,11 +2,33 @@ import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
 
+const SwitchPuzzleDialog = ({ onCancel, onContinue, dimension, difficulty }) => {
+  return (
+    <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-8 rounded-md shadow-md">
+        <p className="text-lg font-semibold mb-4">Switching puzzles</p>
+        <p>Your progress will be lost. Are you sure you want to continue?</p>
+        <div className="mt-6 flex justify-end">
+          <button className="px-4 py-2 mr-2 text-white bg-gray-500 hover:bg-gray-600 rounded" onClick={onCancel}>
+            Cancel
+          </button>
+          <button className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded" onClick={() => onContinue(dimension, difficulty)}>
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
   const [show9x9Dropdown, setShow9x9Dropdown] = useState(false);
+  const [selectedDimension, setSelectedDimension] = useState(4); // Default value, you can adjust accordingly
+  const [selectedDifficulty, setSelectedDifficulty] = useState(1); // Default value, you can adjust accordingly
   const dropdown4x4Ref = useRef(null);
   const dropdown9x9Ref = useRef(null);
+  const [showSwitchPuzzleDialog, setShowSwitchPuzzleDialog] = useState(false);
 
   const toggle4x4Dropdown = () => {
     setShow4x4Dropdown(!show4x4Dropdown);
@@ -31,8 +53,19 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   };
 
   const handleDifficultyChange = (dimension, difficulty) => {
-    setBoardDimension(dimension);
-    setDifficulty(difficulty);
+    setSelectedDimension(dimension);
+    setSelectedDifficulty(difficulty);
+    setShowSwitchPuzzleDialog(true);
+  };
+
+  const handleContinueSwitchPuzzle = () => {
+    setBoardDimension(selectedDimension);
+    setDifficulty(selectedDifficulty);
+    setShowSwitchPuzzleDialog(false);
+  };
+
+  const handleCancelSwitchPuzzle = () => {
+    setShowSwitchPuzzleDialog(false);
   };
 
   useEffect(() => {
@@ -129,6 +162,10 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
           </li>
         </ul>
       </div>
+      {/* Switch Puzzle Dialog */}
+      {showSwitchPuzzleDialog && (
+        <SwitchPuzzleDialog onCancel={handleCancelSwitchPuzzle} onContinue={handleContinueSwitchPuzzle} />
+      )}
     </nav>
   );
 };
