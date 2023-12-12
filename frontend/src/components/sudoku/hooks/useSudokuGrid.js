@@ -9,12 +9,20 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
   });
 
   const handleCellChange = (row, col, value) => {
-    // Create a deep copy of the grid to avoid mutating the state directly
+    // TODO: Notes support
+    value = Number(value);
+    if (sudokuGrid[row][col].value === Number(value)) {
+      console.log("handleCellChange - no change, did not call API");
+      return;
+    }
+
+    // Create a deep copy of the grid
     const newGrid = sudokuGrid.map((row) => row.map((cell) => ({ ...cell })));
+
     // Update the value of the specified cell
     newGrid[row][col].value = value;
 
-    // Call your API function
+    // Call API
     addElementToBoard(currentGameId, row, col, Number(value));
 
     // Update the state with the new grid

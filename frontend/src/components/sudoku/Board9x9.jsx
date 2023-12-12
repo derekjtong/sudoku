@@ -2,14 +2,12 @@ import { useEffect, useCallback } from "react";
 import Cell from "./Cell";
 import Keypad from "./Keypad";
 import { getNineBoard } from "../../api/getBoard";
-import { useSelectedCell } from "./hooks/useSelectedCell";
 import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
 
-function Board9x9({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) {
-  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuBoard(); // Context
-  const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
+function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
+  const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -34,10 +32,7 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) 
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
-      handleCellChange(selectedCell.row, selectedCell.col, {
-        value: value.toString(),
-        notes: sudokuGrid[selectedCell.row][selectedCell.col].notes,
-      });
+      handleCellChange(selectedCell.row, selectedCell.col, value);
     }
   };
 
@@ -60,21 +55,21 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) 
         {[...Array(3)].map((_, rowIndex) => (
           <tr key={`row-${startRow + rowIndex}`}>
             {[...Array(3)].map((_, colIndex) => {
-              const cellObj = sudokuGrid[startRow + rowIndex][startCol + colIndex];
+              const cellRow = startRow + rowIndex;
+              const cellCol = startCol + colIndex;
+              const cellObj = sudokuGrid[cellRow][cellCol];
+              const isSelected = selectedCell.row === cellRow || selectedCell.col === cellCol || isSelectedQuadrant(cellRow, cellCol);
               return (
                 <Cell
-                  key={`cell-${startRow + rowIndex}-${startCol + colIndex}`}
-                  row={startRow + rowIndex}
-                  col={startCol + colIndex}
+                  key={`cell-${cellRow}-${cellCol}`}
+                  row={cellRow}
+                  col={cellCol}
                   cell={cellObj}
-                  onChange={(newCell) => handleCellChange(startRow + rowIndex, startCol + colIndex, newCell)}
+                  onChange={(newCell) => handleCellChange(cellRow, cellCol, newCell)}
                   onCellClick={handleCellClick}
                   showNotes={showNotes}
-                  isSelected={
-                    (startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col) ||
-                    isSelectedQuadrant(startRow + rowIndex, startCol + colIndex)
-                  }
-                  isPrimarySelected={startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col}
+                  isSelected={isSelected}
+                  isPrimarySelected={cellRow === selectedCell.row && cellCol === selectedCell.col}
                   className={`
                   ${rowIndex > 0 && "border-top"}
                   ${colIndex > 0 && "border-left"}

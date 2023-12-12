@@ -3,7 +3,8 @@ import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } 
 import { useSudokuBoard } from "../providers/board-provider";
 
 const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
-  const { setSudokuGrid } = useSudokuBoard();
+  const { setSudokuGrid, setSelectedCell, sudokuGrid } = useSudokuBoard();
+
   const toggleNotes = () => {
     setShowNotes((cur) => !cur);
   };
@@ -11,10 +12,42 @@ const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
   const handleUndo = async () => {
     try {
       const data = await undo(currentGameId);
-      console.log(data.board.grid);
-      setSudokuGrid(data.board.grid);
+      if (data.noMoreMoves) {
+        console.log("No more moves to undo");
+        return;
+      }
+      const newGrid = data.board.grid;
+      setSudokuGrid(newGrid);
+
+      // Find the first cell that is different
+      for (let row = 0; row < newGrid.length; row++) {
+        for (let col = 0; col < newGrid[row].length; col++) {
+          const newValue = Number(newGrid[row][col].value);
+          const oldValue = Number(sudokuGrid[row][col].value);
+          if (newValue !== oldValue) {
+            console.log("Changed cell is", row, col);
+            setSelectedCell({ row, col });
+            return;
+          }
+        }
+      }
     } catch (error) {
       console.error("Error during undo operation:", error);
+    }
+  };
+
+  const handleUndoUntilCorrect = async () => {
+    try {
+      const data = await undoUntilCorrect(currentGameId);
+      if (data.noMoreMoves) {
+        console.log("No more moves to undo");
+        return;
+      }
+      const newGrid = data.board.grid;
+      setSudokuGrid(newGrid);
+      setSelectedCell(-1, -1);
+    } catch (error) {
+      console.error("Error during operation:", error);
     }
   };
 
@@ -23,7 +56,7 @@ const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndo}>
         Undo
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => undoUntilCorrect(currentGameId)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndoUntilCorrect}>
         Undo Until Correct
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
