@@ -1,12 +1,13 @@
 import Game from "../database/gameSchema.js";
 
-const updateGame = async (updatedBoard, gameId, updatedStack) => {
+const updateGame = async (updatedBoard, gameId, updatedStack,noteMode) => {
   try {
     await Game.updateOne(
       { _id: gameId },
       {
         problemBoard: updatedBoard,
         stack: updatedStack,
+        noteMode:noteMode
       },
     );
   } catch (error) {

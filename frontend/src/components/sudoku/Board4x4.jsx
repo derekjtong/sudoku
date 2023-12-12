@@ -4,18 +4,38 @@ import Keypad from "./Keypad4x4";
 import { getFourBoard } from "../../api/getBoard";
 import { useSelectedCell } from "./hooks/useSelectedCell";
 import { useSudokuGrid } from "./hooks/useSudokuGrid";
+import { getSingleGameById } from "../../api/getGame";
+import PropTypes from "prop-types";
 
-function Board4x4() {
+function Board4x4({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(4);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
+  // temp
+  showNotes;
+  setShowNotes(showNotes);
+
   useEffect(() => {
-    console.log("getFourBoard");
-    getFourBoard().then((data) => {
-      const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
-      setSudokuGrid(loadedBoard);
-    });
-  }, [setSudokuGrid]);
+    const fetchGame = async () => {
+      if (currentGameId !== "") {
+        // Load existing game
+        console.log("Found existing game id in local storage, loading it:", currentGameId);
+        const data = await getSingleGameById(currentGameId);
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
+        setSudokuGrid(loadedBoard);
+      } else {
+        // Load a new game
+        console.log("Did not find game id in local storage, load new game:");
+        const data = await getFourBoard();
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
+        setSudokuGrid(loadedBoard);
+        setCurrentGameId(data.game._id);
+        console.log(data.game._id);
+      }
+    };
+    fetchGame();
+    console.log("Board4x4 useEffect");
+  }, [currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
@@ -99,6 +119,7 @@ function Board4x4() {
       if (/^[1-4]$/.test(value)) {
         handleCellChange(selectedCell.row, selectedCell.col, value);
       } else {
+        // Invalid input, do nothing
         // handleCellChange(selectedCell.row, selectedCell.col, "");
       }
     },
@@ -137,5 +158,12 @@ function Board4x4() {
     </div>
   );
 }
+
+Board4x4.propTypes = {
+  currentGameId: PropTypes.string.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
+  showNotes: PropTypes.bool.isRequired,
+  setShowNotes: PropTypes.func.isRequired,
+};
 
 export default Board4x4;

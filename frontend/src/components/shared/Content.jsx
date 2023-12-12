@@ -1,7 +1,23 @@
 import PropTypes from "prop-types";
 import Board from "../sudoku/Board";
+import FooterToolbar from "./FooterToolbar";
 
-function Content({ boardDimension, difficulty }) {
+function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, showNotes, setShowNotes }) {
+  let BoardComponent;
+  switch (boardDimension) {
+    case 4:
+      BoardComponent = (
+        <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
+      );
+      break;
+    case 9:
+      BoardComponent = (
+        <Board9x9 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
+      );
+      break;
+    default:
+      BoardComponent = null;
+  }
   let difficultyText;
   switch (difficulty) {
     case 1:
@@ -20,11 +36,16 @@ function Content({ boardDimension, difficulty }) {
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center">
       {difficultyText && <h2>{difficultyText}</h2>}
       {boardDimension && <Board size={boardDimension} />}
+      <FooterToolbar currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
     </div>
   );
 }
 Content.propTypes = {
   boardDimension: PropTypes.number.isRequired,
   difficulty: PropTypes.number.isRequired,
+  currentGameId: PropTypes.string.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
+  showNotes: PropTypes.bool.isRequired,
+  setShowNotes: PropTypes.func.isRequired,
 };
 export default Content;

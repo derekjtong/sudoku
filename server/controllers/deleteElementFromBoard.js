@@ -9,6 +9,7 @@ export const deleteElementFromBoard = async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
     let board = await Game.findOne({ _id: gameId });
+    const noteMode = board[ "noteMode" ];
     let stack = board["stack"];
     board = board["problemBoard"];
 
@@ -24,10 +25,10 @@ export const deleteElementFromBoard = async (req, res) => {
       return res.status(400).json({ error: "Invalid coordinates" });
     }
 
-    if (board[row][col] !== -1) {
-      board[row][col] = -1;
+    if (board[row][col].value !== -1) {
+      board[row][col].value = -1;
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
-      updateGame(board, gameId, stack);
+      updateGame(board, gameId, stack,noteMode);
     }
 
     return res.json({
