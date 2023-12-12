@@ -24,8 +24,8 @@ export const deleteElementFromBoard = async (req, res) => {
       return res.status(400).json({ error: "Invalid coordinates" });
     }
 
-    if (board[row][col] !== -1) {
-      board[row][col] = -1;
+    if (board[row][col].value !== -1) {
+      board[row][col].value = -1;
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
       updateGame(board, gameId, stack);
     }
