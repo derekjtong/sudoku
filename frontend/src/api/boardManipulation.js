@@ -119,7 +119,6 @@ export const undo = (gameId) => {
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const undoUntilCorrect = (gameId) => {
-  console.log("Called undoUntilCorrect");
   return axios
     .get(`${BASE_URL}/undoUntilCorrect/${gameId}`)
     .then((response) => {
