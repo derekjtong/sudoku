@@ -26,5 +26,9 @@ function Content({ boardDimension, difficulty }) {
 Content.propTypes = {
   boardDimension: PropTypes.number.isRequired,
   difficulty: PropTypes.number.isRequired,
+  currentGameId: PropTypes.string.isRequired,
+  setCurrentGameId: PropTypes.func.isRequired,
+  showNotes: PropTypes.bool.isRequired,
+  setShowNotes: PropTypes.func.isRequired,
 };
 export default Content;

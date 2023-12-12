@@ -1,20 +1,22 @@
 import PropTypes from "prop-types";
 
-function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySelected }) {
-  const handleChange = (event) => {
-    const val = event.target.value;
-    // When backspace is hit, the value becomes empty
-    if (val === "") {
-      onChange(""); // Clear the cell
-    } else {
-      // Check if the input is a single digit between 1 and 9
-      const lastChar = val.slice(-1);
-      if (/^[1-9]$/.test(lastChar)) {
-        onChange(lastChar); // Update with the last character
-      }
-    }
-    // Ignore other inputs
+function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySelected, showNotes }) {
+  // TODO: add notes
+  const { value, notes } = cell;
+
+  if (showNotes) {
+    console.log(notes);
+  }
+
+  const handleOnChange = (e) => {
+    // Construct a new cell object with the updated value
+    const updatedCell = {
+      ...cell, // Copy the existing cell object
+      value: e.target.value, // Update the value
+    };
+    onChange(updatedCell);
   };
+
   return (
     <input
       type="text"
@@ -22,7 +24,7 @@ function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySel
         isSelected ? "bg-gray-200" : ""
       } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
       value={value}
-      onChange={handleChange}
+      onChange={handleOnChange}
       onClick={() => onCellClick(row, col)}
       maxLength="1"
     />
@@ -32,11 +34,15 @@ function Cell({ row, col, value, onCellClick, onChange, isSelected, isPrimarySel
 Cell.propTypes = {
   row: PropTypes.number.isRequired,
   col: PropTypes.number.isRequired,
-  value: PropTypes.string.isRequired,
+  cell: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+    notes: PropTypes.arrayOf(PropTypes.array).isRequired,
+  }).isRequired,
   onCellClick: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   isPrimarySelected: PropTypes.bool.isRequired,
+  showNotes: PropTypes.bool.isRequired,
 };
 
 export default Cell;

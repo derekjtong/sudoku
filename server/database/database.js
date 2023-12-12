@@ -1,14 +1,16 @@
+import dotenv from "dotenv";
 import mongoose from "mongoose";
-const url = "mongodb://localhost:27017/sudoku";
+
+dotenv.config();
 
 function makeDB() {
+  const url = process.env.MONGODB_URL;
+  console.log(url);
   mongoose
     .connect(url)
     .then(() => {
-      console.log("Conected to db..");
+      console.log("Connected to DB...");
     })
-    .catch((err) => {
-      console.log("Error connecting to database");
-    });
+    .catch((err) => console.log(err));
 }
 export default makeDB;

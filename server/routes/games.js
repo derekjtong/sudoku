@@ -5,6 +5,7 @@ const gamesRouter = express.Router();
 
 //@route /api/getonegame/{dbId}
 gamesRouter.get("/getonegame/:id", getSingleGameById);
+
 // @route /api/getallgame/{dbId}
 gamesRouter.get("/getallgames", listAllGamesInDb);
 
