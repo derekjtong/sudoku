@@ -15,9 +15,6 @@ export const addElementIntoBoard = async (req, res) => {
     const row = parseInt(req.body.row);
     const col = parseInt(req.body.col);
     const element = parseInt(req.body.element);
-    console.log("row: " + req.body.row);
-    console.log("col: " + req.body.col);
-    console.log("element: " + req.body.element);
 
     if (stack.length === 0) {
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
