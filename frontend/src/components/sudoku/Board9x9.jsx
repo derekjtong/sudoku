@@ -8,14 +8,14 @@ import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 
 function Board9x9({ currentGameId, setCurrentGameId }) {
-  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(9);
+  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(9, currentGameId);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
 
   useEffect(() => {
     const fetchGame = async () => {
       if (currentGameId !== -1) {
         // Load existing game
-        console.log("Load existing game, call getSingleGameById:", currentGameId);
+        console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
         const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
         setSudokuGrid(loadedBoard);
