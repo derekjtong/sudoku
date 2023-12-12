@@ -98,8 +98,9 @@ export const getSpecificHint = (gameId) => {
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const undo = (gameId) => {
+  console.log("Called undo");
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`) // Updated to POST
+    .get(`${BASE_URL}/undo/${gameId}`)
     .then((response) => response.data)
     .catch((error) => {
       console.log(error);

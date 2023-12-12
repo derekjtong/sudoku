@@ -20,7 +20,7 @@ const gameSchema = new mongoose.Schema({
   ],
   noteMode: {
     type: Boolean,
-    default:false
+    default: false,
   },
 });
 
