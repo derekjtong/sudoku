@@ -17,13 +17,13 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
         setSudokuGrid(loadedBoard);
       } else {
         // Load a new game
         console.log("Load new game, call getNineBoard");
         const data = await getNineBoard();
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((number) => number.toString()));
+        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
         setSudokuGrid(loadedBoard);
         setCurrentGameId(data.game._id);
         console.log("Current game _id:", data.game._id);
@@ -31,7 +31,7 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
     };
 
     fetchGame();
-  }, [currentGameId]);
+  }, [currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {

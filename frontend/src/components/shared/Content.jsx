@@ -38,7 +38,7 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId }
 Content.propTypes = {
   boardDimension: PropTypes.number.isRequired,
   difficulty: PropTypes.number.isRequired,
-  currentGameId: PropTypes.number.isRequired,
+  currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
 };
 export default Content;
