@@ -5,6 +5,7 @@ import AdminDialog from "./AdminDialog";
 
 function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode }) {
   const [showAdminDialog, setShowAdminDialog] = useState(false);
+  const [showDifficultyDialog, setShowDifficultyDialog] = useState(false);
 
   let BoardComponent;
   switch (boardDimension) {
@@ -33,7 +34,20 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
         />
       );
   }
-
+  let difficultyText;
+  switch (difficulty) {
+    case 1:
+      difficultyText = "Easy";
+      break;
+    case 2:
+      difficultyText = "Medium";
+      break;
+    case 3:
+      difficultyText = "Hard";
+      break;
+    default:
+      difficultyText = "Easy";
+  }
   const openAdminDialog = () => {
     setShowAdminDialog(true);
   };
@@ -47,7 +61,15 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
       <button onClick={openAdminDialog} className="mt-4">
         ADMIN COMMANDS
       </button>
-      {showAdminDialog && <AdminDialog onClose={closeAdminDialog} currentGameId={currentGameId} />}
+      {showAdminDialog && (
+        <AdminDialog
+          onClose={closeAdminDialog}
+          currentGameId={currentGameId}
+          showDifficultyDialog={showDifficultyDialog}
+          setShowDifficultyDialog={setShowDifficultyDialog}
+        />
+      )}
+      {showDifficultyDialog && difficultyText}
     </div>
   );
 }
