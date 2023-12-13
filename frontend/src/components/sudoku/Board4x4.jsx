@@ -7,9 +7,13 @@ import { useSudokuGrid } from "./hooks/useSudokuGrid";
 import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 
-function Board4x4({ currentGameId, setCurrentGameId }) {
+function Board4x4({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(4);
   const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
+
+  // temp
+  showNotes;
+  setShowNotes(showNotes);
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -158,6 +162,8 @@ function Board4x4({ currentGameId, setCurrentGameId }) {
 Board4x4.propTypes = {
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
+  showNotes: PropTypes.bool.isRequired,
+  setShowNotes: PropTypes.func.isRequired,
 };
 
 export default Board4x4;

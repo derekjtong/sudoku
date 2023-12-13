@@ -10,27 +10,30 @@ const createGame = async (problemBoard, solutionBoard, dimension, stack) => {
     // [ { 4, [ [], [], [], [] ]}, { 1, [ [], [], [], [] ]}, { 1, [ [], [], [], [] ]}, { 3, [ [], [], [], [] ]} ]
     //]
     let notes = [];
-    let updatedProblemBoard=[]
+    let updatedProblemBoard = [];
 
-    for (let i = 0; i < dimension; i++){
+    let noteDimension;
+    if (dimension === 9) noteDimension = 3;
+    if (dimension === 4) noteDimension = 2;
+    for (let i = 0; i < noteDimension; i++) {
       notes.push([]);
     }
-    for (let i = 0; i < dimension; i++){
-      let initiateRow=[]
-      for (let j = 0; j < dimension; j++){
+    for (let i = 0; i < dimension; i++) {
+      let initiateRow = [];
+      for (let j = 0; j < dimension; j++) {
         initiateRow.push({
-          value: problemBoard[ i ][ j ],
-          notes: notes
+          value: problemBoard[i][j],
+          notes: notes,
         });
       }
       updatedProblemBoard.push(initiateRow);
     }
     const newGame = new Game({
-      problemBoard:updatedProblemBoard,
+      problemBoard: updatedProblemBoard,
       solutionBoard,
       dimension,
       stack,
-      noteMode:false
+      noteMode: false,
     });
 
     const savedGame = await newGame.save();
