@@ -1,6 +1,6 @@
 import Game from "../database/gameSchema.js";
 import stack from "../helpers/stack.js";
-import { ObjectId } from "mongodb";
+import {ObjectId} from "mongodb";
 // board which is the latest one
 const undoUntilCorrect = async (req, res) => {
   try {
