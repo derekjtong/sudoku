@@ -20,7 +20,7 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center">
       {difficultyText && <h2>{difficultyText}</h2>}
-      {boardDimension && <Board size={boardDimension} />}
+      {boardDimension && <Board size={boardDimension} setCurrentGameId={setCurrentGameId} showNotes={showNotes} />}
       <FooterToolbar currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
     </div>
   );

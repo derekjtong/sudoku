@@ -18,18 +18,19 @@ function Board({ size, currentGameId, setCurrentGameId, showNotes }) {
 
   useEffect(() => {
     const fetchGame = async () => {
-      if (currentGameId) {
+      if (currentGameId !== "") {
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
-        setSudokuGrid(data.game.problemBoard.map((row) => row.map((num) => num.toString())));
+        setSudokuGrid(data.game.problemBoard);
       } else {
         // Load a new game based on the size
         console.log(`Loading new ${size}x${size} game`);
         const fetchBoard = size === 4 ? getFourBoard : getNineBoard;
         const data = await fetchBoard();
-        setSudokuGrid(data.game.problemBoard.map((row) => row.map((num) => num.toString())));
+        setSudokuGrid(data.game.problemBoard);
         setCurrentGameId(data.game._id);
+        console.log(data.game._id);
       }
     };
 

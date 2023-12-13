@@ -21,8 +21,7 @@ function Board4x4({ currentGameId, setCurrentGameId, showNotes, setShowNotes }) 
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
-        setSudokuGrid(loadedBoard);
+        setSudokuGrid(data.game.problemBoard);
       } else {
         // Load a new game
         console.log("Did not find game id in local storage, load new game:");
