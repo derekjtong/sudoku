@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9090/api";
+const BASE_URL = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:9090/api";
 
 /**
  * Get a 4x4 sudoku board.

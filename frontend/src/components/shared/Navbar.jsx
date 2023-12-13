@@ -1,25 +1,7 @@
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
-
-const SwitchPuzzleDialog = ({ onCancel, onContinue, dimension, difficulty }) => {
-  return (
-    <div className="fixed left-0 top-0 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50">
-      <div className="rounded-md bg-white p-8 shadow-md">
-        <p className="mb-4 text-lg font-semibold">Switching puzzles</p>
-        <p>Your progress will be lost. Are you sure you want to continue?</p>
-        <div className="mt-6 flex justify-end">
-          <button className="mr-2 rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-600" onClick={onCancel}>
-            Cancel
-          </button>
-          <button className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600" onClick={() => onContinue(dimension, difficulty)}>
-            Continue
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+import SwitchPuzzleDialog from "./SwitchPuzzleDialog";
 
 const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);

@@ -1,37 +1,51 @@
 import PropTypes from "prop-types";
-import Board9x9 from "../sudoku/Board9x9";
-import Board4x4 from "../sudoku/Board4x4";
+import Board from "../sudoku/Board";
+import { useState } from "react";
+import AdminDialog from "./AdminDialog";
 
-function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, addNoteMode }) {
+function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode }) {
+  const [showAdminDialog, setShowAdminDialog] = useState(false);
+
   let BoardComponent;
   switch (boardDimension) {
     case 4:
-      BoardComponent = <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
+      BoardComponent = <div>Sorry, we are closed. Switch back to 9x9 board!</div>;
+      // BoardComponent = <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
+      // TODO 4x4 board
       break;
     case 9:
-      BoardComponent = <Board9x9 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
+      BoardComponent = (
+        <Board
+          currentGameId={currentGameId}
+          setCurrentGameId={setCurrentGameId}
+          addNoteMode={addNoteMode}
+          setAddNoteMode={setAddNoteMode}
+        />
+      );
       break;
     default:
-      BoardComponent = null;
+      BoardComponent = (
+        <Board
+          currentGameId={currentGameId}
+          setCurrentGameId={setCurrentGameId}
+          addNoteMode={addNoteMode}
+          setAddNoteMode={setAddNoteMode}
+        />
+      );
   }
-  let difficultyText;
-  switch (difficulty) {
-    case 1:
-      difficultyText = "Easy";
-      break;
-    case 2:
-      difficultyText = "Medium";
-      break;
-    case 3:
-      difficultyText = "Hard";
-      break;
-    default:
-      difficultyText = null;
-  }
+
+  const openAdminDialog = () => {
+    setShowAdminDialog(true);
+  };
+
+  const closeAdminDialog = () => {
+    setShowAdminDialog(false);
+  };
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
-      {difficultyText}
       {BoardComponent}
+      <button onClick={openAdminDialog}>ADMIN COMMANDS</button>
+      {showAdminDialog && <AdminDialog onClose={closeAdminDialog} currentGameId={currentGameId} />}
     </div>
   );
 }
@@ -41,5 +55,6 @@ Content.propTypes = {
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
   addNoteMode: PropTypes.bool.isRequired,
+  setAddNoteMode: PropTypes.func.isRequired,
 };
 export default Content;

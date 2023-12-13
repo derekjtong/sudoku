@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } from "../../api/boardManipulation";
 import { useSudokuBoard } from "../providers/board-provider";
+import { switchNote } from "../../api/notes";
 
 const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
-  const { selectedCell, sudokuGrid, setSudokuGrid, setSelectedCell, handleCellChange } = useSudokuBoard();
+  const { selectedCell, sudokuGrid, setSudokuGrid, setSelectedCell } = useSudokuBoard();
 
   const handleUndo = async () => {
     try {
@@ -47,11 +48,26 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
     }
   };
 
-  const handleGetSpecificHint = async () => {
-    console.log("Called getSpecificHint");
+  const handleGetRandomHint = async () => {
     try {
-      const suggestedMove = await getSpecificHint(currentGameId, selectedCell.row, selectedCell.col);
-      handleCellChange(selectedCell.row, selectedCell.col, suggestedMove);
+      const { suggestedMove, updatedBoard } = await getRandomHint(currentGameId);
+      if (suggestedMove === null) {
+        console.log("No more hints available");
+        return;
+      }
+      setSelectedCell({ row: suggestedMove.row, col: suggestedMove.col });
+      setSudokuGrid(updatedBoard);
+    } catch (error) {
+      console.error("Error during getRandomHint:", error);
+    }
+  };
+
+  const handleGetSpecificHint = async () => {
+    if (selectedCell.row === -1 || selectedCell.col === -1) return console.log("No cell selected");
+    try {
+      const { suggestedMove, updatedBoard } = await getSpecificHint(currentGameId, selectedCell.row, selectedCell.col);
+      setSelectedCell({ row: suggestedMove.row, col: suggestedMove.col });
+      setSudokuGrid(updatedBoard);
     } catch (error) {
       console.error("Error during getSpecificHint:", error);
     }
@@ -66,6 +82,16 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
     }
   };
 
+  // TODO: SwitchNoteMode - Revisit necessity
+  const handleSwitchNoteMode = async () => {
+    try {
+      const res = await switchNote(currentGameId);
+      setAddNoteMode(res.noteMode);
+    } catch (error) {
+      console.error("Error during switch note mode:", error);
+    }
+  };
+
   return (
     <div className="fixed bottom-0 flex w-full justify-around bg-gray-800">
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndo}>
@@ -74,10 +100,10 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndoUntilCorrect}>
         Undo Until Correct
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => setAddNoteMode((cur) => !cur)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => handleSwitchNoteMode()}>
         {addNoteMode ? "Notes On" : "Notes Off"}
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getRandomHint(currentGameId)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleGetRandomHint}>
         Random Hint
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleGetSpecificHint}>
