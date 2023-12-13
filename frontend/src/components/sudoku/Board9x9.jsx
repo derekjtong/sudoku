@@ -32,6 +32,7 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
   }, [currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
+    console.log("Keypad click");
     if (selectedCell.row !== null && selectedCell.col !== null) {
       handleCellChange(selectedCell.row, selectedCell.col, value);
     }
@@ -107,6 +108,7 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
 
   const handlePhysicalKeyboardInput = useCallback(
     (e) => {
+      console.log("HandlePhysicalKeyboardInput");
       const value = e.key;
       if (selectedCell.row == null || selectedCell.col == null) {
         return;

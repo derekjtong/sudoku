@@ -144,3 +144,11 @@ export const undoUntilCorrect = (gameId) => {
       throw error;
     });
 };
+
+export const addNote = (gameId, row, col) => {
+  // TODO
+};
+
+export const removeNote = (gameId, row, col) => {
+  // TODO
+};
