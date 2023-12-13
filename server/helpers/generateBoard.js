@@ -20,6 +20,7 @@ export const generateBoard = (m, n) => {
     board["cell"] = cell;
     board["solution"] = solution;
   } else if (m == 9 && n == 9) {
+    // TODO: get random board from a board database
     let cell;
     let solution;
     console.log("Sending 9x9 board number", boardNum);

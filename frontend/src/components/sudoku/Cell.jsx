@@ -29,7 +29,7 @@ function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySele
           className={`m-0 h-14 w-14 cursor-default border border-gray-800 text-center caret-transparent focus:outline-none ${
             isSelected ? "bg-gray-200" : ""
           } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
-          value={value == 0 ? "" : value}
+          value={value == -1 ? "" : value}
           onChange={handleOnChange}
           onClick={() => onCellClick(row, col)}
           maxLength="1"
@@ -50,10 +50,10 @@ function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySele
             {[...Array(3)].map((_, noteRowIndex) => {
               return (
                 <div className="sudoku-notes-row" key={noteRowIndex}>
-                  {[...Array(3)].map((_, noteValueIndex) => {
+                  {[...Array(3)].map((i, noteValueIndex) => {
                     const noteValue = noteRowIndex * 3 + noteValueIndex + 1;
                     return (
-                      <div>
+                      <div key={i}>
                         {newNotes.includes(noteValue) ? <div className="note-block">{noteValue} </div> : <div className="note-block" />}
                       </div>
                     );

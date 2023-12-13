@@ -1,5 +1,6 @@
 import { generateBoard } from "../helpers/generateBoard.js";
 import createGame from "../helpers/createGame.js";
+
 export const getNineBoard = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);

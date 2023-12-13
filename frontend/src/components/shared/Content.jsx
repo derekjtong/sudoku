@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
-import Board9x9 from "../sudoku/Board9x9";
-import Board4x4 from "../sudoku/Board4x4";
+import Board from "../sudoku/Board";
 import { resetGame } from "../../api/boardManipulation";
 import { useSudokuBoard } from "../providers/board-provider";
 
@@ -9,13 +8,14 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   let BoardComponent;
   switch (boardDimension) {
     case 4:
-      BoardComponent = <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
+      // BoardComponent = <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
+      // TODO 4x4 board
       break;
     case 9:
-      BoardComponent = <Board9x9 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
+      BoardComponent = <Board currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
       break;
     default:
-      BoardComponent = null;
+      BoardComponent = <Board currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
   }
   let difficultyText;
   switch (difficulty) {
@@ -33,7 +33,6 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   }
   const handleResetGame = async () => {
     const response = await resetGame(currentGameId);
-    // console.log(response.problemBoard);
     setSudokuGrid(response.problemBoard);
   };
   return (
