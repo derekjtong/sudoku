@@ -44,7 +44,9 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
       {BoardComponent}
-      <button onClick={openAdminDialog}>ADMIN COMMANDS</button>
+      <button onClick={openAdminDialog} className="mt-4">
+        ADMIN COMMANDS
+      </button>
       {showAdminDialog && <AdminDialog onClose={closeAdminDialog} currentGameId={currentGameId} />}
     </div>
   );
