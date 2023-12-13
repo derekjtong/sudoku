@@ -6,6 +6,7 @@ import { getNineBoard } from "../../api/getBoard";
 import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
+import GameTimer from "./GameTimer";
 
 function Board9x9({ currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
@@ -138,6 +139,10 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode
 
   return (
     <div>
+      <center>
+        <GameTimer />
+        <br></br>
+      </center>
       <table className="sudoku-grid mb-4 border border-black">
         <tbody>
           {[0, 3, 6].map((startRow, quadrantRowIndex) => (
