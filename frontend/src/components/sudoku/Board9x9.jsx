@@ -32,7 +32,7 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
 
   const handleKeypadClick = (value) => {
     if (selectedCell.row !== null && selectedCell.col !== null) {
-      handleCellChange(selectedCell.row, selectedCell.col, value);
+      handleCellChange(selectedCell.row, selectedCell.col, value, addNoteMode);
     }
   };
 
@@ -51,39 +51,43 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
 
   const renderSubgrid = (startRow, startCol, quadrantIndex) => {
     return (
-      <tbody key={`subgrid-${startRow}-${startCol}`}>
+      <div key={`subgrid-${startRow}-${startCol}`} className="subgrid" style={{ display: "grid", gridTemplateRows: "1fr 1fr 1fr" }}>
         {[...Array(3)].map((_, rowIndex) => (
-          <tr key={`row-${startRow + rowIndex}`}>
+          <div key={`row-${startRow + rowIndex}`} className="row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
             {[...Array(3)].map((_, colIndex) => {
               const cellRow = startRow + rowIndex;
               const cellCol = startCol + colIndex;
               const cellObj = sudokuGrid[cellRow][cellCol];
               const isSelected = selectedCell.row === cellRow || selectedCell.col === cellCol || isSelectedQuadrant(cellRow, cellCol);
               return (
-                <Cell
+                <div
                   key={`cell-${cellRow}-${cellCol}`}
-                  row={cellRow}
-                  col={cellCol}
-                  cell={cellObj}
-                  onChange={(newCell) => handleCellChange(cellRow, cellCol, newCell)}
-                  onCellClick={handleCellClick}
-                  isSelected={isSelected}
-                  isPrimarySelected={cellRow === selectedCell.row && cellCol === selectedCell.col}
                   className={`
-                  ${rowIndex > 0 && "border-top"}
-                  ${colIndex > 0 && "border-left"}
-                  ${rowIndex === 2 && "border-bottom"}
-                  ${colIndex === 2 && "border-right"}
-                  ${getQuadrantColor(quadrantIndex)}
-                  ${isSelectedQuadrant(startRow + rowIndex, startCol + colIndex) && "bg-gray-200"}
-                  ${startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col && "bg-red-500 text-white"}
-                `}
-                />
+              cell 
+              ${rowIndex > 0 && "border-top"}
+              ${colIndex > 0 && "border-left"}
+              ${rowIndex === 2 && "border-bottom"}
+              ${colIndex === 2 && "border-right"}
+              ${getQuadrantColor(quadrantIndex)}
+              ${isSelectedQuadrant(startRow + rowIndex, startCol + colIndex) && "bg-gray-200"}
+              ${startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col && "bg-red-500 text-white"}
+            `}
+                >
+                  <Cell
+                    row={cellRow}
+                    col={cellCol}
+                    cell={cellObj}
+                    onChange={(newCell) => handleCellChange(cellRow, cellCol, newCell, addNoteMode)}
+                    onCellClick={handleCellClick}
+                    isSelected={isSelected}
+                    isPrimarySelected={cellRow === selectedCell.row && cellCol === selectedCell.col}
+                  />
+                </div>
               );
             })}
-          </tr>
+          </div>
         ))}
-      </tbody>
+      </div>
     );
   };
 
@@ -116,9 +120,9 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
       const isNumberKey = /^[0-9]$/.test(e.key);
 
       if (isBackspaceOrDelete) {
-        handleCellChange(selectedCell.row, selectedCell.col, 0);
+        selectedCell.row, selectedCell.col, 0, addNoteMode;
       } else if (isNumberKey) {
-        handleCellChange(selectedCell.row, selectedCell.col, value);
+        handleCellChange(selectedCell.row, selectedCell.col, value, addNoteMode);
       }
     },
     [selectedCell, handleCellChange],
