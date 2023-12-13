@@ -1,5 +1,4 @@
 import checkIfValid from "../helpers/checkIfValid.js";
-import stack from "../helpers/stack.js";
 import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 import updateGame from "../helpers/updateGame.js";
