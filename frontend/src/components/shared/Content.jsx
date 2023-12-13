@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import Board from "../sudoku/Board";
-import { resetGame } from "../../api/boardManipulation";
-import { useSudokuBoard } from "../providers/board-provider";
+import { useState } from "react";
+import AdminDialog from "./AdminDialog";
 
 function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode }) {
-  const { setSudokuGrid } = useSudokuBoard();
+  const [showAdminDialog, setShowAdminDialog] = useState(false);
+
   let BoardComponent;
   switch (boardDimension) {
     case 4:
@@ -46,15 +47,20 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
     default:
       difficultyText = null;
   }
-  const handleResetGame = async () => {
-    const response = await resetGame(currentGameId);
-    setSudokuGrid(response.problemBoard);
+
+  const openAdminDialog = () => {
+    setShowAdminDialog(true);
+  };
+
+  const closeAdminDialog = () => {
+    setShowAdminDialog(false);
   };
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
       {difficultyText}
       {BoardComponent}
-      <button onClick={handleResetGame}>ADMIN reset game</button>
+      <button onClick={openAdminDialog}>ADMIN COMMANDS</button>
+      {showAdminDialog && <AdminDialog onClose={closeAdminDialog} currentGameId={currentGameId} />}
     </div>
   );
 }
