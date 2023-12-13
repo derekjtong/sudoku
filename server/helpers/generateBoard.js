@@ -49,6 +49,7 @@ export const generateBoard = (m, n) => {
         ];
         break;
       case 2:
+        // Easy
         cell = [
           [-1, -1, -1, 2, 6, -1, 7, -1, 1],
           [6, 8, -1, -1, 7, -1, -1, 9, -1],
