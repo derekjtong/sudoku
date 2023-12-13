@@ -8,6 +8,7 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   let BoardComponent;
   switch (boardDimension) {
     case 4:
+      BoardComponent = <div>Sorry, we're closed. Switch back to 9x9 board!</div>;
       // BoardComponent = <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
       // TODO 4x4 board
       break;
