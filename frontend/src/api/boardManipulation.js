@@ -1,10 +1,13 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:9090/api";
+const BASE_URL = import.meta.env.VITE_BACKEND_API_URL || "http://localhost:9090/api";
 
 /**
- * Add element to sudoku board
- * @param {Object} inputData Object containing row, column, and value.
+ * Add a value to a cell in the sudoku board
+ * @param {string} gameId - The identifier for the game.
+ * @param {number} row - The row number of the cell.
+ * @param {number} col - The column number of the cell.
+ * @param {number} value - The value to add
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const addElementToBoard = (gameId, row, col, value) => {
@@ -23,8 +26,10 @@ export const addElementToBoard = (gameId, row, col, value) => {
 };
 
 /**
- * Delete element from sudoku board
- * @param {Object} inputData Object containing row, column, and value.
+ * Delete a value from the sudoku board
+ * @param {string} gameId - The identifier for the game.
+ * @param {number} row - The row number of the cell.
+ * @param {number} col - The column number of the cell.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const deleteElementFromBoard = (inputData) => {
@@ -37,9 +42,17 @@ export const deleteElementFromBoard = (inputData) => {
 };
 
 /**
- * Checking if board solved
- * @param {string} id - The identifier for the board.
- * @returns {Promise<Object>} A promise that resolves to the board data.
+ * Check if the Sudoku board is solved and valid
+ * This function sends a request to the server to verify if the Sudoku board associated with the given gameId is completely solved and valid.
+ *
+ * The response includes an object with properties:
+ * - `isSolved`: A boolean indicating if the board is completely filled.
+ * - `valid`: A boolean indicating if the filled board is a valid Sudoku solution.
+ *
+ * If `isSolved` is false, it additionally checks if the current state of the board is valid.
+ *
+ * @param {string} gameId - The identifier for the game.
+ * @returns {Promise<Object>} A promise that resolves to an object containing the properties 'isSolved' and 'valid'.
  */
 export const checkIfSolved = (gameId) => {
   return axios
@@ -51,16 +64,24 @@ export const checkIfSolved = (gameId) => {
 };
 
 /**
- * Checking if board is currently correct
- * @param {string} id - The identifier for the board.
- * @returns {Promise<Object>} A promise that resolves to the board data.
+ * Check if the current state of the Sudoku board is correct
+ * This function sends a request to the server to assess the current state of the Sudoku board associated with the given gameId.
+ * It evaluates whether the current entries on the board comply with Sudoku rules, without necessarily being a complete solution.
+ *
+ * The response includes an object with a property:
+ * - `valid`: A boolean indicating if the current state of the board is valid according to Sudoku rules.
+ *
+ * Note: This function does not determine if the board is fully solved, but only checks the correctness of the current entries.
+ *
+ * @param {string} gameId - The identifier for the game.
+ * @returns {Promise<Object>} A promise that resolves to an object containing the property 'valid'.
  */
 export const correctSoFar = (gameId) => {
   return axios
     .get(`${BASE_URL}/correctSoFar/${gameId}`)
     .then((response) => response.data)
     .catch((error) => {
-      throw new Error(`Error checking board: ${error.message}`);
+      throw new Error(`Error checking if the board's current state is correct: ${error.message}`);
     });
 };
 
@@ -143,14 +164,6 @@ export const undoUntilCorrect = (gameId) => {
       console.error("Error during undoUntilCorrect operation:", error);
       throw error;
     });
-};
-
-export const addNote = (gameId, row, col) => {
-  // TODO
-};
-
-export const removeNote = (gameId, row, col) => {
-  // TODO
 };
 
 /**

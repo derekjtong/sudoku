@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } from "../../api/boardManipulation";
 import { useSudokuBoard } from "../providers/board-provider";
+import { switchNote } from "../../api/notes";
 
 const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
   const { selectedCell, sudokuGrid, setSudokuGrid, setSelectedCell, handleCellChange } = useSudokuBoard();
@@ -66,6 +67,16 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
     }
   };
 
+  // TODO: SwitchNoteMode - Revisit necessity
+  const handleSwitchNoteMode = async () => {
+    try {
+      const res = await switchNote(currentGameId);
+      setAddNoteMode(res.noteMode);
+    } catch (error) {
+      console.error("Error during switch note mode:", error);
+    }
+  };
+
   return (
     <div className="fixed bottom-0 flex w-full justify-around bg-gray-800">
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndo}>
@@ -74,7 +85,7 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndoUntilCorrect}>
         Undo Until Correct
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => setAddNoteMode((cur) => !cur)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => handleSwitchNoteMode()}>
         {addNoteMode ? "Notes On" : "Notes Off"}
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getRandomHint(currentGameId)}>

@@ -6,50 +6,49 @@ import updateGame from "../helpers/updateGame.js";
 // id on the url
 // body {row, col, element}
 //  }
-
 const addNotes = async (req, res) => {
   try {
-    // note mode on
-    //coordinate of the board
     const gameId = new ObjectId(req.params.id);
     const game = await Game.findOne({ _id: gameId });
     const noteMode = game["noteMode"];
-    if (noteMode) {
-      const problemBoard = game["problemBoard"];
-      const dimension = game["dimension"];
-      if (dimension === 9) dimension = 3;
-      if (dimension === 4) dimension = 2;
-      const stack = game["stack"];
-      const row = parseInt(req.body.row);
-      const col = parseInt(req.body.col);
-      const element = parseInt(req.body.element);
-      let cell = problemBoard[row][col].notes;
-      for (let i = 0; i < dimension; i++) {
-        let cellRow = cell[i];
-        if (cellRow.length < dimension) {
-          cellRow.push(element);
-          break;
-        }
-      }
-      problemBoard[row][col] = {
-        value: problemBoard[row][col].value,
-        notes: cell,
-      };
-      updateGame(problemBoard, gameId, stack, noteMode);
-      await game.save();
-      return res.json({
-        game,
-      });
+    if (!noteMode) {
+      return res.status(400).json({ message: "Note mode is not enabled." });
     }
-    return res.json({
-      message: "Turn on the game mode!",
-    });
+
+    const { row, col, element } = req.body;
+    const parsedRow = parseInt(row);
+    const parsedCol = parseInt(col);
+    const parsedElement = parseInt(element);
+
+    // Validate row, col, and element
+    if (isNaN(parsedRow) || isNaN(parsedCol) || isNaN(parsedElement)) {
+      return res.status(400).json({ error: "Invalid input. Row, column, and element must be numbers." });
+    }
+
+    const problemBoard = game["problemBoard"];
+    let dimension = game["dimension"];
+    dimension = dimension === 9 ? 3 : dimension === 4 ? 2 : dimension;
+    const cell = problemBoard[parsedRow][parsedCol].notes;
+
+    for (let i = 0; i < dimension; i++) {
+      let cellRow = cell[i];
+      if (cellRow.length < dimension) {
+        cellRow.push(parsedElement);
+        break;
+      }
+    }
+
+    problemBoard[parsedRow][parsedCol] = {
+      value: problemBoard[parsedRow][parsedCol].value,
+      notes: cell,
+    };
+
+    updateGame(problemBoard, gameId, game["stack"], noteMode);
+    await game.save();
+    return res.json({ game });
   } catch (err) {
-    console.log(err);
-    return res.json({
-      message: "Internal server error",
-      err,
-    });
+    console.error("Error in addNotes:", err);
+    return res.status(500).json({ message: "Internal server error", err });
   }
 };
 

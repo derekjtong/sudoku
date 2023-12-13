@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { addElementToBoard } from "../../../api/boardManipulation";
+import { addNote } from "../../../api/notes";
 
 export function useSudokuGrid(size, currentGameId, initialGrid) {
   // Initialize the grid state
@@ -8,7 +9,7 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
     return initialGrid || Array.from({ length: size }, () => Array(size).fill({ value: 0, notes: Array(9).fill([]) }));
   });
 
-  const handleCellChange = (row, col, value, addNoteMode) => {
+  const handleCellChange = async (row, col, value, addNoteMode) => {
     const numberValue = Number(value);
     if (Number.isNaN(numberValue)) return;
     // Adding notes
@@ -31,8 +32,9 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
       newGrid[row][col].notes = newNotes;
 
       newGrid[row][col].value = 0;
-      // TODO: Call API
-      console.log("Call api");
+
+      addNote(currentGameId, row, col, value);
+      // setSudokuGrid(response.game.problemBoard);
       // Update the state with the new grid
       setSudokuGrid(newGrid);
       console.log("Complete");

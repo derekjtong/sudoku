@@ -14,48 +14,49 @@ import callSpecificHint from "../controllers/getSpecificHint.js";
 
 const router = express.Router();
 
-// @route /api/addelement/{dbId}
+// @route /api/addelement/{gameId}
 router.post("/addelement/:id", addElementIntoBoard); // {valid:true or false, board,stack}
 
 // TODO frontend
-// @route /api/deleteelement/{dbId}
+// @route /api/deleteelement/{gameId}
 router.post("/deleteelement/:id", deleteElementFromBoard); // {valid:true or false, board}
 
 // TODO frontend
-// @route /api/checksolved/{dbId}
+// @route /api/checksolved/{gameId}
 router.get("/checksolved/:id", checkIfSolved); // {isSolved:true/false}
 
 // TODO frontend
-//@route /api/correctSoFar/{dbId}
+//@route /api/correctSoFar/{gameId}
 router.get("/correctSoFar/:id", correctSoFar); // {valid:true/false}
 
 // TODO Safal
-// @route /api/getRandomHint/{dbId}
+// @route /api/getRandomHint/{gameId}
 router.get("/getRandomHint/:id", callRandomHint); //{suggestedMove:{row,col,num}}
 
-// @route /api/getSpecificHint/{dbId}
+// @route /api/getSpecificHint/{gameId}
 router.post("/getSpecificHint/:id", callSpecificHint); //{suggestedMove} suggestedMove means the element that we can add
 
-// @route /api/undo/{dbId}
+// @route /api/undo/{gameId}
 router.get("/undo/:id", undo); // {board}
 
-// @route /api/undountilcorrect/{dbId}
+// @route /api/undountilcorrect/{gameId}
 router.get("/undountilcorrect/:id", undoUntilCorrect); // {board}
 
-// TODO ??
+// TODO: SwitchNoteMode - Revisit necessity
+//       If removing, look for same todo on frontend
 // @route /api/switchnote
 router.put("/switchnote/:id", switchNote);
 
 // TODO frontend
-// @route /api/addnote/{dbId}
+// @route /api/addnote/{gameId}
 router.put("/addnote/:id", addNotes);
 
 // TODO frontend
-// @route /api/deletenote/{dbId}
+// @route /api/deletenote/{gameId}
 router.delete("/deletenote/:id", deleteNotes);
 
 // TODO frontend
-// @route /api/reset/{dbId}
+// @route /api/reset/{gameId}
 router.put("/reset/:id", resetGame);
 
 export default router;
