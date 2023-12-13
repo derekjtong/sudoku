@@ -3,25 +3,27 @@ import FooterToolbar from "./components/shared/FooterToolbar";
 import Content from "./components/shared/Content";
 import Navbar from "./components/shared/Navbar";
 import useLocalStorage from "./hooks/useLocalStorage";
+import { SudokuBoardProvider } from "./components/providers/board-provider";
 
 function Home() {
   const [boardDimension, setBoardDimension] = useState(9);
   const [difficulty, setDifficulty] = useState(1);
-  const [currentGameId, setCurrentGameId] = useLocalStorage("current9x9GameId", -1);
-  const [showNotes, setShowNotes] = useState(false);
+  const [currentGameId, setCurrentGameId] = useLocalStorage("currentGameId", "");
+  const [addNoteMode, setAddNoteMode] = useState(false);
 
   return (
-    <>
+    <SudokuBoardProvider size={boardDimension} currentGameId={currentGameId}>
       <Navbar setBoardDimension={setBoardDimension} setDifficulty={setDifficulty} setCurrentGameId={setCurrentGameId} />
       <Content
         boardDimension={boardDimension}
         difficulty={difficulty}
         currentGameId={currentGameId}
         setCurrentGameId={setCurrentGameId}
-        showNotes={showNotes}
+        addNoteMode={addNoteMode}
+        setAddNoteMode={setAddNoteMode}
       />
-      <FooterToolbar currentGameId={currentGameId} showNotes={showNotes} setShowNotes={setShowNotes} />
-    </>
+      <FooterToolbar currentGameId={currentGameId} addNoteMode={addNoteMode} setAddNoteMode={setAddNoteMode} />
+    </SudokuBoardProvider>
   );
 }
 

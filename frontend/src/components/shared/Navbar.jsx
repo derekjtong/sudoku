@@ -1,31 +1,13 @@
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
-
-const SwitchPuzzleDialog = ({ onCancel, onContinue, dimension, difficulty }) => {
-  return (
-    <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-8 rounded-md shadow-md">
-        <p className="text-lg font-semibold mb-4">Switching puzzles</p>
-        <p>Your progress will be lost. Are you sure you want to continue?</p>
-        <div className="mt-6 flex justify-end">
-          <button className="px-4 py-2 mr-2 text-white bg-gray-500 hover:bg-gray-600 rounded" onClick={onCancel}>
-            Cancel
-          </button>
-          <button className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded" onClick={() => onContinue(dimension, difficulty)}>
-            Continue
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+import SwitchPuzzleDialog from "./SwitchPuzzleDialog";
 
 const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
   const [show9x9Dropdown, setShow9x9Dropdown] = useState(false);
-  const [selectedDimension, setSelectedDimension] = useState(4); // Default value, you can adjust accordingly
-  const [selectedDifficulty, setSelectedDifficulty] = useState(1); // Default value, you can adjust accordingly
+  const [selectedDimension, setSelectedDimension] = useState(4);
+  const [selectedDifficulty, setSelectedDifficulty] = useState(1);
   const dropdown4x4Ref = useRef(null);
   const dropdown9x9Ref = useRef(null);
   const [showSwitchPuzzleDialog, setShowSwitchPuzzleDialog] = useState(false);
@@ -62,6 +44,7 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
     setBoardDimension(selectedDimension);
     setDifficulty(selectedDifficulty);
     setShowSwitchPuzzleDialog(false);
+    setCurrentGameId("");
   };
 
   const handleCancelSwitchPuzzle = () => {
@@ -84,17 +67,17 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
         {/* Navigation links */}
         <ul className="flex text-2xl">
           <li>
-            <a className="cursor-pointer p-4 text-white hover:bg-gray-900 hover:text-gray-300" onClick={() => setCurrentGameId(-1)}>
+            <button className="cursor-pointer p-4 text-white hover:bg-gray-900 hover:text-gray-300" onClick={() => setCurrentGameId("")}>
               New Game
-            </a>
+            </button>
           </li>
           <li ref={dropdown4x4Ref}>
-            <a
+            <button
               className={`cursor-pointer p-4 text-white hover:bg-gray-900 hover:text-gray-300 ${show4x4Dropdown ? `bg-gray-900` : ``}`}
               onClick={toggle4x4Dropdown}
             >
               4 x 4
-            </a>
+            </button>
             {show4x4Dropdown && (
               <ul className="absolute mt-2 bg-gray-800">
                 <li>
@@ -125,12 +108,12 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
             )}
           </li>
           <li ref={dropdown9x9Ref}>
-            <a
+            <button
               className={`cursor-pointer p-4 text-white hover:bg-gray-900 hover:text-gray-300 ${show9x9Dropdown ? `bg-gray-900` : ``}`}
               onClick={toggle9x9Dropdown}
             >
               9 x 9
-            </a>
+            </button>
             {show9x9Dropdown && (
               <ul className="absolute mt-2 bg-gray-800">
                 <li>
@@ -163,9 +146,7 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
         </ul>
       </div>
       {/* Switch Puzzle Dialog */}
-      {showSwitchPuzzleDialog && (
-        <SwitchPuzzleDialog onCancel={handleCancelSwitchPuzzle} onContinue={handleContinueSwitchPuzzle} />
-      )}
+      {showSwitchPuzzleDialog && <SwitchPuzzleDialog onCancel={handleCancelSwitchPuzzle} onContinue={handleContinueSwitchPuzzle} />}
     </nav>
   );
 };

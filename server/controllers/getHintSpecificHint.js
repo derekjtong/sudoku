@@ -22,3 +22,4 @@ const getSpecificHint = async (req, res) => {
 };
 
 export default getSpecificHint;
+

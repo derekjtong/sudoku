@@ -18,7 +18,10 @@ const gameSchema = new mongoose.Schema({
       booleanValue: Boolean,
     },
   ],
-  noteMode: Boolean,
+  noteMode: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Game = mongoose.model("Game", gameSchema);

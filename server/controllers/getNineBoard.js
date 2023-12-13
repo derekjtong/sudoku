@@ -1,5 +1,6 @@
 import { generateBoard } from "../helpers/generateBoard.js";
 import createGame from "../helpers/createGame.js";
+
 export const getNineBoard = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
@@ -14,7 +15,7 @@ export const getNineBoard = async (req, res, next) => {
     if (id === 9) {
       // Generate a 9x9 Sudoku board and its solution
       const dic = generateBoard(9, 9);
-      console.log(dic);
+      // console.log(dic);
       // Create and save games
 
       const board = dic["cell"];

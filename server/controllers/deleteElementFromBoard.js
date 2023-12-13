@@ -1,5 +1,4 @@
 import checkIfValid from "../helpers/checkIfValid.js";
-import stack from "../helpers/stack.js";
 import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 import updateGame from "../helpers/updateGame.js";
@@ -8,9 +7,11 @@ import updateGame from "../helpers/updateGame.js";
 export const deleteElementFromBoard = async (req, res) => {
   console.log("In Delete Element")
   try {
+    console.log(req.body);
     const gameId = new ObjectId(req.params.id);
     console.log("Game ID: " + gameId)
     let board = await Game.findOne({ _id: gameId });
+    const noteMode = board["noteMode"];
     let stack = board["stack"];
     board = board["problemBoard"];
 
@@ -29,7 +30,7 @@ export const deleteElementFromBoard = async (req, res) => {
     if (board[row][col].value !== -1) {
       board[row][col].value = -1;
       stack.push({ grid: board, booleanValue: checkIfValid(board) });
-      updateGame(board, gameId, stack);
+      updateGame(board, gameId, stack, noteMode);
     }
 
     return res.json({

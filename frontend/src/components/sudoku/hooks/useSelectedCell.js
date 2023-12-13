@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function useSelectedCell() {
-  const [selectedCell, setSelectedCell] = useState({ row: 0, col: 0 });
+  const [selectedCell, setSelectedCell] = useState({ row: -1, col: -1 });
 
+  useEffect(() => {
+    console.log("Selected sell:", selectedCell.row, selectedCell.col);
+  }, [selectedCell]);
   const handleCellClick = (row, col) => {
     setSelectedCell({ row, col });
   };
