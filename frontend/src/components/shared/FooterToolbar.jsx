@@ -91,6 +91,7 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
       console.error("Error during switch note mode:", error);
     }
   };
+
   return (
     <div className="fixed bottom-0 flex w-full justify-around bg-gray-800">
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndo}>
