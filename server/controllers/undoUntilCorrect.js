@@ -16,9 +16,10 @@ const undoUntilCorrect = async (req, res) => {
     }
 
     let isBoardCorrect = false;
+    let previousBoard;
     while (!isBoardCorrect && game.stack.length > 1) {
       let currentBoard = game.stack.pop(); // Remove the current state
-      let previousBoard = game.stack[game.stack.length - 1]; // Peek at the next state
+      previousBoard = game.stack[game.stack.length - 1]; // Peek at the next state
 
       isBoardCorrect = checkBoardCorrectness(previousBoard.grid, game.solutionBoard);
       if (isBoardCorrect) {
@@ -27,7 +28,7 @@ const undoUntilCorrect = async (req, res) => {
       }
     }
 
-    console.log("Reached initial state of the game.");
+    game.problemBoard = previousBoard.grid;
     return res.json({
       message: "Reached initial state of the game.",
       board: game.problemBoard,

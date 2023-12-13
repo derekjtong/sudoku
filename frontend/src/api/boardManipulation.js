@@ -120,20 +120,21 @@ export const undo = (gameId) => {
  */
 export const undoUntilCorrect = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undoUntilCorrect/${gameId}`)
+    .get(`${BASE_URL}/undountilcorrect/${gameId}`)
     .then((response) => {
       // Handle specific messages or data returned by the backend
+      console.log("response: ", response.data);
       if (response.data.message) {
         if (response.data.message === "No more moves to undo.") {
-          return { noMoreMoves: true };
+          console.log(response.data.message);
         } else if (response.data.message === "Reached initial state of the game.") {
-          return { initialStateReached: true };
+          console.log(response.data.message);
         }
       }
       return response.data;
     })
     .catch((error) => {
       console.error("Error during undoUntilCorrect operation:", error);
-      throw error; // Propagate the error for further handling
+      throw error;
     });
 };
