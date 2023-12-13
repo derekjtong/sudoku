@@ -6,7 +6,6 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
   const { setSudokuGrid, setSelectedCell, sudokuGrid } = useSudokuBoard();
 
   const handleUndo = async () => {
-    console.log("called undo");
     try {
       const data = await undo(currentGameId);
       if (data.noMoreMoves) {

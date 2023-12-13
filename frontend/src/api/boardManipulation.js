@@ -123,9 +123,8 @@ export const undoUntilCorrect = (gameId) => {
     .get(`${BASE_URL}/undountilcorrect/${gameId}`)
     .then((response) => {
       // Handle specific messages or data returned by the backend
-      console.log("response: ", response.data);
       if (response.data.message) {
-        if (response.data.message === "No more moves to undo.") {
+        if (response.data.message === "No more moves to undo") {
           console.log(response.data.message);
         } else if (response.data.message === "Reached initial state of the game.") {
           console.log(response.data.message);

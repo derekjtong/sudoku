@@ -18,7 +18,6 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
         setSudokuGrid(data.game.problemBoard);
-        console.log(data.game.problemBoard);
       } else {
         // Load a new game
         console.log("Did not find game id in local storage, load new game:");
@@ -108,7 +107,6 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
 
   const handlePhysicalKeyboardInput = useCallback(
     (e) => {
-      console.log("Calling handleCellChange from event handler");
       const value = e.key;
       if (selectedCell.row == null || selectedCell.col == null) {
         return;
