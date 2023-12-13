@@ -15,7 +15,8 @@ const resetGame = async (req, res) => {
     problemBoard.forEach((arr) => {
       arr.forEach((obj) => {
         obj.value = 0;
-        obj.notes = [[]];
+        // TODO: Less notes for a 4x4 dimension grid
+        obj.notes = [[], [], []];
       });
     });
     console.log(problemBoard);
