@@ -138,7 +138,6 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode
 
   return (
     <div>
-      {addNoteMode ? "add note mode" : "add element mode"}
       <table className="sudoku-grid mb-4 border border-black">
         <tbody>
           {[0, 3, 6].map((startRow, quadrantRowIndex) => (

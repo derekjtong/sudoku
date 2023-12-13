@@ -33,20 +33,6 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
         />
       );
   }
-  let difficultyText;
-  switch (difficulty) {
-    case 1:
-      difficultyText = "Easy";
-      break;
-    case 2:
-      difficultyText = "Medium";
-      break;
-    case 3:
-      difficultyText = "Hard";
-      break;
-    default:
-      difficultyText = null;
-  }
 
   const openAdminDialog = () => {
     setShowAdminDialog(true);
@@ -57,7 +43,6 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   };
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
-      {difficultyText}
       {BoardComponent}
       <button onClick={openAdminDialog}>ADMIN COMMANDS</button>
       {showAdminDialog && <AdminDialog onClose={closeAdminDialog} currentGameId={currentGameId} />}
