@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import Cell from "./Cell";
+
 import Keypad from "./Keypad";
 import { getNineBoard } from "../../api/getBoard";
 import { getSingleGameById } from "../../api/getGame";
@@ -17,6 +18,7 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
         setSudokuGrid(data.game.problemBoard);
+        console.log(data.game.problemBoard);
       } else {
         // Load a new game
         console.log("Did not find game id in local storage, load new game:");

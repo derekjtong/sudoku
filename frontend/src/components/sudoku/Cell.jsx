@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySelected }) {
   // TODO: add notes
   const { value, notes } = cell;
-
+  // console.log(notes);
   const handleOnChange = (e) => {
     // If user enters 0, show blank and don't make API
     if (e.target.value === "0") return;
@@ -41,7 +41,6 @@ Cell.propTypes = {
   onChange: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   isPrimarySelected: PropTypes.bool.isRequired,
-  showNotes: PropTypes.bool.isRequired,
 };
 
 export default Cell;
