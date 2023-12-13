@@ -15,8 +15,20 @@ function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySele
       value: e.target.value, // Update the value
     };
     onChange(updatedCell);
-  };
 
+    const val = event.target.value;
+    // When backspace is hit, the value becomes empty
+    if (val === "") {
+      onChange(""); // Clear the cell
+    } else {
+      // Check if the input is a single digit between 1 and 9
+      const lastChar = val.slice(-1);
+      if (/^[1-9]$/.test(lastChar)) {
+        onChange(lastChar); // Update with the last character
+      }
+    }
+    // Ignore other inputs
+  };
   return (
     <input
       type="text"
