@@ -127,7 +127,7 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
         handleCellChange(selectedCell.row, selectedCell.col, value, addNoteMode);
       }
     },
-    [selectedCell, handleCellChange],
+    [selectedCell, handleCellChange, addNoteMode],
   );
 
   useEffect(() => {
