@@ -1,52 +1,36 @@
 import Game from "../database/gameSchema.js";
+import stack from "../helpers/stack.js";
 import { ObjectId } from "mongodb";
-
+// board which is the latest one
 const undoUntilCorrect = async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
-    let game = await Game.findOne({ _id: gameId });
-
-    if (!game || !game.stack || game.stack.length <= 1) {
-      console.log("No more moves to undo.");
-      return res.json({
-        message: "No more moves to undo.",
-        board: game ? game.problemBoard : null,
-      });
+    console.log(gameId);
+    let stackDb = await Game.findOne({ _id: gameId });
+    stackDb = stackDb["stack"];
+    if (stackDb.length === 0) {
+      return res.status(400).json({ error: "Stack is empty." });
     }
 
-    let isBoardCorrect = false;
-    let previousBoard;
-    while (!isBoardCorrect && game.stack.length > 1) {
-      let currentBoard = game.stack.pop(); // Remove the current state
-      previousBoard = game.stack[game.stack.length - 1]; // Peek at the next state
+    let correct;
+    let { grid, booleanValue } = stackDb[stackDb.length - 1];
 
-      isBoardCorrect = checkBoardCorrectness(previousBoard.grid, game.solutionBoard);
-      if (isBoardCorrect) {
-        await Game.updateOne({ _id: gameId }, { problemBoard: previousBoard.grid, stack: game.stack });
-        return res.json({ board: previousBoard });
-      }
+    // Undo changes until a correct state is reached
+    while (!booleanValue && stackDb.length > 0) {
+      correct = stackDb.pop();
+      ({ grid, booleanValue } = correct);
     }
+    stackDb.push({ grid, booleanValue });
+    let updateGame = await Game.updateOne({ _id: gameId }, { problemBoard: grid, stack: stackDb });
 
-    game.problemBoard = previousBoard.grid;
     return res.json({
-      message: "Reached initial state of the game.",
-      board: game.problemBoard,
+      board: grid, // Use the grid from the last correct state
+      game: updateGame,
     });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal Server Error", error });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Internal Server Error", err });
   }
-};
-
-const checkBoardCorrectness = (board, solution) => {
-  for (let i = 0; i < board.length; i++) {
-    for (let j = 0; j < board[i].length; j++) {
-      if (board[i][j].value !== solution[i][j]) {
-        return false; // Incorrect cell found
-      }
-    }
-  }
-  return true; // All cells match the solution
 };
 
 export default undoUntilCorrect;
