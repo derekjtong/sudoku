@@ -63,6 +63,7 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
   };
 
   const handleGetSpecificHint = async () => {
+    if (selectedCell.row === -1 || selectedCell.col === -1) return console.log("No cell selected");
     try {
       const { suggestedMove, updatedBoard } = await getSpecificHint(currentGameId, selectedCell.row, selectedCell.col);
       setSelectedCell({ row: suggestedMove.row, col: suggestedMove.col });
