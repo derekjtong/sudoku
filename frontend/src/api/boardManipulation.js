@@ -83,11 +83,18 @@ export const getRandomHint = (gameId) => {
  * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const getSpecificHint = (gameId) => {
+export const getSpecificHint = (gameId, row, col) => {
   return axios
-    .get(`${BASE_URL}/getSpecificHint/${gameId}`) // ??
-    .then((response) => response.data)
+    .post(`${BASE_URL}/getspecifichint/${gameId}`, {
+      row: row,
+      col: col,
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data.suggestedMove;
+    })
     .catch((error) => {
+      console.log(error);
       throw new Error(`Error getting specific hint: ${error.message}`);
     });
 };

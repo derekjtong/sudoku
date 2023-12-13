@@ -3,7 +3,6 @@ import { ObjectId } from "mongodb";
 
 // returns board after undo
 const undo = async (req, res) => {
-  console.log("Called undo for game", req.params.id);
   try {
     const gameId = new ObjectId(req.params.id);
     let game = await Game.findOne({ _id: gameId });

@@ -2,7 +2,6 @@ import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 
 const undoUntilCorrect = async (req, res) => {
-  console.log("Called undoUntilCorrect for game", req.params.id);
   try {
     const gameId = new ObjectId(req.params.id);
     let game = await Game.findOne({ _id: gameId });

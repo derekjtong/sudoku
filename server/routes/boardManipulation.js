@@ -30,7 +30,7 @@ router.get("/correctSoFar/:id", correctSoFar); // {valid:true/false}
 router.get("/getRandomHint/:id", getRandomHint); // {suggestedMove:{row,col,num}}
 
 // @route /api/getSpecificHint/{dbId}
-router.post("/getSpecificHint/:id", getSpecificHint); // {suggestedMove} suggestedMove means the element that we can add
+router.post("/getspecifichint/:id", getSpecificHint); // {suggestedMove} suggestedMove means the element that we can add
 
 // @route /api/undo/{dbId}
 router.get("/undo/:id", undo); // {board}
