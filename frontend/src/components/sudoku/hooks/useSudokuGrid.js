@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addElementToBoard } from "../../../api/boardManipulation";
+import { addElementToBoard, deleteElementFromBoard } from "../../../api/boardManipulation";
 import { addNote } from "../../../api/notes";
 
 export function useSudokuGrid(size, currentGameId, initialGrid) {
@@ -31,8 +31,18 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
       // Update the value of the specified cell
       newGrid[row][col].notes = newNotes;
 
-      newGrid[row][col].value = 0;
+      // API call to delete existing value
+      if (sudokuGrid[row][col].value !== -1) {
+        console.log("Call delete element API");
+        try {
+          await deleteElementFromBoard(currentGameId, row, col);
+          newGrid[row][col].value = -1; // Update value after successful deletion
+        } catch (error) {
+          console.error("Error deleting element from board:", error);
+        }
+      }
 
+      console.log("Call api");
       addNote(currentGameId, row, col, value);
       // setSudokuGrid(response.game.problemBoard);
       // Update the state with the new grid
@@ -40,7 +50,17 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
       console.log("Complete");
     }
     // Adding values
-    else {
+    else if (value === -1) {
+      const newGrid = sudokuGrid.map((row) => row.map((cell) => ({ ...cell })));
+      try {
+        await deleteElementFromBoard(currentGameId, row, col);
+        newGrid[row][col].value = -1; // Update value after successful deletion
+      } catch (error) {
+        console.error("Error deleting element from board:", error);
+      }
+      console.log("Deleted cell value");
+      setSudokuGrid(newGrid);
+    } else {
       if (sudokuGrid[row][col].value === numberValue) {
         console.log("handleCellChange - no change, did not call API");
         return;

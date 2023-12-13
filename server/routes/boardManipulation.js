@@ -47,15 +47,12 @@ router.get("/undountilcorrect/:id", undoUntilCorrect); // {board}
 // @route /api/switchnote
 router.put("/switchnote/:id", switchNote);
 
-// TODO frontend
 // @route /api/addnote/{gameId}
 router.put("/addnote/:id", addNotes);
 
-// TODO frontend
 // @route /api/deletenote/{gameId}
 router.delete("/deletenote/:id", deleteNotes);
 
-// TODO frontend
 // @route /api/reset/{gameId}
 router.put("/reset/:id", resetGame);
 

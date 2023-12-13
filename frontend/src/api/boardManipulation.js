@@ -32,9 +32,9 @@ export const addElementToBoard = (gameId, row, col, value) => {
  * @param {number} col - The column number of the cell.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const deleteElementFromBoard = (inputData) => {
+export const deleteElementFromBoard = (gameId, row, col) => {
   return axios
-    .post(`${BASE_URL}/deleteelement/`, inputData)
+    .post(`${BASE_URL}/deleteelement/${gameId}`, { row, col })
     .then((response) => response.data)
     .catch((error) => {
       throw new Error(`Error deleting element from board: ${error.message}`);

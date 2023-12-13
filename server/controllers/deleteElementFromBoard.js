@@ -7,6 +7,7 @@ import updateGame from "../helpers/updateGame.js";
 //{valid:true/false,board}
 export const deleteElementFromBoard = async (req, res) => {
   try {
+    console.log(req.body);
     const gameId = new ObjectId(req.params.id);
     let board = await Game.findOne({ _id: gameId });
     const noteMode = board["noteMode"];

@@ -7,7 +7,7 @@ import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
 
-function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
+function Board9x9({ currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
 
   useEffect(() => {
@@ -118,12 +118,9 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
         return;
       }
 
-      const isBackspaceOrDelete = e.key === "Backspace" || e.key === "Delete";
-      const isNumberKey = /^[0-9]$/.test(e.key);
-
-      if (isBackspaceOrDelete) {
-        selectedCell.row, selectedCell.col, 0, addNoteMode;
-      } else if (isNumberKey) {
+      if (e.key === "Backspace" || e.key === "Delete" || e.key === "0") {
+        handleCellChange(selectedCell.row, selectedCell.col, 0 - 1, addNoteMode);
+      } else if (/^[1-9]$/.test(e.key)) {
         handleCellChange(selectedCell.row, selectedCell.col, value, addNoteMode);
       }
     },
@@ -168,5 +165,6 @@ Board9x9.propTypes = {
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
   addNoteMode: PropTypes.bool.isRequired,
+  setAddNoteMode: PropTypes.func.isRequired,
 };
 export default Board9x9;
