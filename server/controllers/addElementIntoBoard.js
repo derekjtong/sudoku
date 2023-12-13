@@ -7,15 +7,21 @@ import { ObjectId } from "mongodb";
 // valid: true means the added element wont cause any problem and the puzzle is in the suitable position
 // but not might not be in the exact position
 export const addElementIntoBoard = async (req, res) => {
+  console.log("In add element")
   try {
     const gameId = new ObjectId(req.params.id);
+    console.log("Game ID: " + gameId)
     let board = await Game.findOne({ _id: gameId });
     const noteMode = board["noteMode"];
     let stack = board["stack"];
     board = board["problemBoard"];
     const row = parseInt(req.body.row);
+    console.log("body: " + req.body)
+    console.log("row: " + row)
     const col = parseInt(req.body.col);
+    console.log("col: " + col)
     const element = parseInt(req.body.element);
+    console.log("element: " + element)
 
     if (stack.length === 0) {
       stack.push({ grid: board, booleanValue: checkIfValid(board) });

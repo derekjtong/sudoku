@@ -1,14 +1,15 @@
 import checkIfValid from "../helpers/checkIfValid.js";
-import stack from "../helpers/stack.js";
 import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
 import updateGame from "../helpers/updateGame.js";
 
 //{valid:true/false,board}
 export const deleteElementFromBoard = async (req, res) => {
+  console.log("In Delete Element")
   try {
     console.log(req.body);
     const gameId = new ObjectId(req.params.id);
+    console.log("Game ID: " + gameId)
     let board = await Game.findOne({ _id: gameId });
     const noteMode = board["noteMode"];
     let stack = board["stack"];

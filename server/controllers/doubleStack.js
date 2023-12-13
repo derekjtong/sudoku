@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-import Game from "../database/gameSchema.js";
 import checkIfCellHasValue from "../helpers/checkIfCellHasValue.js";
 import updateGame from "../helpers/updateGame.js";
 import checkIfValid from "../helpers/checkIfValid.js";

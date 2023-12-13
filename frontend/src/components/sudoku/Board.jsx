@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
 import GameTimer from "./GameTimer";
 
-function Board9x9({ currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode }) {
+function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
 
   useEffect(() => {
@@ -158,9 +158,9 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode
           ))}
         </tbody>
       </table>
-      <center>
+      <div className="md:ml-6 md:mt-0">
         <Keypad onKeypadClick={handleKeypadClick} />
-      </center>
+      </div>
     </div>
   );
 }

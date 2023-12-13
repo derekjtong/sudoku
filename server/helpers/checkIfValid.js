@@ -9,8 +9,9 @@ const checkIfValid = (board) => {
         let curr = board[i][j].value;
         let rowVal = curr + "row" + i;
         let colVal = curr + "col" + j;
-        let square = curr + "square" + i / 3 + "-" + j / 3;
+        let square = curr + "square" + Math.floor(i / 3) + "-" + Math.floor(j / 3);
         if (rows.has(rowVal) || cols.has(colVal) || squares.has(square)) {
+          console.log("Not valid");
           return false;
         } else {
           rows.add(rowVal);
