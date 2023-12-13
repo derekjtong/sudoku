@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import Cell from "./Cell";
+
 import Keypad from "./Keypad";
 import { getNineBoard } from "../../api/getBoard";
 import { getSingleGameById } from "../../api/getGame";
@@ -106,7 +107,6 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
 
   const handlePhysicalKeyboardInput = useCallback(
     (e) => {
-      console.log("Calling handleCellChange from event handler");
       const value = e.key;
       if (selectedCell.row == null || selectedCell.col == null) {
         return;

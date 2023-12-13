@@ -39,7 +39,7 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
         console.log("No more moves to undo");
         return;
       }
-      const newGrid = data.board.grid;
+      const newGrid = data.board;
       setSudokuGrid(newGrid);
       setSelectedCell(-1, -1);
     } catch (error) {
