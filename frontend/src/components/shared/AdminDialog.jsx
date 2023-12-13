@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { resetGame } from "../../api/boardManipulation";
 import { useSudokuBoard } from "../providers/board-provider";
 
-const AdminDialog = ({ onClose, currentGameId, showDifficultyDialog, setShowDifficultyDialog }) => {
+const AdminDialog = ({ onClose, currentGameId, setShowDifficultyDialog }) => {
   const { setSudokuGrid } = useSudokuBoard();
 
   const handleResetGame = async () => {
@@ -39,6 +39,7 @@ const AdminDialog = ({ onClose, currentGameId, showDifficultyDialog, setShowDiff
 AdminDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   currentGameId: PropTypes.string.isRequired,
+  setShowDifficultyDialog: PropTypes.func.isRequired,
 };
 
 export default AdminDialog;
