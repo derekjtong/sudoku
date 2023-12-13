@@ -1,42 +1,40 @@
 import { useEffect, useCallback } from "react";
 import Cell from "./Cell";
+
 import Keypad from "./Keypad";
 import { getNineBoard } from "../../api/getBoard";
-import { useSelectedCell } from "./hooks/useSelectedCell";
-import { useSudokuGrid } from "./hooks/useSudokuGrid";
 import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
+import { useSudokuBoard } from "../providers/board-provider";
 
-function Board9x9({ currentGameId, setCurrentGameId }) {
-  const { sudokuGrid, setSudokuGrid, handleCellChange } = useSudokuGrid(9, currentGameId);
-  const { selectedCell, setSelectedCell, handleCellClick } = useSelectedCell();
+function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
+  const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
 
   useEffect(() => {
+    console.log("Board9x9 useEffect");
     const fetchGame = async () => {
       if (currentGameId !== "") {
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
         const data = await getSingleGameById(currentGameId);
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
-        setSudokuGrid(loadedBoard);
+        setSudokuGrid(data.game.problemBoard);
       } else {
         // Load a new game
         console.log("Did not find game id in local storage, load new game:");
         const data = await getNineBoard();
-        const loadedBoard = data.game.problemBoard.map((row) => row.map((cell) => cell.value.toString()));
-        setSudokuGrid(loadedBoard);
+        setSudokuGrid(data.game.problemBoard);
         setCurrentGameId(data.game._id);
         console.log(data.game._id);
       }
     };
 
     fetchGame();
-    console.log("Board9x9 useEffect");
   }, [currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
+    console.log("Keypad click");
     if (selectedCell.row !== null && selectedCell.col !== null) {
-      handleCellChange(selectedCell.row, selectedCell.col, value.toString());
+      handleCellChange(selectedCell.row, selectedCell.col, value);
     }
   };
 
@@ -57,22 +55,23 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
     return (
       <tbody key={`subgrid-${startRow}-${startCol}`}>
         {[...Array(3)].map((_, rowIndex) => (
-          <tr key={rowIndex}>
-            {[...Array(3)].map((_, colIndex) => (
-              <Cell
-                key={`${startRow + rowIndex}-${startCol + colIndex}`}
-                row={startRow + rowIndex}
-                col={startCol + colIndex}
-                value={sudokuGrid[startRow + rowIndex][startCol + colIndex]}
-                onChange={(value) => handleCellChange(startRow + rowIndex, startCol + colIndex, value)}
-                onCellClick={handleCellClick}
-                isSelected={
-                  startRow + rowIndex === selectedCell.row ||
-                  startCol + colIndex === selectedCell.col ||
-                  isSelectedQuadrant(startRow + rowIndex, startCol + colIndex)
-                }
-                isPrimarySelected={startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col}
-                className={`
+          <tr key={`row-${startRow + rowIndex}`}>
+            {[...Array(3)].map((_, colIndex) => {
+              const cellRow = startRow + rowIndex;
+              const cellCol = startCol + colIndex;
+              const cellObj = sudokuGrid[cellRow][cellCol];
+              const isSelected = selectedCell.row === cellRow || selectedCell.col === cellCol || isSelectedQuadrant(cellRow, cellCol);
+              return (
+                <Cell
+                  key={`cell-${cellRow}-${cellCol}`}
+                  row={cellRow}
+                  col={cellCol}
+                  cell={cellObj}
+                  onChange={(newCell) => handleCellChange(cellRow, cellCol, newCell)}
+                  onCellClick={handleCellClick}
+                  isSelected={isSelected}
+                  isPrimarySelected={cellRow === selectedCell.row && cellCol === selectedCell.col}
+                  className={`
                   ${rowIndex > 0 && "border-top"}
                   ${colIndex > 0 && "border-left"}
                   ${rowIndex === 2 && "border-bottom"}
@@ -81,8 +80,9 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
                   ${isSelectedQuadrant(startRow + rowIndex, startCol + colIndex) && "bg-gray-200"}
                   ${startRow + rowIndex === selectedCell.row && startCol + colIndex === selectedCell.col && "bg-red-500 text-white"}
                 `}
-              />
-            ))}
+                />
+              );
+            })}
           </tr>
         ))}
       </tbody>
@@ -108,16 +108,19 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
 
   const handlePhysicalKeyboardInput = useCallback(
     (e) => {
+      console.log("HandlePhysicalKeyboardInput");
       const value = e.key;
       if (selectedCell.row == null || selectedCell.col == null) {
         return;
       }
 
-      if (/^[1-9]$/.test(value)) {
+      const isBackspaceOrDelete = e.key === "Backspace" || e.key === "Delete";
+      const isNumberKey = /^[0-9]$/.test(e.key);
+
+      if (isBackspaceOrDelete) {
+        handleCellChange(selectedCell.row, selectedCell.col, 0);
+      } else if (isNumberKey) {
         handleCellChange(selectedCell.row, selectedCell.col, value);
-      } else {
-        // Invalid input, do nothing
-        // handleCellChange(selectedCell.row, selectedCell.col, "");
       }
     },
     [selectedCell, handleCellChange],
@@ -134,6 +137,7 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
 
   return (
     <div>
+      {addNoteMode ? "add note mode" : "add element mode"}
       <table className="sudoku-grid mb-4 border border-black">
         <tbody>
           {[0, 3, 6].map((startRow, quadrantRowIndex) => (
@@ -159,5 +163,6 @@ function Board9x9({ currentGameId, setCurrentGameId }) {
 Board9x9.propTypes = {
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
+  addNoteMode: PropTypes.bool.isRequired,
 };
 export default Board9x9;

@@ -1,25 +1,31 @@
 import Game from "../database/gameSchema.js";
 import { ObjectId } from "mongodb";
+
 // returns board after undo
 const undo = async (req, res) => {
   try {
-    // Check if the stack is empty
     const gameId = new ObjectId(req.params.id);
-    let stackDb = await Game.findOne({ _id: gameId });
-    stackDb = stackDb["stack"];
-    if (stackDb.length <= 1) {
-      return res.status(400).json({ error: "Stack is empty." });
+    let game = await Game.findOne({ _id: gameId });
+
+    if (!game || !game.stack || game.stack.length <= 1) {
+      console.log("No more moves to undo.");
+      // Instead of returning an error, return a message indicating no more undos are possible
+      return res.json({
+        message: "No more moves to undo.",
+        board: game ? game.problemBoard : null, // You can choose to return the current board or just a message
+      });
     }
-    // Pop an item from the stack
-    stackDb.pop();
-    const board = stackDb.pop();
-    stackDb.push(board);
-    await Game.updateOne({ _id: gameId }, { problemBoard: board["grid"], stack: stackDb });
-    return res.json({
-      board,
-    });
-  } catch (err) {
-    console.log(err);
+
+    // Undo logic
+    let stack = game.stack;
+    stack.pop(); // Remove the current state
+    const previousBoard = stack.pop(); // Get the previous state
+    stack.push(previousBoard); // Re-push the previous state as the current state
+    await Game.updateOne({ _id: gameId }, { problemBoard: previousBoard.grid, stack: stack });
+
+    return res.json({ board: previousBoard });
+  } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error", error });
   }
 };

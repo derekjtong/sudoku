@@ -1,11 +1,11 @@
 import Game from "../database/gameSchema.js";
 import stack from "../helpers/stack.js";
-import {ObjectId} from "mongodb";
+import { ObjectId } from "mongodb";
 // board which is the latest one
 const undoUntilCorrect = async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.id);
-    console.log(gameId)
+    console.log(gameId);
     let stackDb = await Game.findOne({ _id: gameId });
     stackDb = stackDb["stack"];
     if (stackDb.length === 0) {
@@ -13,7 +13,7 @@ const undoUntilCorrect = async (req, res) => {
     }
 
     let correct;
-    let { grid, booleanValue } = stackDb[stackDb.length-1];
+    let { grid, booleanValue } = stackDb[stackDb.length - 1];
 
     // Undo changes until a correct state is reached
     while (!booleanValue && stackDb.length > 0) {

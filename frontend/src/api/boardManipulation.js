@@ -83,11 +83,18 @@ export const getRandomHint = (gameId) => {
  * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const getSpecificHint = (gameId) => {
+export const getSpecificHint = (gameId, row, col) => {
   return axios
-    .get(`${BASE_URL}/getSpecificHint/${gameId}`) // ??
-    .then((response) => response.data)
+    .post(`${BASE_URL}/getspecifichint/${gameId}`, {
+      row: row,
+      col: col,
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data.suggestedMove;
+    })
     .catch((error) => {
+      console.log(error);
       throw new Error(`Error getting specific hint: ${error.message}`);
     });
 };
@@ -99,24 +106,49 @@ export const getSpecificHint = (gameId) => {
  */
 export const undo = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`) // Updated to POST
-    .then((response) => response.data)
+    .get(`${BASE_URL}/undo/${gameId}`)
+    .then((response) => {
+      // If there are no more moves to undo, return a specific response instead of throwing an error
+      if (response.data.message && response.data.message === "No more moves to undo.") {
+        return { noMoreMoves: true };
+      }
+      return response.data;
+    })
     .catch((error) => {
-      console.log(error);
-      throw new Error(`Error undoing last element on the board: ${error.message}`);
+      console.error("Error during undo operation:", error);
+      throw error; // Propagate the error for further handling
     });
 };
 
 /**
  * Undo until sudoku board is correct
- * @param {string} id - The identifier for the board.
+ * @param {string} gameId - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
 export const undoUntilCorrect = (gameId) => {
   return axios
     .get(`${BASE_URL}/undountilcorrect/${gameId}`)
-    .then((response) => response.data)
+    .then((response) => {
+      // Handle specific messages or data returned by the backend
+      if (response.data.message) {
+        if (response.data.message === "No more moves to undo") {
+          console.log(response.data.message);
+        } else if (response.data.message === "Reached initial state of the game.") {
+          console.log(response.data.message);
+        }
+      }
+      return response.data;
+    })
     .catch((error) => {
-      throw new Error(`Error undoing board until correct: ${error.message}`);
+      console.error("Error during undoUntilCorrect operation:", error);
+      throw error;
     });
+};
+
+export const addNote = (gameId, row, col) => {
+  // TODO
+};
+
+export const removeNote = (gameId, row, col) => {
+  // TODO
 };
