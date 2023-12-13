@@ -3,7 +3,7 @@ import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } 
 import { useSudokuBoard } from "../providers/board-provider";
 
 const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
-  const { setSudokuGrid, setSelectedCell, sudokuGrid } = useSudokuBoard();
+  const { selectedCell, sudokuGrid, setSudokuGrid, setSelectedCell, handleCellChange } = useSudokuBoard();
 
   const handleUndo = async () => {
     try {
@@ -39,7 +39,7 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
         console.log("No more moves to undo");
         return;
       }
-      const newGrid = data.board.grid;
+      const newGrid = data.board;
       setSudokuGrid(newGrid);
       setSelectedCell(-1, -1);
     } catch (error) {
@@ -50,8 +50,8 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
   const handleGetSpecificHint = async () => {
     console.log("Called getSpecificHint");
     try {
-      const data = await getSpecificHint(currentGameId);
-      console.log(data);
+      const suggestedMove = await getSpecificHint(currentGameId, selectedCell.row, selectedCell.col);
+      handleCellChange(selectedCell.row, selectedCell.col, suggestedMove);
     } catch (error) {
       console.error("Error during getSpecificHint:", error);
     }

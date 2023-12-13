@@ -79,7 +79,6 @@ Cell.propTypes = {
   onChange: PropTypes.func.isRequired,
   isSelected: PropTypes.bool.isRequired,
   isPrimarySelected: PropTypes.bool.isRequired,
-  showNotes: PropTypes.bool.isRequired,
 };
 
 export default Cell;

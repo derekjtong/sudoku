@@ -27,10 +27,10 @@ router.get("/checksolved/:id", checkIfSolved); // {isSolved:true/false}
 router.get("/correctSoFar/:id", correctSoFar); // {valid:true/false}
 
 // @route /api/getRandomHint/{dbId}
-router.get("/getRandomHint/:id", getRandomHint); //{suggestedMove:{row,col,num}}
+router.get("/getRandomHint/:id", getRandomHint); // {suggestedMove:{row,col,num}}
 
 // @route /api/getSpecificHint/{dbId}
-router.post("/getSpecificHint/:id", getSpecificHint); //{suggestedMove} suggestedMove means the element that we can add
+router.post("/getspecifichint/:id", getSpecificHint); // {suggestedMove} suggestedMove means the element that we can add
 
 // @route /api/undo/{dbId}
 router.get("/undo/:id", undo); // {board}
@@ -47,7 +47,6 @@ router.put("/addnote/:id", addNotes);
 // @route /api/deletenote/{dbId}
 router.delete("/deletenote/:id", deleteNotes);
 
-// just pass the id
 // @route /api/reset/{dbId}
 router.put("/reset/:id", resetGame);
 

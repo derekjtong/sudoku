@@ -83,11 +83,18 @@ export const getRandomHint = (gameId) => {
  * @param {string} id - The identifier for the board.
  * @returns {Promise<Object>} A promise that resolves to the board data.
  */
-export const getSpecificHint = (gameId) => {
+export const getSpecificHint = (gameId, row, col) => {
   return axios
-    .get(`${BASE_URL}/getSpecificHint/${gameId}`) // ??
-    .then((response) => response.data)
+    .post(`${BASE_URL}/getspecifichint/${gameId}`, {
+      row: row,
+      col: col,
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data.suggestedMove;
+    })
     .catch((error) => {
+      console.log(error);
       throw new Error(`Error getting specific hint: ${error.message}`);
     });
 };
@@ -120,20 +127,20 @@ export const undo = (gameId) => {
  */
 export const undoUntilCorrect = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undoUntilCorrect/${gameId}`)
+    .get(`${BASE_URL}/undountilcorrect/${gameId}`)
     .then((response) => {
       // Handle specific messages or data returned by the backend
       if (response.data.message) {
-        if (response.data.message === "No more moves to undo.") {
-          return { noMoreMoves: true };
+        if (response.data.message === "No more moves to undo") {
+          console.log(response.data.message);
         } else if (response.data.message === "Reached initial state of the game.") {
-          return { initialStateReached: true };
+          console.log(response.data.message);
         }
       }
       return response.data;
     })
     .catch((error) => {
       console.error("Error during undoUntilCorrect operation:", error);
-      throw error; // Propagate the error for further handling
+      throw error;
     });
 };

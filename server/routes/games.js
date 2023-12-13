@@ -9,4 +9,6 @@ gamesRouter.get("/getonegame/:id", getSingleGameById);
 // @route /api/getallgame/{dbId}
 gamesRouter.get("/getallgames", listAllGamesInDb);
 
+// TODO add 2 hardcoded boards in /games route
+
 export default gamesRouter;
