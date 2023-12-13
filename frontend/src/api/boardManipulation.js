@@ -152,3 +152,17 @@ export const addNote = (gameId, row, col) => {
 export const removeNote = (gameId, row, col) => {
   // TODO
 };
+
+/**
+ * Reset the sudoku game to its initial state
+ * @param {string} gameId - The identifier for the game.
+ * @returns {Promise<Object>} A promise that resolves to the board data.
+ */
+export const resetGame = (gameId) => {
+  return axios
+    .put(`${BASE_URL}/reset/${gameId}`)
+    .then((response) => response.data)
+    .catch((error) => {
+      throw new Error(`Error resetting the game: ${error.message}`);
+    });
+};

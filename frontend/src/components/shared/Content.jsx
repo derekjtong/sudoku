@@ -1,8 +1,11 @@
 import PropTypes from "prop-types";
 import Board9x9 from "../sudoku/Board9x9";
 import Board4x4 from "../sudoku/Board4x4";
+import { resetGame } from "../../api/boardManipulation";
+import { useSudokuBoard } from "../providers/board-provider";
 
 function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, addNoteMode }) {
+  const { setSudokuGrid } = useSudokuBoard();
   let BoardComponent;
   switch (boardDimension) {
     case 4:
@@ -28,10 +31,16 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
     default:
       difficultyText = null;
   }
+  const handleResetGame = async () => {
+    const response = await resetGame(currentGameId);
+    // console.log(response.problemBoard);
+    setSudokuGrid(response.problemBoard);
+  };
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center ">
       {difficultyText}
       {BoardComponent}
+      <button onClick={handleResetGame}>ADMIN reset game</button>
     </div>
   );
 }
