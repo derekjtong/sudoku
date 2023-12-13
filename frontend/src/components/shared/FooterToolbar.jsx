@@ -2,12 +2,8 @@ import PropTypes from "prop-types";
 import { undo, undoUntilCorrect, correctSoFar, getRandomHint, getSpecificHint } from "../../api/boardManipulation";
 import { useSudokuBoard } from "../providers/board-provider";
 
-const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
+const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
   const { setSudokuGrid, setSelectedCell, sudokuGrid } = useSudokuBoard();
-
-  const toggleNotes = () => {
-    setShowNotes((cur) => !cur);
-  };
 
   const handleUndo = async () => {
     try {
@@ -47,7 +43,26 @@ const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
       setSudokuGrid(newGrid);
       setSelectedCell(-1, -1);
     } catch (error) {
-      console.error("Error during operation:", error);
+      console.error("Error during undoUntilCorrect:", error);
+    }
+  };
+
+  const handleGetSpecificHint = async () => {
+    console.log("Called getSpecificHint");
+    try {
+      const data = await getSpecificHint(currentGameId);
+      console.log(data);
+    } catch (error) {
+      console.error("Error during getSpecificHint:", error);
+    }
+  };
+
+  const handleCheckBoard = async () => {
+    try {
+      const data = await correctSoFar(currentGameId);
+      console.log(data);
+    } catch (error) {
+      console.error("Error duing checkBoard:", error);
     }
   };
 
@@ -59,16 +74,16 @@ const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleUndoUntilCorrect}>
         Undo Until Correct
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={toggleNotes}>
-        {showNotes ? "Notes On" : "Notes Off"}
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => setAddNoteMode((cur) => !cur)}>
+        {addNoteMode ? "Notes On" : "Notes Off"}
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getRandomHint(currentGameId)}>
         Random Hint
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getSpecificHint(currentGameId)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleGetSpecificHint}>
         Specific Hint
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => correctSoFar(currentGameId)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleCheckBoard}>
         Check Board
       </button>
     </div>
@@ -77,8 +92,8 @@ const FooterToolbar = ({ currentGameId, showNotes, setShowNotes }) => {
 
 FooterToolbar.propTypes = {
   currentGameId: PropTypes.string.isRequired,
-  setShowNotes: PropTypes.func.isRequired,
-  showNotes: PropTypes.bool.isRequired,
+  addNoteMode: PropTypes.bool.isRequired,
+  setAddNoteMode: PropTypes.func.isRequired,
 };
 
 export default FooterToolbar;

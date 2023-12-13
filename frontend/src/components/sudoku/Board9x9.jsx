@@ -6,10 +6,11 @@ import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
 
-function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
+function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
 
   useEffect(() => {
+    console.log("Board9x9 useEffect");
     const fetchGame = async () => {
       if (currentGameId !== "") {
         // Load existing game
@@ -27,7 +28,6 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
     };
 
     fetchGame();
-    console.log("Board9x9 useEffect");
   }, [currentGameId, setCurrentGameId, setSudokuGrid]);
 
   const handleKeypadClick = (value) => {
@@ -67,7 +67,6 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
                   cell={cellObj}
                   onChange={(newCell) => handleCellChange(cellRow, cellCol, newCell)}
                   onCellClick={handleCellClick}
-                  showNotes={showNotes}
                   isSelected={isSelected}
                   isPrimarySelected={cellRow === selectedCell.row && cellCol === selectedCell.col}
                   className={`
@@ -107,16 +106,19 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
 
   const handlePhysicalKeyboardInput = useCallback(
     (e) => {
+      console.log("Calling handleCellChange from event handler");
       const value = e.key;
       if (selectedCell.row == null || selectedCell.col == null) {
         return;
       }
 
-      if (/^[1-9]$/.test(value)) {
+      const isBackspaceOrDelete = e.key === "Backspace" || e.key === "Delete";
+      const isNumberKey = /^[0-9]$/.test(e.key);
+
+      if (isBackspaceOrDelete) {
+        handleCellChange(selectedCell.row, selectedCell.col, 0);
+      } else if (isNumberKey) {
         handleCellChange(selectedCell.row, selectedCell.col, value);
-      } else {
-        // Invalid input, do nothing
-        // handleCellChange(selectedCell.row, selectedCell.col, "");
       }
     },
     [selectedCell, handleCellChange],
@@ -133,6 +135,7 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
 
   return (
     <div>
+      {addNoteMode ? "add note mode" : "add element mode"}
       <table className="sudoku-grid mb-4 border border-black">
         <tbody>
           {[0, 3, 6].map((startRow, quadrantRowIndex) => (
@@ -158,7 +161,6 @@ function Board9x9({ currentGameId, setCurrentGameId, showNotes }) {
 Board9x9.propTypes = {
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
-  showNotes: PropTypes.bool.isRequired,
-  setShowNotes: PropTypes.func.isRequired,
+  addNoteMode: PropTypes.bool.isRequired,
 };
 export default Board9x9;
