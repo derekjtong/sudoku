@@ -112,7 +112,7 @@ export const getSpecificHint = (gameId, row, col) => {
     })
     .then((response) => {
       console.log(response);
-      return response.data.suggestedMove;
+      return response.data;
     })
     .catch((error) => {
       console.log(error);

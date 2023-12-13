@@ -26,7 +26,7 @@ const callSpecificHint = async (req, res) => {
   problemBoard = await doubleStack(suggestedMove, board, gameId, gameStack);
 
   return res.json({
-    suggestedMove: suggestedMove.num,
+    suggestedMove,
     updatedBoard: problemBoard,
   });
 };

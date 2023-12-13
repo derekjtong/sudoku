@@ -4,7 +4,7 @@ import { useSudokuBoard } from "../providers/board-provider";
 import { switchNote } from "../../api/notes";
 
 const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
-  const { selectedCell, sudokuGrid, setSudokuGrid, setSelectedCell, handleCellChange } = useSudokuBoard();
+  const { selectedCell, sudokuGrid, setSudokuGrid, setSelectedCell } = useSudokuBoard();
 
   const handleUndo = async () => {
     try {
@@ -48,11 +48,25 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
     }
   };
 
-  const handleGetSpecificHint = async () => {
-    console.log("Called getSpecificHint");
+  const handleGetRandomHint = async () => {
     try {
-      const suggestedMove = await getSpecificHint(currentGameId, selectedCell.row, selectedCell.col);
-      handleCellChange(selectedCell.row, selectedCell.col, suggestedMove);
+      const { suggestedMove, updatedBoard } = await getRandomHint(currentGameId);
+      if (suggestedMove === null) {
+        console.log("No more hints available");
+        return;
+      }
+      setSelectedCell({ row: suggestedMove.row, col: suggestedMove.col });
+      setSudokuGrid(updatedBoard);
+    } catch (error) {
+      console.error("Error during getRandomHint:", error);
+    }
+  };
+
+  const handleGetSpecificHint = async () => {
+    try {
+      const { suggestedMove, updatedBoard } = await getSpecificHint(currentGameId, selectedCell.row, selectedCell.col);
+      setSelectedCell({ row: suggestedMove.row, col: suggestedMove.col });
+      setSudokuGrid(updatedBoard);
     } catch (error) {
       console.error("Error during getSpecificHint:", error);
     }
@@ -88,7 +102,7 @@ const FooterToolbar = ({ currentGameId, addNoteMode, setAddNoteMode }) => {
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => handleSwitchNoteMode()}>
         {addNoteMode ? "Notes On" : "Notes Off"}
       </button>
-      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={() => getRandomHint(currentGameId)}>
+      <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleGetRandomHint}>
         Random Hint
       </button>
       <button className="w-full p-4 text-white hover:bg-gray-900" onClick={handleGetSpecificHint}>
