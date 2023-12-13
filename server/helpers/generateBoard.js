@@ -75,7 +75,6 @@ export const generateBoard = (m, n) => {
     // TODO: get random board from a board database
     let cell;
     let solution;
-    console.log("Sending 9x9 board number", boardNum);
     switch (boardNum) {
       case 1:
         cell = [
@@ -102,6 +101,7 @@ export const generateBoard = (m, n) => {
         ];
         break;
       case 2:
+        // Easy
         cell = [
           [-1, -1, -1, 2, 6, -1, 7, -1, 1],
           [6, 8, -1, -1, 7, -1, -1, 9, -1],
