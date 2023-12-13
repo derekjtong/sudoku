@@ -99,7 +99,7 @@ export const getSpecificHint = (gameId) => {
  */
 export const undo = (gameId) => {
   return axios
-    .get(`${BASE_URL}/undo/${gameId}`)  // Updated to POST
+    .get(`${BASE_URL}/undo/${gameId}`)
     .then((response) => response.data)
     .catch((error) => {
       console.log(error);
@@ -115,6 +115,7 @@ export const undo = (gameId) => {
 export const undoUntilCorrect = (gameId) => {
   return axios
     .get(`${BASE_URL}/undountilcorrect/${gameId}`)
+    .then(console.log("GameID: " + gameId))
     .then(console.log("GameID: " + gameId))
     .then((response) => response.data)
     .catch((error) => {
