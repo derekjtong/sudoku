@@ -12,6 +12,7 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
   const handleCellChange = async (row, col, value, addNoteMode) => {
     const numberValue = Number(value);
     if (Number.isNaN(numberValue)) return;
+
     // Adding notes
     if (addNoteMode) {
       // Create a deep copy of the grid
@@ -19,11 +20,12 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
       const notes = sudokuGrid[row][col].notes;
       // creates a copy of the notes
       const newNotes = [...notes];
-
       const notesArrayLocation = getNotesArray(numberValue);
+
       // remove the number value from notes if it exists
-      if (notes.flat(1).includes(numberValue)) {
-        newNotes[notesArrayLocation].splice(notes.indexOf(numberValue), 1);
+      if (notes[notesArrayLocation].includes(numberValue)) {
+        const indexToRemove = newNotes[notesArrayLocation].indexOf(numberValue);
+        newNotes[notesArrayLocation].splice(indexToRemove, 1);
       } else {
         newNotes[notesArrayLocation].push(numberValue);
       }
@@ -49,7 +51,7 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
       setSudokuGrid(newGrid);
       console.log("Complete");
     }
-    // Adding values
+    // Deleting value
     else if (value === -1) {
       const newGrid = sudokuGrid.map((row) => row.map((cell) => ({ ...cell })));
       try {
@@ -60,7 +62,9 @@ export function useSudokuGrid(size, currentGameId, initialGrid) {
       }
       console.log("Deleted cell value");
       setSudokuGrid(newGrid);
-    } else {
+    }
+    // Adding value
+    else {
       if (sudokuGrid[row][col].value === numberValue) {
         console.log("handleCellChange - no change, did not call API");
         return;
