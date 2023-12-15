@@ -6,6 +6,7 @@ import { getNineBoard } from "../../api/getBoard";
 import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
+import GameTimer from "./GameTimer";
 
 function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
@@ -154,6 +155,9 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
         </tbody>
       </table>
       <div className="md:ml-6 md:mt-0">
+        <center className="mb-2">
+          <GameTimer />
+        </center>
         <Keypad onKeypadClick={handleKeypadClick} />
       </div>
     </div>
