@@ -4,19 +4,15 @@ function Keypad({ onKeypadClick }) {
   const keypadNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
-    <table>
-      <tbody>
-        <tr>
-          {keypadNumbers.map((number) => (
-            <td key={number} className="border border-black hover:bg-gray-300">
-              <button onClick={() => onKeypadClick(number)} className="p-4 text-2xl">
-                {number}
-              </button>
-            </td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
+    <div className="grid grid-cols-9 md:grid-cols-3">
+      {keypadNumbers.map((number) => (
+        <div key={number} className="flex justify-center border border-black text-2xl hover:bg-gray-300">
+          <button onClick={() => onKeypadClick(number)} className="h-20 w-20 p-4 text-3xl">
+            {number}
+          </button>
+        </div>
+      ))}
+    </div>
   );
 }
 

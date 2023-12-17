@@ -3,10 +3,10 @@ export const generateBoard = (m, n) => {
   let board = {};
 
   // Select a random hard coded board
+  let cell;
+  let solution;
   let boardNum = randomInt(1, 4);
   if (m == 4 && n == 4) {
-    let cell;
-    let solution;
     console.log("Sending 4x4 board number", boardNum);
     switch (boardNum) {
       case 1:
@@ -73,8 +73,6 @@ export const generateBoard = (m, n) => {
     board["solution"] = solution;
   } else if (m == 9 && n == 9) {
     // TODO: get random board from a board database
-    let cell;
-    let solution;
     console.log("Sending 9x9 board number", boardNum);
     switch (boardNum) {
       case 1:
