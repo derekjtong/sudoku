@@ -1,9 +1,15 @@
 // Mohammad
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
-const GameTimer = () => {
+const GameTimer = ({ currentGameId }) => {
   const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    setSeconds(0);
+    setIsActive(false);
+  }, [currentGameId]);
 
   useEffect(() => {
     let interval = null;
@@ -43,11 +49,15 @@ const GameTimer = () => {
             cursor: "pointer",
           }}
         >
-          {isActive ? "Pause" : "Resume"}
+          {isActive ? "Pause" : seconds === 0 ? "Start" : "Resume"}
         </button>
       </h3>
     </div>
   );
+};
+
+GameTimer.propTypes = {
+  currentGameId: PropTypes.string.isRequired,
 };
 
 export default GameTimer;

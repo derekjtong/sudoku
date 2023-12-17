@@ -147,7 +147,7 @@ function Board({ currentGameId, setCurrentGameId, addNoteMode, boardDimension, s
         </table>
         <div className="md:ml-6 md:mt-0">
           <center className="mb-2">
-            <GameTimer />
+            <GameTimer currentGameId={currentGameId} />
           </center>
           <Keypad onKeypadClick={handleKeypadClick} />
         </div>
