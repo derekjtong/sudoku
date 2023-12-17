@@ -14,17 +14,23 @@ function Home() {
 
   return (
     <SudokuBoardProvider size={boardDimension} currentGameId={currentGameId}>
-      <Navbar setBoardDimension={setBoardDimension} setDifficulty={setDifficulty} setCurrentGameId={setCurrentGameId} />
-      <Content
-        boardDimension={boardDimension}
-        setBoardDimension={setBoardDimension}
-        difficulty={difficulty}
-        currentGameId={currentGameId}
-        setCurrentGameId={setCurrentGameId}
-        addNoteMode={addNoteMode}
-        setAddNoteMode={setAddNoteMode}
-      />
-      <FooterToolbar currentGameId={currentGameId} addNoteMode={addNoteMode} setAddNoteMode={setAddNoteMode} />
+      <div data-testid="navbar">
+        <Navbar setBoardDimension={setBoardDimension} setDifficulty={setDifficulty} setCurrentGameId={setCurrentGameId} />
+      </div>
+      <div data-testid="content">
+        <Content
+          boardDimension={boardDimension}
+          setBoardDimension={setBoardDimension}
+          difficulty={difficulty}
+          currentGameId={currentGameId}
+          setCurrentGameId={setCurrentGameId}
+          addNoteMode={addNoteMode}
+          setAddNoteMode={setAddNoteMode}
+        />
+      </div>
+      <div data-testid="footerToolbar">
+        <FooterToolbar currentGameId={currentGameId} addNoteMode={addNoteMode} setAddNoteMode={setAddNoteMode} />
+      </div>
     </SudokuBoardProvider>
   );
 }
