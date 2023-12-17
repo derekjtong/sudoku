@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";
 import SwitchPuzzleDialog from "./SwitchPuzzleDialog";
+import { useSudokuBoard } from "../providers/board-provider";
 
 const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
+  const { setSelectedCell } = useSudokuBoard();
   const [show4x4Dropdown, setShow4x4Dropdown] = useState(false);
   const [show9x9Dropdown, setShow9x9Dropdown] = useState(false);
   const [selectedDimension, setSelectedDimension] = useState(4);
@@ -42,6 +44,7 @@ const Navbar = ({ setBoardDimension, setDifficulty, setCurrentGameId }) => {
   };
 
   const handleContinueSwitchPuzzle = () => {
+    setSelectedCell({ row: -1, col: -1 });
     setBoardDimension(selectedDimension);
     setDifficulty(selectedDifficulty);
     setShowSwitchPuzzleDialog(false);

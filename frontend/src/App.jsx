@@ -17,6 +17,7 @@ function Home() {
       <Navbar setBoardDimension={setBoardDimension} setDifficulty={setDifficulty} setCurrentGameId={setCurrentGameId} />
       <Content
         boardDimension={boardDimension}
+        setBoardDimension={setBoardDimension}
         difficulty={difficulty}
         currentGameId={currentGameId}
         setCurrentGameId={setCurrentGameId}

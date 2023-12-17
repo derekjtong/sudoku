@@ -1,37 +1,83 @@
 // Mohammad, Derek
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import Cell from "./Cell";
 
 import Keypad from "./Keypad";
-import { getNineBoard } from "../../api/getBoard";
+import { getFourBoard, getNineBoard } from "../../api/getBoard";
 import { getSingleGameById } from "../../api/getGame";
 import PropTypes from "prop-types";
 import { useSudokuBoard } from "../providers/board-provider";
 import GameTimer from "./GameTimer";
 
-function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
+function Board({ currentGameId, setCurrentGameId, addNoteMode, boardDimension, setBoardDimension }) {
   const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Board9x9 useEffect");
     const fetchGame = async () => {
+      setIsLoading(true);
+      let data;
       if (currentGameId !== "") {
         // Load existing game
         console.log("Found existing game id in local storage, loading it:", currentGameId);
-        const data = await getSingleGameById(currentGameId);
-        setSudokuGrid(data.game.problemBoard);
+        data = await getSingleGameById(currentGameId);
+        setBoardDimension(data.game.dimension);
       } else {
         // Load a new game
         console.log("Did not find game id in local storage, load new game:");
-        const data = await getNineBoard();
-        setSudokuGrid(data.game.problemBoard);
+        data = await (boardDimension == 9 ? getNineBoard() : getFourBoard());
         setCurrentGameId(data.game._id);
-        console.log(data.game._id);
       }
+      setSudokuGrid(data.game.problemBoard);
+      setIsLoading(false);
     };
 
     fetchGame();
-  }, [currentGameId, setCurrentGameId, setSudokuGrid]);
+  }, [currentGameId, setCurrentGameId, setSudokuGrid, boardDimension, setBoardDimension]);
+
+  const handleArrowKeys = useCallback(
+    (e) => {
+      const ARROW_KEYS = {
+        ArrowUp: { row: -1, col: 0 },
+        ArrowDown: { row: 1, col: 0 },
+        ArrowLeft: { row: 0, col: -1 },
+        ArrowRight: { row: 0, col: 1 },
+      };
+      if (ARROW_KEYS[e.key]) {
+        const maxIndex = boardDimension - 1;
+        const newRow = Math.max(0, Math.min(maxIndex, selectedCell.row + ARROW_KEYS[e.key].row));
+        const newCol = Math.max(0, Math.min(maxIndex, selectedCell.col + ARROW_KEYS[e.key].col));
+        setSelectedCell({ row: newRow, col: newCol });
+      }
+    },
+    [selectedCell, setSelectedCell, boardDimension],
+  );
+
+  const handlePhysicalKeyboardInput = useCallback(
+    (e) => {
+      console.log("HandlePhysicalKeyboardInput");
+      const value = e.key;
+      if (selectedCell.row == null || selectedCell.col == null) {
+        return;
+      }
+
+      if (e.key === "Backspace" || e.key === "Delete" || e.key === "0") {
+        handleCellChange(selectedCell.row, selectedCell.col, 0 - 1, addNoteMode);
+      } else if (/^[1-9]$/.test(e.key)) {
+        handleCellChange(selectedCell.row, selectedCell.col, value, addNoteMode);
+      }
+    },
+    [selectedCell, handleCellChange, addNoteMode],
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleArrowKeys);
+    document.addEventListener("keydown", handlePhysicalKeyboardInput);
+    return () => {
+      document.removeEventListener("keydown", handleArrowKeys);
+      document.removeEventListener("keydown", handlePhysicalKeyboardInput);
+    };
+  }, [selectedCell, handleArrowKeys, handlePhysicalKeyboardInput]);
 
   const handleKeypadClick = (value) => {
     console.log("Keypad click");
@@ -39,6 +85,64 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
       handleCellChange(selectedCell.row, selectedCell.col, value, addNoteMode);
     }
   };
+
+  const isGridReady = sudokuGrid.length === boardDimension && sudokuGrid.every((row) => row.length === boardDimension);
+
+  if (!isGridReady || isLoading) {
+    const placeholderCellProps = {
+      value: -1,
+      notes: [[], [], []],
+      isSelected: false,
+      isPrimarySelected: false,
+      onCellClick: () => {}, // No-op function
+      onChange: () => {}, // No-op function
+    };
+
+    const subgridSize = boardDimension === 9 ? 3 : 2;
+
+    return (
+      <div className="flex flex-col items-center md:flex-row">
+        <table className="mb-4 border border-black">
+          <tbody>
+            {Array.from({ length: boardDimension }, (_, i) => i)
+              .filter((i) => i % subgridSize === 0)
+              .map((startRow, quadrantRowIndex) => (
+                <tr key={quadrantRowIndex}>
+                  {Array.from({ length: boardDimension }, (_, i) => i)
+                    .filter((i) => i % subgridSize === 0)
+                    .map((startCol, quadrantColIndex) => (
+                      <td key={quadrantColIndex} className="border-0 bg-gray-800">
+                        <table className={`subgrid placeholder-grid`}>
+                          {Array.from({ length: subgridSize }).map((_, rowIndex) => (
+                            <tr key={rowIndex}>
+                              {Array.from({ length: subgridSize }).map((_, colIndex) => (
+                                <td key={colIndex} className={`cell placeholder-cell`}>
+                                  <Cell
+                                    row={rowIndex}
+                                    col={colIndex}
+                                    cell={placeholderCellProps}
+                                    {...placeholderCellProps} // Spread dummy props
+                                  />
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </table>
+                      </td>
+                    ))}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+        <div className="md:ml-6 md:mt-0">
+          <center className="mb-2">
+            <GameTimer />
+          </center>
+          <Keypad onKeypadClick={handleKeypadClick} />
+        </div>
+      </div>
+    );
+  }
 
   const isSelectedQuadrant = (row, col) => {
     const selectedRow = selectedCell.row;
@@ -53,12 +157,23 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
 
   const getQuadrantColor = (quadrantIndex) => (quadrantIndex % 2 === 0 ? "bg-white" : "bg-yellow-100");
 
+  // const subgridSize = Math.sqrt(size);
+  const subgridSize = boardDimension === 9 ? 3 : 2;
+
   const renderSubgrid = (startRow, startCol, quadrantIndex) => {
     return (
-      <div key={`subgrid-${startRow}-${startCol}`} className="subgrid" style={{ display: "grid", gridTemplateRows: "1fr 1fr 1fr" }}>
-        {[...Array(3)].map((_, rowIndex) => (
-          <div key={`row-${startRow + rowIndex}`} className="row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-            {[...Array(3)].map((_, colIndex) => {
+      <div
+        key={`subgrid-${startRow}-${startCol}`}
+        className="subgrid"
+        style={{ display: "grid", gridTemplateRows: `repeat(${subgridSize}, 1fr)` }}
+      >
+        {[...Array(subgridSize)].map((_, rowIndex) => (
+          <div
+            key={`row-${startRow + rowIndex}`}
+            className="row"
+            style={{ display: "grid", gridTemplateColumns: `repeat(${subgridSize}, 1fr)` }}
+          >
+            {[...Array(subgridSize)].map((_, colIndex) => {
               const cellRow = startRow + rowIndex;
               const cellCol = startCol + colIndex;
               const cellObj = sudokuGrid[cellRow][cellCol];
@@ -95,80 +210,43 @@ function Board9x9({ currentGameId, setCurrentGameId, addNoteMode }) {
     );
   };
 
-  const handleArrowKeys = useCallback(
-    (e) => {
-      const ARROW_KEYS = {
-        ArrowUp: { row: -1, col: 0 },
-        ArrowDown: { row: 1, col: 0 },
-        ArrowLeft: { row: 0, col: -1 },
-        ArrowRight: { row: 0, col: 1 },
-      };
-      if (ARROW_KEYS[e.key]) {
-        const newRow = Math.max(0, Math.min(8, selectedCell.row + ARROW_KEYS[e.key].row));
-        const newCol = Math.max(0, Math.min(8, selectedCell.col + ARROW_KEYS[e.key].col));
-        setSelectedCell({ row: newRow, col: newCol });
-      }
-    },
-    [selectedCell, setSelectedCell],
-  );
-
-  const handlePhysicalKeyboardInput = useCallback(
-    (e) => {
-      console.log("HandlePhysicalKeyboardInput");
-      const value = e.key;
-      if (selectedCell.row == null || selectedCell.col == null) {
-        return;
-      }
-
-      if (e.key === "Backspace" || e.key === "Delete" || e.key === "0") {
-        handleCellChange(selectedCell.row, selectedCell.col, 0 - 1, addNoteMode);
-      } else if (/^[1-9]$/.test(e.key)) {
-        handleCellChange(selectedCell.row, selectedCell.col, value, addNoteMode);
-      }
-    },
-    [selectedCell, handleCellChange, addNoteMode],
-  );
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleArrowKeys);
-    document.addEventListener("keydown", handlePhysicalKeyboardInput);
-    return () => {
-      document.removeEventListener("keydown", handleArrowKeys);
-      document.removeEventListener("keydown", handlePhysicalKeyboardInput);
-    };
-  }, [selectedCell, handleArrowKeys, handlePhysicalKeyboardInput]);
-
   return (
     <div className="flex flex-col items-center md:flex-row">
       <table className="mb-4 border border-black">
         <tbody>
-          {[0, 3, 6].map((startRow, quadrantRowIndex) => (
-            <tr key={quadrantRowIndex}>
-              {[0, 3, 6].map((startCol, quadrantColIndex) => (
-                <td key={quadrantColIndex} className="border-0 bg-gray-800">
-                  <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
-                    {renderSubgrid(startRow, startCol, 3 * quadrantRowIndex + quadrantColIndex)}
-                  </table>
-                </td>
-              ))}
-            </tr>
-          ))}
+          {Array.from({ length: boardDimension }, (_, i) => i)
+            .filter((i) => i % subgridSize === 0)
+            .map((startRow, quadrantRowIndex) => (
+              <tr key={quadrantRowIndex}>
+                {Array.from({ length: boardDimension }, (_, i) => i)
+                  .filter((i) => i % subgridSize === 0)
+                  .map((startCol, quadrantColIndex) => (
+                    <td key={quadrantColIndex} className="border-0 bg-gray-800">
+                      <table className={`subgrid ${getQuadrantColor(3 * quadrantRowIndex + quadrantColIndex)}`}>
+                        {renderSubgrid(startRow, startCol, 3 * quadrantRowIndex + quadrantColIndex)}
+                      </table>
+                    </td>
+                  ))}
+              </tr>
+            ))}
         </tbody>
       </table>
       <div className="md:ml-6 md:mt-0">
         <center className="mb-2">
           <GameTimer />
         </center>
-        <Keypad onKeypadClick={handleKeypadClick} />
+        <Keypad onKeypadClick={handleKeypadClick} boardDimension={boardDimension} />
       </div>
     </div>
   );
 }
 
-Board9x9.propTypes = {
+Board.propTypes = {
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
   addNoteMode: PropTypes.bool.isRequired,
   setAddNoteMode: PropTypes.func.isRequired,
+  boardDimension: PropTypes.number.isRequired,
+  setBoardDimension: PropTypes.func.isRequired,
 };
-export default Board9x9;
+export default Board;

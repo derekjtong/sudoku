@@ -4,37 +4,10 @@ import Board from "../sudoku/Board";
 import { useState } from "react";
 import AdminDialog from "./AdminDialog";
 
-function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode }) {
+function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, addNoteMode, setAddNoteMode, setBoardDimension }) {
   const [showAdminDialog, setShowAdminDialog] = useState(false);
   const [showDifficultyDialog, setShowDifficultyDialog] = useState(false);
 
-  let BoardComponent;
-  switch (boardDimension) {
-    case 4:
-      BoardComponent = <div>Sorry, we are closed. Switch back to 9x9 board!</div>;
-      // BoardComponent = <Board4x4 currentGameId={currentGameId} setCurrentGameId={setCurrentGameId} addNoteMode={addNoteMode} />;
-      // TODO 4x4 board
-      break;
-    case 9:
-      BoardComponent = (
-        <Board
-          currentGameId={currentGameId}
-          setCurrentGameId={setCurrentGameId}
-          addNoteMode={addNoteMode}
-          setAddNoteMode={setAddNoteMode}
-        />
-      );
-      break;
-    default:
-      BoardComponent = (
-        <Board
-          currentGameId={currentGameId}
-          setCurrentGameId={setCurrentGameId}
-          addNoteMode={addNoteMode}
-          setAddNoteMode={setAddNoteMode}
-        />
-      );
-  }
   let difficultyText;
   switch (difficulty) {
     case 1:
@@ -58,7 +31,14 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   };
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center pb-28">
-      {BoardComponent}
+      <Board
+        currentGameId={currentGameId}
+        setCurrentGameId={setCurrentGameId}
+        addNoteMode={addNoteMode}
+        setAddNoteMode={setAddNoteMode}
+        boardDimension={boardDimension}
+        setBoardDimension={setBoardDimension}
+      />
       <div className="text-content mx-auto px-4 lg:px-32 xl:px-64">
         <h1 className="py-4 text-2xl">Enjoy Free Sudoku Online!</h1>
         Recognized globally as a classic puzzle game, Sudoku challenges you to fill a 9x9 grid with numbers in such a way that each row,
@@ -110,6 +90,7 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
 }
 Content.propTypes = {
   boardDimension: PropTypes.number.isRequired,
+  setBoardDimension: PropTypes.func.isRequired,
   difficulty: PropTypes.number.isRequired,
   currentGameId: PropTypes.string.isRequired,
   setCurrentGameId: PropTypes.func.isRequired,
