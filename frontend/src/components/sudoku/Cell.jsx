@@ -32,7 +32,7 @@ function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySele
           } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
           value={value == -1 ? "" : value}
           onChange={handleOnChange}
-          onClick={() => onCellClick(row, col)}
+          onClick={() => onCellClick({row, col})}
           maxLength="1"
         />
       ) : (
@@ -44,7 +44,7 @@ function Cell({ row, col, cell, onCellClick, onChange, isSelected, isPrimarySele
             } ${isPrimarySelected ? "bg-gray-400 text-white" : ""}`}
             value={""}
             onChange={handleOnChange}
-            onClick={() => onCellClick(row, col)}
+            onClick={() => onCellClick({row, col})}
             maxLength="1"
           />
           <div className="sudoku-notes-container m-0 h-14 w-14">

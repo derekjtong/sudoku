@@ -10,7 +10,7 @@ import { useSudokuBoard } from "../providers/board-provider";
 import GameTimer from "./GameTimer";
 
 function Board({ currentGameId, setCurrentGameId, addNoteMode, boardDimension, setBoardDimension }) {
-  const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell, handleCellClick } = useSudokuBoard(); // Context
+  const { sudokuGrid, setSudokuGrid, handleCellChange, selectedCell, setSelectedCell } = useSudokuBoard(); // Context
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -197,7 +197,7 @@ function Board({ currentGameId, setCurrentGameId, addNoteMode, boardDimension, s
                     col={cellCol}
                     cell={cellObj}
                     onChange={(newCell) => handleCellChange(cellRow, cellCol, newCell, addNoteMode)}
-                    onCellClick={handleCellClick}
+                    onCellClick={setSelectedCell}
                     isSelected={isSelected}
                     isPrimarySelected={cellRow === selectedCell.row && cellCol === selectedCell.col}
                   />
