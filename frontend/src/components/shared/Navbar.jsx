@@ -1,3 +1,4 @@
+// Chenyu, Kayla
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
 import Logo from "./Logo";

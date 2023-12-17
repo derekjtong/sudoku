@@ -1,3 +1,4 @@
+// Mohammad
 import { useState, useEffect } from "react";
 
 const GameTimer = () => {

@@ -1,3 +1,4 @@
+// Derek, Mohammad
 import PropTypes from "prop-types";
 import { useMemo } from "react";
 import "./cell.css";
