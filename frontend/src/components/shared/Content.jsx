@@ -31,14 +31,16 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
   };
   return (
     <div className="container mx-auto mt-32 flex flex-col items-center justify-center pb-28">
-      <Board
-        currentGameId={currentGameId}
-        setCurrentGameId={setCurrentGameId}
-        addNoteMode={addNoteMode}
-        setAddNoteMode={setAddNoteMode}
-        boardDimension={boardDimension}
-        setBoardDimension={setBoardDimension}
-      />
+      <div data-testid="board">
+        <Board
+          currentGameId={currentGameId}
+          setCurrentGameId={setCurrentGameId}
+          addNoteMode={addNoteMode}
+          setAddNoteMode={setAddNoteMode}
+          boardDimension={boardDimension}
+          setBoardDimension={setBoardDimension}
+        />
+      </div>
       <div className="text-content mx-auto px-4 lg:px-32 xl:px-64">
         <h1 className="py-4 text-2xl">Enjoy Free Sudoku Online!</h1>
         Recognized globally as a classic puzzle game, Sudoku challenges you to fill a 9x9 grid with numbers in such a way that each row,
@@ -73,16 +75,18 @@ function Content({ boardDimension, difficulty, currentGameId, setCurrentGameId, 
         Now that you&apos;re equipped with some basic knowledge about Sudoku, go ahead and challenge yourself with this engaging online
         game.
       </div>
-      <button onClick={openAdminDialog} className="mt-4">
+      <button data-testid="adminButton" onClick={openAdminDialog} className="mt-4">
         ADMIN COMMANDS
       </button>
       {showAdminDialog && (
-        <AdminDialog
-          onClose={closeAdminDialog}
-          currentGameId={currentGameId}
-          showDifficultyDialog={showDifficultyDialog}
-          setShowDifficultyDialog={setShowDifficultyDialog}
-        />
+        <div data-testid="adminDialog">
+          <AdminDialog
+            onClose={closeAdminDialog}
+            currentGameId={currentGameId}
+            showDifficultyDialog={showDifficultyDialog}
+            setShowDifficultyDialog={setShowDifficultyDialog}
+          />
+        </div>
       )}
       {showDifficultyDialog && difficultyText}
     </div>
