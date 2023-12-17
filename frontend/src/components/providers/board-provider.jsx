@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import { createContext, useContext } from "react";
 import { useSudokuGrid } from "../../hooks/useSudokuGrid";
 
-const SudokuBoardContext = createContext();
+// Exported for testing purposes
+export const SudokuBoardContext = createContext();
 
 export const useSudokuBoard = () => useContext(SudokuBoardContext);
 
