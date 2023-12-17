@@ -90,8 +90,10 @@ function Board({ currentGameId, setCurrentGameId, addNoteMode, boardDimension, s
 
   if (!isGridReady || isLoading) {
     const placeholderCellProps = {
-      value: -1,
-      notes: [[], [], []],
+      cell: {
+        value: -1,
+        notes: [[], [], []],
+      },
       isSelected: false,
       isPrimarySelected: false,
       onCellClick: () => {}, // No-op function
@@ -112,21 +114,30 @@ function Board({ currentGameId, setCurrentGameId, addNoteMode, boardDimension, s
                     .filter((i) => i % subgridSize === 0)
                     .map((startCol, quadrantColIndex) => (
                       <td key={quadrantColIndex} className="border-0 bg-gray-800">
-                        <table className={`subgrid placeholder-grid`}>
-                          {Array.from({ length: subgridSize }).map((_, rowIndex) => (
-                            <tr key={rowIndex}>
-                              {Array.from({ length: subgridSize }).map((_, colIndex) => (
-                                <td key={colIndex} className={`cell placeholder-cell`}>
-                                  <Cell
-                                    row={rowIndex}
-                                    col={colIndex}
-                                    cell={placeholderCellProps}
-                                    {...placeholderCellProps} // Spread dummy props
-                                  />
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
+                        <table className={`subgrid`}>
+                          <div
+                            key={`subgrid-${startRow}-${startCol}`}
+                            className="subgrid"
+                            style={{ display: "grid", gridTemplateRows: `repeat(${subgridSize}, 1fr)` }}
+                          >
+                            {[...Array(subgridSize)].map((_, rowIndex) => (
+                              <div
+                                key={`row-${startRow + rowIndex}`}
+                                className="row"
+                                style={{ display: "grid", gridTemplateColumns: `repeat(${subgridSize}, 1fr)` }}
+                              >
+                                {[...Array(subgridSize)].map((_, colIndex) => {
+                                  const cellRow = startRow + rowIndex;
+                                  const cellCol = startCol + colIndex;
+                                  return (
+                                    <div key={`cell-${cellRow}-${cellCol}`}>
+                                      <Cell {...placeholderCellProps} />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            ))}
+                          </div>{" "}
                         </table>
                       </td>
                     ))}
