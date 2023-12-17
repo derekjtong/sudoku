@@ -1,3 +1,4 @@
+// Kayla
 import PropTypes from "prop-types";
 
 const SwitchPuzzleDialog = ({ onCancel, onContinue, dimension, difficulty }) => {
