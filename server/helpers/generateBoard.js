@@ -30,7 +30,6 @@ export const generateBoard = (m, n) => {
           [1, 3, -1, 4],
           [4, 2, 1, 3],
         ];
-
         solution = [
           [2, 1, 4, 3],
           [3, 4, 2, 1],
@@ -45,7 +44,6 @@ export const generateBoard = (m, n) => {
           [3, 4, 2, 1],
           [1, 2, 3, -1],
         ];
-
         solution = [
           [1, 3, 4, 2],
           [2, 1, 3, 4],
@@ -60,7 +58,6 @@ export const generateBoard = (m, n) => {
           [3, 1, 2, 4],
           [4, 2, 1, 3],
         ];
-
         solution = [
           [1, 4, 3, 2],
           [2, 3, 4, 1],
